@@ -1,0 +1,30 @@
+{
+    "manifest_version": 3,
+    "name": "ProfStats UT Dallas",
+    "version": "1.0",
+    "description": "This extension shows professor ratings from RateMyProfessor.com and sources grade distributions from UTDgrades.com",
+    "action": {
+      "default_popup": "index.html",
+      "default_title": "ProfStats"
+    },
+    "permissions": [
+      "tabs",
+      "scripting",
+      "http://*/",
+      "https://*/"
+    ],
+    "host_permissions": [
+      "https://*/*"
+    ],
+    "icons": {
+      "48": "vite.svg",
+      "128": "vite.svg"
+    },
+    "web_accessible_resources": [
+      {
+        "resources": ["*"],
+        "matches": ["<all_urls>"]
+      }
+    ]
+  }
+  
