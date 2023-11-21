@@ -31,7 +31,7 @@ jobs:
       with:
         push: true
         tags: profstatsutd.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_dad78c03511a49a890d56e29b1d04379 }}/profstatsutd:${{ github.sha }}
-        file: ./server/Dockerfile
+        file: Dockerfile
 
   deploy:
     runs-on: ubuntu-latest
