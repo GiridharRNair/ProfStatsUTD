@@ -1,4 +1,5 @@
-from flask import Flask, request, jsonify
+from werkzeug.exceptions import Forbidden, HTTPException, NotFound, RequestTimeout, Unauthorized
+from flask import Flask, request, jsonify, render_template
 from collections import OrderedDict
 from flask_cors import CORS
 import ratemyprofessor
@@ -6,12 +7,12 @@ import sqlite3
 import os
 
 
-app = Flask(__name__)
-app.json.sort_keys = False
-CORS(app)
-
 current_dir = os.path.dirname(os.path.abspath(__file__))
 db_path = os.path.join(current_dir, "utdgrades.sqlite3")
+
+app = Flask(__name__, template_folder=os.path.join(current_dir, "templates"))
+app.json.sort_keys = False
+CORS(app)
 
 
 def run_sql_query(subject, course_section=None, instructor=None):
@@ -106,6 +107,26 @@ def get_ratings():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 400
+    
+
+@app.errorhandler(NotFound)
+def page_not_found_handler(e: HTTPException):
+    return render_template('404.html'), 404
+
+
+@app.errorhandler(Unauthorized)
+def unauthorized_handler(e: HTTPException):
+    return render_template('401.html'), 401
+
+
+@app.errorhandler(Forbidden)
+def forbidden_handler(e: HTTPException):
+    return render_template('403.html'), 403
+
+
+@app.errorhandler(RequestTimeout)
+def request_timeout_handler(e: HTTPException):
+    return render_template('408.html'), 408
     
 
 if __name__ == '__main__':
