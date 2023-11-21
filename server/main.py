@@ -56,11 +56,11 @@ def run_sql_query(subject, course_section=None, instructor=None):
 @app.route('/grades', methods=['GET'])
 def get_grades():
     try:
-        teacher_param = request.args.get('teacher').strip()
+        teacher_param = request.args.get('teacher')
         course_param = request.args.get('course')
 
         if not teacher_param:
-            raise ValueError("Required parameter missing")
+            return jsonify({"error": "Required parameter missing"}), 422
 
         if course_param:
             course_param = course_param.strip()
@@ -71,7 +71,7 @@ def get_grades():
         else:
             subject, course_section = None, None
 
-        result_data = run_sql_query(subject, course_section, teacher_param)
+        result_data = run_sql_query(subject, course_section, teacher_param.strip())
 
         return jsonify(result_data), 200
 
@@ -82,28 +82,32 @@ def get_grades():
 @app.route('/ratings', methods=['GET'])
 def get_ratings():
     try:
-        teacher_param = request.args.get('teacher').strip()
+        teacher_param = request.args.get('teacher')
 
         if not teacher_param:
-            raise ValueError("Required parameter missing")
+            return jsonify({"error": "Required parameter missing"}), 422
 
         professor = ratemyprofessor.get_professor_by_school_and_name(
             ratemyprofessor.get_school_by_name("The University of Texas at Dallas"),
-            teacher_param
+            teacher_param.strip()
         )
         
         result_data = {}
 
         if professor:
             result_data = {
+                'id': professor.id,
                 'name': professor.name,
                 'department': professor.department,
                 'rating': professor.rating,
                 'difficulty': professor.difficulty,
-                'would_take_again': round(professor.would_take_again, 1) if professor.would_take_again is not None else None
+                'would_take_again': round(professor.would_take_again, 1) if professor.would_take_again is not None else None,
             }
 
-        return jsonify(result_data) if result_data else jsonify({"error": "No data! Make sure you have the correct teacher name"})
+        if result_data:
+            return jsonify(result_data), 200
+        else:
+            return jsonify({"error": "No data! Make sure you have the correct teacher name"}), 404
 
     except Exception as e:
         return jsonify({"error": str(e)}), 400

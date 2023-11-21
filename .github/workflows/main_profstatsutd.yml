@@ -1,3 +1,8 @@
+# This GitHub Actions workflow automates the process of building, pushing, and deploying a containerized web application to an 
+# Azure Web App. It starts by checking out the repository code and setting up Docker Buildx. Then, it logs in to the Azure 
+# Container Registry, builds and pushes the container image to the registry, and deploys the container image to the Azure Web App's 
+# production slot.
+
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 

@@ -16,10 +16,13 @@ import {
   CircularProgress,
   CircularProgressLabel,
   VStack,
-  Spacer
+  Spacer,
+  Link
 } from '@chakra-ui/react';
 import { gradeMappings } from '../data/gradeMappings.js';
 import './styles/App.css';
+
+const API_URL = import.meta.env.VITE_API_URL
 
 function App() {
   const toast = useToast();
@@ -41,20 +44,33 @@ function App() {
 
   const fetchData = async () => {
     setLoading(true);
-
+  
     try {
-      const ratingsResponse = await axios.get(`http://0.0.0.0:5000/ratings?teacher=${teacherName}`);
-      const gradesResponse = await axios.get(`http://0.0.0.0:5000/grades?teacher=${ratingsResponse.data.name}&course=${course}`);
-
+      const ratingsResponse = await axios.get(`${API_URL}/ratings?teacher=${teacherName}`);
       setRateMyProfessorRating(ratingsResponse.data);
-      setGradeDistribution(gradesResponse.data);
+      
+      try {
+        if (ratingsResponse.data) {
+          const gradesResponse = await axios.get(`${API_URL}/grades?teacher=${ratingsResponse.data.name}&course=${course}`);
+          setGradeDistribution(gradesResponse.data);
+        } else {
+          setGradeDistribution([]);
+          showToast('error', 'No grades found');
+        }
+      } catch (error) {
+        setGradeDistribution([]);
+        showToast('error', 'No grades found');
+      }
     } catch (error) {
       console.error('Error fetching data:', error.message);
-      showToast('error', 'No data found for teacher or course');
+      setRateMyProfessorRating(null);
+      setGradeDistribution([]);
+      showToast('error', 'No data found');
     } finally {
       setLoading(false);
     }
   };
+  
 
   const handleSubmit = () => {
     if (!teacherName) {
@@ -80,7 +96,7 @@ function App() {
   }));
 
   return (
-    <Stack spacing={2} width={400} align="center">
+    <Stack spacing={2} width={300} align="center">
       <Input
         required
         placeholder="Enter Teacher Name ex. Jey Veerasamy"
@@ -98,20 +114,26 @@ function App() {
 
       {rateMyProfessorRating && (
         <VStack paddingTop={2}>
-          <Text fontSize="2xl">{rateMyProfessorRating.name}</Text>
+          <Text fontSize="2xl" _hover={{ color: '#3182CE' }}>
+            <Link href={`https://www.ratemyprofessors.com/professor/${rateMyProfessorRating.id}`} target="_blank">
+              {rateMyProfessorRating.name}
+            </Link>
+          </Text>
           <Text fontSize="xl">{rateMyProfessorRating.department}</Text>
-          <HStack width={400}>
+          <HStack width={300}>
             {renderRateMyProfessorRating('Rating', rateMyProfessorRating.rating)}
             <Spacer />
             {renderRateMyProfessorRating('Difficulty', rateMyProfessorRating.difficulty)}
             <Spacer />
             {renderRateMyProfessorRating('Enjoyment?', rateMyProfessorRating.would_take_again)}
           </HStack>
-          <BarChart width={400} height={150} data={chartData}>
-            <XAxis dataKey="name" />
-            <Tooltip />
-            <Bar dataKey="count" fill="#3182CE" />
-          </BarChart>
+          {chartData.length > 0 && (
+            <BarChart width={300} height={150} data={chartData}>
+              <XAxis dataKey="name" />
+              <Tooltip />
+              <Bar dataKey="count" fill="#3182CE" />
+            </BarChart>
+          )}
         </VStack>
       )}
     </Stack>
