@@ -105,6 +105,7 @@ function App() {
         onChange={(e) => setTeacherName(e.target.value)}
       />
       <Input
+        maxLength={7}
         placeholder="Specify a Course? ex. CS 1337"
         value={course}
         onChange={(e) => setCourse(e.target.value)}
