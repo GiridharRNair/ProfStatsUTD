@@ -5,7 +5,7 @@ ProfStatsUTD is a Chrome extension that provides a convenient way to view profes
 ## Environment Variables
 To run the YourDailyRundown Frontend, you'll need to set the following environment variables:
 
-`VITE_API_URL`=Backend Endpoint (ex. http://127.0.0.1:5000) <br/>
+`VITE_API_URL` = Backend Domain (ex. http://127.0.0.1:5000) <br/>
 
 ## Installation and Setup
 1. Clone the repository to your local machine and change into the working directory using `cd extension`.

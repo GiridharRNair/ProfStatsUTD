@@ -17,6 +17,8 @@ CORS(app)
 
 def run_sql_query(subject, course_section=None, instructor=None):
     with sqlite3.connect(db_path) as conn:
+        modified_instructor = instructor.replace(" ", "% %")
+
         cursor = conn.cursor()
 
         sql_query_base = """
@@ -28,14 +30,14 @@ def run_sql_query(subject, course_section=None, instructor=None):
                 gp.f, gp.cr, gp.nc, gp.p, gp.w, gp.i, gp.nf
             FROM grades_populated gp
             JOIN grades_strings gs ON gp.gradesId = gs.id
-            WHERE TRIM(gs.instructor1) = ?
+            WHERE TRIM(gs.instructor1) LIKE ?
         """
 
         if subject and course_section:
             sql_query = f"{sql_query_base} AND gs.subject = ? AND catalogNumber = ?"
-            cursor.execute(sql_query, (instructor, subject.upper(), course_section))
+            cursor.execute(sql_query, (modified_instructor, subject.upper(), course_section))
         else:
-            cursor.execute(sql_query_base, (instructor,))
+            cursor.execute(sql_query_base, (modified_instructor,))
 
         results = cursor.fetchall()
 
