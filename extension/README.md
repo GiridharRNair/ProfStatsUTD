@@ -1,6 +1,6 @@
 # ProfStatsUTD Frontend
 
-ProfStatsUTD is a Chrome extension that provides a convenient way to view professor ratings and grade distributions from UT Dallas's ProfStatsUTD backend. The frontend is built using Chakra UI and Vite.
+This is the frontend code for ProfStatsUTD, a Chrome extension that provides aggregated grades and professor ratings for courses at The University of Texas at Dallas (UTD), built using Chakra UI and Vite.
 
 ## Environment Variables
 To run the YourDailyRundown Frontend, you'll need to set the following environment variables:

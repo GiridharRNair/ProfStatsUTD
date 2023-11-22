@@ -2,14 +2,12 @@
     "manifest_version": 3,
     "name": "ProfStats UT Dallas",
     "version": "1.0",
-    "description": "This extension shows professor ratings from RateMyProfessor.com and sources grade distributions from UTDgrades.com",
+    "description": "ProfStatsUTD is a comprehensive Chrome extension designed to streamline your academic experience at The University of Texas at Dallas (UTD). The extension offers a user-friendly interface for accessing aggregated grades and professor ratings effortlessly.",
     "action": {
       "default_popup": "index.html",
       "default_title": "ProfStats"
     },
     "permissions": [
-      "tabs",
-      "scripting",
       "http://*/",
       "https://*/"
     ],
@@ -17,14 +15,7 @@
       "https://*/*"
     ],
     "icons": {
-      "48": "vite.svg",
-      "128": "vite.svg"
-    },
-    "web_accessible_resources": [
-      {
-        "resources": ["*"],
-        "matches": ["<all_urls>"]
-      }
-    ]
+      "128": "ProfStatsUTDIcon128.png"
+    }
   }
   

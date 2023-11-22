@@ -1,8 +1,8 @@
 from werkzeug.exceptions import Forbidden, HTTPException, NotFound, RequestTimeout, Unauthorized
 from flask import Flask, request, jsonify, render_template
 from collections import OrderedDict
+from professor import Professor
 from flask_cors import CORS
-import ratemyprofessor
 import sqlite3
 import os
 
@@ -16,6 +16,14 @@ CORS(app)
 
 
 def run_sql_query(subject, course_section=None, instructor=None):
+    """
+    Run an SQL query on the SQLite database and aggregate the results.
+
+    :param subject: Subject code for the course.
+    :param course_section: Course section number.
+    :param instructor: Instructor's name.
+    :return: Aggregated data from the database.
+    """
     with sqlite3.connect(db_path) as conn:
         modified_instructor = instructor.replace(" ", "% %")
 
@@ -57,6 +65,11 @@ def run_sql_query(subject, course_section=None, instructor=None):
 
 @app.route('/grades', methods=['GET'])
 def get_grades():
+    """
+    Endpoint to retrieve aggregated grades data based on parameters.
+
+    :return: JSON response with aggregated data.
+    """
     try:
         teacher_param = request.args.get('teacher')
         course_param = request.args.get('course')
@@ -83,33 +96,41 @@ def get_grades():
 
 @app.route('/ratings', methods=['GET'])
 def get_ratings():
+    """
+    Endpoint to retrieve professor ratings data based on parameters.
+
+    :return: JSON response with professor ratings data.
+    """
     try:
         teacher_param = request.args.get('teacher')
+        course_param = request.args.get('course')
 
         if not teacher_param:
-            return jsonify({"error": "Required parameter missing"}), 422
+            return jsonify({"error": "Required parameter 'teacher' missing"}), 422
 
-        professor = ratemyprofessor.get_professor_by_school_and_name(
-            ratemyprofessor.get_school_by_name("The University of Texas at Dallas"),
-            teacher_param.strip()
-        )
-        
-        result_data = {}
+        professor = Professor(teacher_param.strip())
 
-        if professor:
-            result_data = {
-                'id': professor.id,
-                'name': professor.name,
-                'department': professor.department,
-                'rating': professor.rating,
-                'difficulty': professor.difficulty,
-                'would_take_again': round(professor.would_take_again, 1) if professor.would_take_again is not None else None,
-            }
-
-        if result_data:
-            return jsonify(result_data), 200
+        if course_param:
+            ratings = professor.get_ratings(course_param.strip().replace(" ", "").upper())
+            total_ratings = len(ratings)
+            total_rating = sum(rating.rating for rating in ratings)
+            total_difficulty = sum(rating.difficulty for rating in ratings)
+            professor_rating = round(total_rating / total_ratings, 1)
+            professor_difficulty = round(total_difficulty / total_ratings, 1)
         else:
-            return jsonify({"error": "No data! Make sure you have the correct teacher name"}), 404
+            professor_rating = professor.rating
+            professor_difficulty = professor.difficulty
+
+        result_data = {
+            'id': professor.id,
+            'name': professor.name,
+            'department': professor.department,
+            'rating': professor_rating,
+            'difficulty': professor_difficulty,
+            'would_take_again': round(professor.would_take_again, 1) if professor.would_take_again is not None else None,
+        }
+
+        return jsonify(result_data), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 400

@@ -31,6 +31,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [rateMyProfessorRating, setRateMyProfessorRating] = useState(null);
   const [gradeDistribution, setGradeDistribution] = useState([]);
+  const [options, setOptions] = useState(['test', 'test2', 'test3']);
 
   const showToast = (status, description) => {
     toast({
@@ -46,7 +47,7 @@ function App() {
     setLoading(true);
   
     try {
-      const ratingsResponse = await axios.get(`${API_URL}/ratings?teacher=${teacherName}`);
+      const ratingsResponse = await axios.get(`${API_URL}/ratings?teacher=${teacherName}&course=${course}`);
       setRateMyProfessorRating(ratingsResponse.data);
       
       try {
@@ -99,7 +100,7 @@ function App() {
     <Stack spacing={2} width={300} align="center">
       <Input
         required
-        placeholder="Enter Teacher Name ex. Jey Veerasamy"
+        placeholder="Enter Teacher Name ex. Jason Smith"
         value={teacherName}
         onChange={(e) => setTeacherName(e.target.value)}
       />
@@ -121,11 +122,11 @@ function App() {
           </Text>
           <Text fontSize="xl">{rateMyProfessorRating.department}</Text>
           <HStack width={300}>
-            {renderRateMyProfessorRating('Rating', rateMyProfessorRating.rating)}
+            {renderRateMyProfessorRating('Quality', rateMyProfessorRating.rating)}
             <Spacer />
             {renderRateMyProfessorRating('Difficulty', rateMyProfessorRating.difficulty)}
             <Spacer />
-            {renderRateMyProfessorRating('Enjoyment?', rateMyProfessorRating.would_take_again)}
+            {renderRateMyProfessorRating('Enjoyment', rateMyProfessorRating.would_take_again)}
           </HStack>
           {chartData.length > 0 && (
             <BarChart width={300} height={150} data={chartData}>
