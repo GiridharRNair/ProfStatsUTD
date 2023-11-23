@@ -4,7 +4,9 @@ from collections import OrderedDict
 from professor import Professor
 from flask_cors import CORS
 import sqlite3
+import string
 import os
+import re
 
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -15,7 +17,7 @@ app.json.sort_keys = False
 CORS(app)
 
 
-def run_sql_query(subject, course_section=None, instructor=None):
+def run_sql_query(instructor, subject, course_section):
     """
     Run an SQL query on the SQLite database and aggregate the results.
 
@@ -26,27 +28,26 @@ def run_sql_query(subject, course_section=None, instructor=None):
     """
     with sqlite3.connect(db_path) as conn:
         modified_instructor = instructor.replace(" ", "% %")
-
         cursor = conn.cursor()
 
         sql_query_base = """
-            SELECT
-                gp.aPlus, gp.a, gp.aMinus,
-                gp.bPlus, gp.b, gp.bMinus,
-                gp.cPlus, gp.c, gp.cMinus,
-                gp.dPlus, gp.d, gp.dMinus,
-                gp.f, gp.cr, gp.nc, gp.p, gp.w, gp.i, gp.nf
+            SELECT gp.aPlus, gp.a, gp.aMinus, gp.bPlus, gp.b, gp.bMinus,
+                   gp.cPlus, gp.c, gp.cMinus, gp.dPlus, gp.d, gp.dMinus,
+                   gp.f, gp.cr, gp.nc, gp.p, gp.w, gp.i, gp.nf
             FROM grades_populated gp
             JOIN grades_strings gs ON gp.gradesId = gs.id
             WHERE TRIM(gs.instructor1) LIKE ?
         """
 
+        sql_params = [modified_instructor]
+
         if subject and course_section:
             sql_query = f"{sql_query_base} AND gs.subject = ? AND catalogNumber = ?"
-            cursor.execute(sql_query, (modified_instructor, subject.upper(), course_section))
+            sql_params.extend([subject.upper(), course_section])
         else:
-            cursor.execute(sql_query_base, (modified_instructor,))
+            sql_query = sql_query_base
 
+        cursor.execute(sql_query, tuple(sql_params))
         results = cursor.fetchall()
 
         columns = [column[0] for column in cursor.description]
@@ -54,7 +55,7 @@ def run_sql_query(subject, course_section=None, instructor=None):
         aggregated_data = OrderedDict()
         for column in columns:
             column_sum = sum(row[columns.index(column)] for row in results)
-            if column_sum != 0:
+            if column_sum:
                 aggregated_data[column] = column_sum
 
         if aggregated_data:
@@ -76,22 +77,43 @@ def get_grades():
 
         if not teacher_param:
             return jsonify({"error": "Required parameter missing"}), 422
+        
+        formatted_course_name = course_param.translate({ord(c): None for c in string.whitespace}).upper() if course_param else None
+        subject, course_section = None, None 
 
-        if course_param:
-            course_param = course_param.strip()
-            if " " not in course_param:
-                subject, course_section = course_param[:2], course_param[2:]
-            else:
-                subject, course_section = course_param.split(" ", 1)
-        else:
-            subject, course_section = None, None
+        if formatted_course_name:
+            match = re.match(r'([a-zA-Z]+)([0-9]+)', formatted_course_name)
+            if match:
+                subject, course_section = match.groups()
 
-        result_data = run_sql_query(subject, course_section, teacher_param.strip())
+        result_data = run_sql_query(teacher_param.strip(), subject, course_section)
 
         return jsonify(result_data), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 400
+    
+
+def calculate_average_ratings(ratings):
+    """
+    Calculate the average ratings for a professor.
+
+    :param ratings: List of ratings.
+    :return: Average ratings.
+    """
+    total_ratings = len(ratings)
+    if total_ratings > 0:
+        total_rating = sum(rating.rating for rating in ratings)
+        total_difficulty = sum(rating.difficulty for rating in ratings)
+        would_take_again = sum(1 if rating.take_again else 0 for rating in ratings)
+        
+        return (
+            round(total_rating / total_ratings, 1), 
+            round(total_difficulty / total_ratings, 1), 
+            round((would_take_again / total_ratings) * 100, 1)
+        )
+    else:
+        raise ValueError("No ratings found for this professor")
     
 
 @app.route('/ratings', methods=['GET'])
@@ -111,23 +133,19 @@ def get_ratings():
         professor = Professor(teacher_param.strip())
 
         if course_param:
-            ratings = professor.get_ratings(course_param.strip().replace(" ", "").upper())
-            total_ratings = len(ratings)
-            total_rating = sum(rating.rating for rating in ratings)
-            total_difficulty = sum(rating.difficulty for rating in ratings)
-            professor_rating = round(total_rating / total_ratings, 1)
-            professor_difficulty = round(total_difficulty / total_ratings, 1)
+            formatted_course_name = course_param.translate({ord(c): None for c in string.whitespace}).upper()
+            ratings = professor.get_ratings(formatted_course_name)
+            rating, difficulty, would_take_again = calculate_average_ratings(ratings)
         else:
-            professor_rating = professor.rating
-            professor_difficulty = professor.difficulty
+            rating, difficulty, would_take_again = professor.rating, professor.difficulty, round(professor.would_take_again, 1)
 
         result_data = {
             'id': professor.id,
             'name': professor.name,
             'department': professor.department,
-            'rating': professor_rating,
-            'difficulty': professor_difficulty,
-            'would_take_again': round(professor.would_take_again, 1) if professor.would_take_again is not None else None,
+            'rating': rating,
+            'difficulty': difficulty,
+            'would_take_again': would_take_again,
         }
 
         return jsonify(result_data), 200
@@ -137,23 +155,11 @@ def get_ratings():
     
 
 @app.errorhandler(NotFound)
-def page_not_found_handler(e: HTTPException):
-    return render_template('404.html'), 404
-
-
 @app.errorhandler(Unauthorized)
-def unauthorized_handler(e: HTTPException):
-    return render_template('401.html'), 401
-
-
 @app.errorhandler(Forbidden)
-def forbidden_handler(e: HTTPException):
-    return render_template('403.html'), 403
-
-
 @app.errorhandler(RequestTimeout)
-def request_timeout_handler(e: HTTPException):
-    return render_template('408.html'), 408
+def page_not_found_handler(e: HTTPException):
+    return render_template(f'{e.code}.html'), e.code
     
 
 if __name__ == '__main__':

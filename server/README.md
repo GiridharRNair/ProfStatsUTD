@@ -15,8 +15,9 @@ The SQLite database will be created in the `db` directory.
 
 ## Setup
 1. Clone the repository: `git clone https://github.com/GiridharRNair/ProfStatsUTD`
-2. Install dependencies: `pip install -r requirements.txt`
-3. Run the backend: `python main.py`
+2. Change into the working directory: `cd server`
+3. Install dependencies: `pip install -r requirements.txt`
+4. Run the backend: `python main.py`
 
 ## Endpoints
 
@@ -45,4 +46,8 @@ curl -X GET "http://127.0.0.1:5000/grades?teacher=Jey%20Veerasamy&course=CS1337"
 ```bash
 curl -X GET "http://127.0.0.1:5000/ratings?teacher=Jey%20Veerasamy&course=CS1337"
 ```
+
+## Deployment
+
+The ProfStatsUTD backend utilizes a CI/CD pipeline configured in the YAML file [main_profstatsutd.yml](../.github/workflows/main_profstatsutd.yml). This file outlines the necessary steps for building the Docker image, pushing it to the Azure Container Registry, and deploying it to the Azure Web App.
 

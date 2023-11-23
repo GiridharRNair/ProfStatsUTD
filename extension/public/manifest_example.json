@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "ProfStats UT Dallas",
+  "version": "1.0",
+  "description": "This extension offers a user-friendly interface for accessing aggregated grades and professor ratings effortlessly.",
+  "action": {
+    "default_popup": "index.html",
+    "default_title": "ProfStats"
+  },
+  "icons": {
+    "128": "ProfStatsUTDIcon128.png"
+  },
+  "permissions": [
+    "<Backend Domain>"
+  ]
+}
