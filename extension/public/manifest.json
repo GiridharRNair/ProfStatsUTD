@@ -5,12 +5,14 @@
   "description": "This extension offers a user-friendly interface for accessing aggregated grades and professor ratings effortlessly.",
   "action": {
     "default_popup": "index.html",
+    "default_icon": "icon128.png",
     "default_title": "ProfStats"
   },
   "icons": {
-    "128": "ProfStatsUTDIcon128.png"
-  },
-  "permissions": [
-    "<Backend Domain>"
-  ]
+    "16": "icon16.png",
+    "32": "icon32.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  }
 }
+  

@@ -1,10 +1,10 @@
 # ProfStatsUTD Backend
 
-This is the backend code for ProfStatsUTD, a Chrome extension that provides aggregated grades and professor ratings for courses at The University of Texas at Dallas (UTD).
+This is the backend code (Python Flask) for ProfStatsUTD, a Chrome extension that provides aggregated grades and professor ratings for courses at The University of Texas at Dallas (UTD).
 
 ## Database
 
-The SQLite database used in this project is retrieved from the [utd-grades](https://github.com/acmutd/utd-grades) GitHub repository. To set up the database, clone the repository and run the following commands:
+The SQLite database used in this project is retrieved from the [utd-grades](https://github.com/acmutd/utd-grades) GitHub repository. To set up the database, clone and navigate to their repository and run the following commands:
 
 ```bash
 npm install   # Install dependencies
