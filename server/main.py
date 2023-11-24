@@ -149,7 +149,3 @@ def get_ratings(teacher: str, course: str = None):
 
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
-
-
-if __name__ == '__main__':
-    uvicorn.run("main:app", reload=True)

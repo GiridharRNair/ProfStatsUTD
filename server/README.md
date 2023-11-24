@@ -1,6 +1,6 @@
 # ProfStatsUTD Backend
 
-This is the backend code (Python Flask) for ProfStatsUTD, a Chrome extension that provides aggregated grades and professor ratings for courses at The University of Texas at Dallas (UTD).
+This repository contains the backend code written in Python using the FastAPI framework for ProfStatsUTD, a Chrome extension designed to provide aggregated grades and professor ratings for courses at The University of Texas at Dallas (UTD).
 
 ## Database
 
@@ -14,11 +14,21 @@ npm run dev   # Create the SQLite database from raw data and launch the Next.js 
 The SQLite database will be created in the `db` directory. 
 
 ## Setup
+
+To set up the ProfStatsUTD Backend on your local machine, follow these steps:
+
 1. Clone the repository: `git clone https://github.com/GiridharRNair/ProfStatsUTD`
 2. Change into the working directory: `cd server`
 3. Install dependencies: `pip install -r requirements.txt`
 4. Run the backend: `python main.py`
 
+**Note:** Alternatively, you can conveniently build and start the backend using the provided npm script. This will also simultaneously start the React frontend and the FastAPI backend:
+
+```bash
+npm run start
+```
+
+This command utilizes `concurrently` to run the React development server and the FastAPI backend concurrently.
 ## Endpoints
 
 ### 1. `/grades`
