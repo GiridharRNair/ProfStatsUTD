@@ -17,4 +17,5 @@ COPY ./server/ .
 # Expose port 80
 EXPOSE 80
 
-CMD ["gunicorn", "--bind", "0.0.0.0:80", "--workers", "4", "--threads", "4", "--timeout", "120", "main:app"]
+# Use uvicorn to run the FastAPI app
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]

@@ -1,8 +1,9 @@
-from werkzeug.exceptions import Forbidden, HTTPException, NotFound, RequestTimeout, Unauthorized
-from flask import Flask, request, jsonify, render_template
+from fastapi.responses import FileResponse, JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi import FastAPI, HTTPException
 from collections import OrderedDict
 from professor import Professor
-from flask_cors import CORS
+import uvicorn
 import sqlite3
 import string
 import os
@@ -12,12 +13,20 @@ import re
 current_dir = os.path.dirname(os.path.abspath(__file__))
 db_path = os.path.join(current_dir, "utdgrades.sqlite3")
 
-app = Flask(__name__, template_folder=os.path.join(current_dir, "templates"))
-app.json.sort_keys = False
-CORS(app)
+app = FastAPI()
+
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
-def run_sql_query(instructor, subject, course_section):
+def run_sql_query(instructor: str, subject: str = None, course_section: str = None):
     """
     Run an SQL query on the SQLite database and aggregate the results.
 
@@ -62,36 +71,30 @@ def run_sql_query(instructor, subject, course_section):
             return aggregated_data
         else:
             raise ValueError("No data! Make sure you have the correct teacher name or course number")
-    
+   
 
-@app.route('/grades', methods=['GET'])
-def get_grades():
+@app.get('/grades', response_class=JSONResponse)
+def get_grades(teacher: str, course: str = None):
     """
     Endpoint to retrieve aggregated grades data based on parameters.
 
     :return: JSON response with aggregated data.
     """
     try:
-        teacher_param = request.args.get('teacher')
-        course_param = request.args.get('course')
-
-        if not teacher_param:
-            return jsonify({"error": "Required parameter missing"}), 422
-        
-        formatted_course_name = course_param.translate({ord(c): None for c in string.whitespace}).upper() if course_param else None
-        subject, course_section = None, None 
+        formatted_course_name = course.translate({ord(c): None for c in string.whitespace}).upper() if course else None
+        subject, course_section = None, None
 
         if formatted_course_name:
             match = re.match(r'([a-zA-Z]+)([0-9]+)', formatted_course_name)
             if match:
                 subject, course_section = match.groups()
 
-        result_data = run_sql_query(teacher_param.strip(), subject, course_section)
+        result_data = run_sql_query(teacher.strip(), subject, course_section)
 
-        return jsonify(result_data), 200
+        return result_data
 
     except Exception as e:
-        return jsonify({"error": str(e)}), 400
+        raise HTTPException(status_code=400, detail=str(e))
     
 
 def calculate_average_ratings(ratings):
@@ -114,26 +117,20 @@ def calculate_average_ratings(ratings):
         )
     else:
         raise ValueError("No ratings found for this professor")
-    
 
-@app.route('/ratings', methods=['GET'])
-def get_ratings():
+
+@app.get('/ratings', response_class=JSONResponse)
+def get_ratings(teacher: str, course: str = None):
     """
     Endpoint to retrieve professor ratings data based on parameters.
 
     :return: JSON response with professor ratings data.
     """
     try:
-        teacher_param = request.args.get('teacher')
-        course_param = request.args.get('course')
+        professor = Professor(teacher.strip())
 
-        if not teacher_param:
-            return jsonify({"error": "Required parameter 'teacher' missing"}), 422
-
-        professor = Professor(teacher_param.strip())
-
-        if course_param:
-            formatted_course_name = course_param.translate({ord(c): None for c in string.whitespace}).upper()
+        if course:
+            formatted_course_name = course.translate({ord(c): None for c in string.whitespace}).upper()
             ratings = professor.get_ratings(formatted_course_name)
             rating, difficulty, would_take_again = calculate_average_ratings(ratings)
         else:
@@ -148,19 +145,19 @@ def get_ratings():
             'would_take_again': would_take_again,
         }
 
-        return jsonify(result_data), 200
+        return result_data
 
     except Exception as e:
-        return jsonify({"error": str(e)}), 400
+        raise HTTPException(status_code=400, detail=str(e))
     
 
-@app.errorhandler(NotFound)
-@app.errorhandler(Unauthorized)
-@app.errorhandler(Forbidden)
-@app.errorhandler(RequestTimeout)
-def page_not_found_handler(e: HTTPException):
-    return render_template(f'{e.code}.html'), e.code
-    
+@app.exception_handler(404)
+@app.exception_handler(401)
+@app.exception_handler(403)
+@app.exception_handler(408)
+async def custom_handler(request, exc: HTTPException):
+    return FileResponse(f'{current_dir}/templates/{exc.status_code}.html')
+
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    uvicorn.run(app)
