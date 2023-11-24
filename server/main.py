@@ -149,15 +149,7 @@ def get_ratings(teacher: str, course: str = None):
 
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
-    
-
-@app.exception_handler(404)
-@app.exception_handler(401)
-@app.exception_handler(403)
-@app.exception_handler(408)
-async def custom_handler(request, exc: HTTPException):
-    return FileResponse(f'{current_dir}/templates/{exc.status_code}.html')
 
 
 if __name__ == '__main__':
-    uvicorn.run(app)
+    uvicorn.run("main:app", reload=True)

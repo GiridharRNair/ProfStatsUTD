@@ -2,11 +2,6 @@
 
 This is the frontend code for ProfStatsUTD, a Chrome extension that provides aggregated grades and professor ratings for courses at The University of Texas at Dallas (UTD), built using Chakra UI and Vite.
 
-## Environment Variables
-To run the YourDailyRundown Frontend, you'll need to set the following environment variables:
-
-`VITE_API_URL` = Backend Domain (ex. http://127.0.0.1:5000) <br/>
-
 ## Installation and Setup
 1. Clone the repository: `git clone https://github.com/GiridharRNair/ProfStatsUTD`
 2. Change into the working directory: `cd extension`
