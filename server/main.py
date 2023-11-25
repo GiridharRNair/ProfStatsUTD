@@ -1,9 +1,8 @@
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, HTTPException
 from collections import OrderedDict
 from professor import Professor
-import uvicorn
 import sqlite3
 import string
 import os
@@ -119,6 +118,20 @@ def calculate_average_ratings(ratings):
         raise ValueError("No ratings found for this professor")
 
 
+def get_tags(ratings):
+    """
+    Get the tags for a professor.
+
+    :param ratings: List of ratings.
+    :return: Tags.
+    """
+    tags = set()
+    for rating in ratings:
+        tags = tags.union(rating.tags)
+    tags = set([string.capwords(tag) for tag in tags if tag != ""])
+    return list(tags)[:5] if len(tags) > 5 else list(tags)
+
+
 @app.get('/ratings', response_class=JSONResponse)
 def get_ratings(teacher: str, course: str = None):
     """
@@ -128,10 +141,10 @@ def get_ratings(teacher: str, course: str = None):
     """
     try:
         professor = Professor(teacher.strip())
+        formatted_course_name = course.translate({ord(c): None for c in string.whitespace}).upper() if course else None
+        ratings = professor.get_ratings(formatted_course_name)
 
         if course:
-            formatted_course_name = course.translate({ord(c): None for c in string.whitespace}).upper()
-            ratings = professor.get_ratings(formatted_course_name)
             rating, difficulty, would_take_again = calculate_average_ratings(ratings)
         else:
             rating, difficulty, would_take_again = professor.rating, professor.difficulty, round(professor.would_take_again, 1)
@@ -143,6 +156,7 @@ def get_ratings(teacher: str, course: str = None):
             'rating': rating,
             'difficulty': difficulty,
             'would_take_again': would_take_again,
+            'tags': get_tags(ratings),
         }
 
         return result_data

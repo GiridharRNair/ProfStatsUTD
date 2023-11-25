@@ -97,7 +97,8 @@ class Professor:
         if course_name is not None and not any(course == course_name for course in self.courses_taught):
             return []
 
-        ratings_query["variables"]["courseFilter"] = course_name if course_name is not None else None
+        if course_name is not None:
+            ratings_query["variables"]["courseFilter"] = course_name
 
         data = requests.post(url="https://www.ratemyprofessors.com/graphql", json=ratings_query, headers=headers)
 
@@ -110,12 +111,12 @@ class Professor:
         for rating_data in ratings_data:
             rating = rating_data["node"]
             take_again = True if rating["wouldTakeAgain"] == 1 else False if rating["wouldTakeAgain"] == 0 else None
-
             ratings.append(Rating(
                 rating=rating["helpfulRating"],
                 difficulty=rating["difficultyRating"],
                 class_name=rating["class"],
-                take_again=take_again
+                take_again=take_again,
+                tags=set(rating["ratingTags"].split("--"))
             ))
 
         return ratings
@@ -124,7 +125,7 @@ class Professor:
 class Rating:
     """Represents a rating."""
 
-    def __init__(self, rating: int, difficulty: int, class_name: str, take_again=None):
+    def __init__(self, rating: int, difficulty: int, class_name: str, take_again=None, tags: set=None):
         """
         Initializes a Rating instance.
 
@@ -137,5 +138,4 @@ class Rating:
         self.difficulty = difficulty
         self.class_name = class_name
         self.take_again = take_again
-
-
+        self.tags = tags
