@@ -145,13 +145,14 @@ def get_ratings(teacher: str, course: str = None):
     """
     try:
         professor = Professor(teacher.strip())
-        formatted_course_name = course.translate({ord(c): None for c in string.whitespace}).upper() if course else None
-        ratings = professor.get_ratings(formatted_course_name)
 
-        if not course:
-            rating, difficulty, would_take_again = professor.rating, professor.difficulty, round(professor.would_take_again, 1)
-        else:
+        if course:
+            formatted_course_name = course.translate({ord(c): None for c in string.whitespace}).upper()
+            ratings = professor.get_ratings(formatted_course_name)
             rating, difficulty, would_take_again = calculate_average_ratings(ratings)
+        else:
+            ratings = professor.get_ratings()
+            rating, difficulty, would_take_again = professor.rating, professor.difficulty, round(professor.would_take_again, 1)
 
         tags = get_tags(ratings)
 
