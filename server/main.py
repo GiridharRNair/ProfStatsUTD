@@ -77,6 +77,8 @@ def get_grades(teacher: str, course: str = None):
     """
     Endpoint to retrieve aggregated grades data based on parameters.
 
+    :param teacher: Name of the professor.
+    :param course: Name of the course (optional).
     :return: JSON response with aggregated data.
     """
     try:
@@ -137,6 +139,8 @@ def get_ratings(teacher: str, course: str = None):
     """
     Endpoint to retrieve professor ratings data based on parameters.
 
+    :param teacher: Name of the professor.
+    :param course: Name of the course (optional).
     :return: JSON response with professor ratings data.
     """
     try:
@@ -144,10 +148,12 @@ def get_ratings(teacher: str, course: str = None):
         formatted_course_name = course.translate({ord(c): None for c in string.whitespace}).upper() if course else None
         ratings = professor.get_ratings(formatted_course_name)
 
-        if course:
-            rating, difficulty, would_take_again = calculate_average_ratings(ratings)
-        else:
+        if not course:
             rating, difficulty, would_take_again = professor.rating, professor.difficulty, round(professor.would_take_again, 1)
+        else:
+            rating, difficulty, would_take_again = calculate_average_ratings(ratings)
+
+        tags = get_tags(ratings)
 
         result_data = {
             'id': professor.id,
@@ -156,7 +162,7 @@ def get_ratings(teacher: str, course: str = None):
             'rating': rating,
             'difficulty': difficulty,
             'would_take_again': would_take_again,
-            'tags': get_tags(ratings),
+            'tags': tags,
         }
 
         return result_data
