@@ -40,7 +40,7 @@ class Professor:
         :return: The school ID.
         """
         page = requests.get("https://www.ratemyprofessors.com/search/schools?q=The+University+of+Texas+at+Dallas")
-        return re.findall(r'"legacyId":(\d+)', page.text)[0]
+        return re.findall(r'"id":"([^"]+)"', page.text)[0]
 
 
     def get_professor_id(self, professor_name, school_id):

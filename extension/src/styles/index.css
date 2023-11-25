@@ -2,12 +2,6 @@ body {
   margin: 0;
   display: flex;
   place-items: center;
-  min-width: 320px;
+  min-width: 300px;
   min-height: 100vh;
-}
-
-.container {
-  max-width: 800px; /* Set your desired maximum width */
-  width: 100%;
-  margin: 0 auto; /* Center the container */
 }

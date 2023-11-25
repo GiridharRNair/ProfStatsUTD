@@ -16,7 +16,7 @@ To set up the ProfStatsUTD Frontend on your local machine, follow these steps:
 4. Start the development server with `npm run dev`.
 5. Access the app in your browser at `http://localhost:5173/`.
 
-**Note:** Alternatively, you can conveniently build and start the backend using the provided npm script. This will also simultaneously start the React frontend and the FastAPI backend:
+**Note:** Alternatively, this will also simultaneously start the React frontend and the FastAPI backend:
 
 ```bash
 npm run start
@@ -33,7 +33,7 @@ To test the ProfStatsUTD Chrome extension in your Chrome browser, enable develop
 5. Click on "Load unpacked" and select the `dist` folder within the `extension` directory in your cloned repository.
 6. The ProfStatsUTD Chrome extension will be loaded and ready for use.
 
-**Note:** Alternatively, you can conveniently build and start the backend using the provided npm script. This will also simultaneously start the React frontend and the FastAPI backend:
+**Note:** Alternatively, this will also simultaneously build the React frontend and start the FastAPI backend:
 
 ```bash
 npm run build
