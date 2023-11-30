@@ -17,11 +17,11 @@ The SQLite database will be created in the `db` directory.
 
 To set up the ProfStatsUTD Backend on your local machine, follow these steps:
 
-0. Ensure you have a virtual enviroment set up with Python 3.8+.
-1. Clone the repository: `git clone https://github.com/GiridharRNair/ProfStatsUTD`
-2. Change into the working directory: `cd server`
-3. Install dependencies: `pip install -r requirements.txt`
-4. Run the backend: `python main.py`
+1. Ensure you have a virtual enviroment set up with Python 3.8+.
+2. Clone the repository: `git clone https://github.com/GiridharRNair/ProfStatsUTD`
+3. Change into the working directory: `cd server`
+4. Install dependencies: `pip install -r requirements.txt`
+5. Run the backend: `uvicorn main:app --reload`
 
 **Note:** Alternatively, this will also simultaneously start the React frontend and the FastAPI backend:
 

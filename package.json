@@ -1,13 +1,15 @@
 {
-  "devDependencies": {
-    "concurrently": "^8.2.2"
-  },
-  "scripts": {
-    "install-packages": "npm install && cd extension && npm install && cd ../server && pip install -r requirements.txt",
-    "start": "concurrently \"npm run start-react\" \"npm run start-fastapi\"",
-    "start-react": "cd extension && npm run dev",
-    "start-fastapi": "cd server && uvicorn main:app --reload",
-    "build": "concurrently \"npm run build-extension\" \"npm run start-fastapi\"",
-    "build-extension": "cd extension && npm run build"
+    "devDependencies": {
+      "concurrently": "^8.2.2"
+    },
+    "scripts": {
+      "install-packages": "npm install && cd extension && npm install && cd ../server && pip install -r requirements.txt",
+      "start": "concurrently \"npm run start-react\" \"npm run start-fastapi\"",
+      "start-react": "cd extension && npm run dev",
+      "start-fastapi": "cd server && uvicorn main:app --reload",
+      "build": "concurrently \"npm run run-extension\" \"npm run run-docker\"",
+      "run-docker": "docker build -t profstats:latest . && docker run -p 80:80 profstats:latest",
+      "run-extension": "cd extension && npm run build"
+    }
   }
-}
+  

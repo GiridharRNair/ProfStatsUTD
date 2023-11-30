@@ -5,10 +5,20 @@ import {
     HStack,
     VStack,
     Spacer,
-    Link,
+    Tag,
+    Wrap,
+    WrapItem,
     Tooltip as ChakraTooltip,
+    Drawer,
+    DrawerBody,
+    DrawerOverlay,
+    DrawerContent,
+    Button,
     CircularProgress,
     CircularProgressLabel,
+    useDisclosure,
+    Image,
+    useColorMode
 } from '@chakra-ui/react';
 import {
     BarElement,
@@ -17,11 +27,14 @@ import {
     LinearScale,
     Tooltip,
 } from "chart.js";
-import { gradeMappings, colorMap } from '../../data/gradeMappings.js';
+import { gradeMappings, colorMap } from '../../data/data.js';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip);
 
-function ProfResults({ rateMyProfessorRating, gradeDistribution }) {
+function ProfResults({ professorInfo }) {
+    const { name, department, id, subject, course_number, tags, rating, difficulty, would_take_again, grades } = professorInfo;
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const { colorMode } = useColorMode();
 
     const renderRateMyProfessorRating = (label, value) => {
         let color;
@@ -34,7 +47,7 @@ function ProfResults({ rateMyProfessorRating, gradeDistribution }) {
         return (
           <VStack>
             <Text>{label}</Text>
-            <CircularProgress size='60px' thickness='10px' value={(value <= 5) ? ((value / 5) * 100) : value} color={color}>
+            <CircularProgress size='55px' thickness='10px' value={(value <= 5) ? ((value / 5) * 100) : value} color={color}>
                 <CircularProgressLabel>{value}</CircularProgressLabel>
             </CircularProgress>
           </VStack>
@@ -44,55 +57,106 @@ function ProfResults({ rateMyProfessorRating, gradeDistribution }) {
     const getColors = (labels) => {
         return labels.map(label => colorMap[label]);
     };
+
+    const gradeLabels = Object.keys(grades).map((grade) => gradeMappings[grade] || grade);
       
     const chartData = {
-        labels: Object.keys(gradeDistribution).map(grade => gradeMappings[grade] || grade),
+        labels: gradeLabels,
         datasets: [{
-            data: Object.values(gradeDistribution),
-            backgroundColor: getColors(Object.keys(gradeDistribution).map(grade => gradeMappings[grade] || grade)),
+            data: Object.values(grades),
+            backgroundColor: getColors(gradeLabels),
         }],
     };
     
     const options = {
         plugins: {
-            tooltip: {
-                enabled: true,
-                mode: "nearest",
-                intersect: true,
-                callbacks: {
-                    label: (context) => {
-                        const count = context.parsed.y;
-                        return [
-                        `Students: ${count}`,
-                        `Percentage: ${((count / Object.values(gradeDistribution).reduce((acc, count) => acc + count, 0)) * 100).toFixed(2)}%`,
-                        ];
-                    },
-                },
+          tooltip: {
+            enabled: true,
+            mode: "nearest",
+            intersect: true,
+            callbacks: {
+              label: (context) => {
+                const count = context.parsed.y;
+                return [
+                    `Students: ${count}`,
+                    `Percentage: ${((count / Object.values(grades).reduce((acc, count) => acc + count, 0)) * 100).toFixed(2)}%`,
+                ];
+              },
             },
+          },
         },
-    };
+        scales: {
+          x: {
+            grid: {
+              color: colorMode === 'light' ? 'rgb(245, 245, 245)' : "#2D3748"
+            },
+            ticks: {
+                color: colorMode === 'light' ? '#2D3748' : 'white',
+            },
+          },
+          y: {
+            grid: {
+              color: colorMode === 'light' ? 'rgb(245, 245, 245)' : "#2D3748"
+            },
+            ticks: {
+                color: colorMode === 'light' ? '#2D3748' : 'white', 
+            },
+          },
+        }
+      };
+      
 
 
     return (
-        <VStack>
-            <ChakraTooltip label='Go to Rate My Professor Profile?' placement='bottom'>
-            <Text fontSize="2xl" _hover={{ color: '#3182CE' }}>
-                <Link href={`https://www.ratemyprofessors.com/professor/${rateMyProfessorRating.id}`} target="_blank">
-                    {rateMyProfessorRating.name}
-                </Link>
-            </Text>
+        <VStack width={325}>
+            <ChakraTooltip label='More Information?' placement='bottom'>
+                <Text fontSize="lg" _hover={{ color: '#3182CE' }} onClick={onOpen}>
+                    {name}
+                </Text>
             </ChakraTooltip>
-            <Text fontSize="xl">{rateMyProfessorRating.department}</Text>
+
+            <Text fontSize="md">{department}</Text>
+
+            <Drawer isOpen={isOpen} onClose={onClose} placement="bottom" size='md'>
+                <DrawerOverlay />
+                <DrawerContent>
+                    <DrawerBody>
+                        <VStack>
+                            <Button leftIcon={<Image src='/RMPIcon.png' height={46}/>} width={240} onClick={() => (window.open(`https://www.ratemyprofessors.com/professor/${id}`, '_blank'))}>
+                                Rate My Professor
+                            </Button>
+                            <Button leftIcon={<Image src='/UTDGradesIcon.png' height={22} />} width={240} onClick={() => (window.open(`https://utdgrades.com/results?search=${subject ? subject : '%20'}+${course_number ? course_number : '%20'}+${name.split(" ")[0]}+${name.split(" ")[1]}`, '_blank'))}>
+                                UTD Grades
+                            </Button>
+                            <Button leftIcon={<Image src='/UTDIcon.png' height={25}/>} width={240} onClick={() => (window.open(`https://profiles.utdallas.edu/browse?search=${name.split(" ")[0]}+${name.split(" ")[1]}`, '_blank'))}>
+                                UTD Proflile
+                            </Button>
+                        </VStack>
+                    </DrawerBody>
+                </DrawerContent>
+            </ Drawer>
+
+            {tags &&
+                <Wrap justify={"center"}>
+                    {tags.map((tag, index) => (
+                        <WrapItem key={index}>
+                            <Tag size="sm" variant="outline">
+                                {tag}
+                            </Tag>
+                        </WrapItem>
+                    ))}
+                </Wrap>
+            }
+
             <HStack width={300}>
-            {renderRateMyProfessorRating('Quality', rateMyProfessorRating.rating)}
-            <Spacer />
-            {renderRateMyProfessorRating('Difficulty', rateMyProfessorRating.difficulty)}
-            <Spacer />
-            {renderRateMyProfessorRating('Enjoyment', rateMyProfessorRating.would_take_again)}
+                {renderRateMyProfessorRating('Quality', rating)}
+                <Spacer />
+                {renderRateMyProfessorRating('Difficulty', difficulty)}
+                <Spacer />
+                {renderRateMyProfessorRating('Enjoyment', would_take_again)}
             </HStack>
-            {chartData.labels.length > 0 && (
-                <Bar data={chartData} options={options}/>
-            )}
+
+            {chartData && <Bar data={chartData} options={options}/>}
         </VStack>
     )
 }

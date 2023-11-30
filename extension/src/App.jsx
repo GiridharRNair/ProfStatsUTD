@@ -7,20 +7,20 @@ import {
   useToast,
   Box,
 } from '@chakra-ui/react';
-import GithubIcon from './components/GithubIcon.jsx';
+import InfoIcon from './components/InfoIcon.jsx';
 import ProfResults from './components/ProfResults.jsx';
-import { defaultRating, defaultGrades } from '../data/defaultData.js';
+import { defaultTeacher } from '../data/data.js';
+import NotFoundPage from './components/NotFound.jsx';
 import './styles/App.css';
 
 const API_URL = import.meta.env.VITE_API_URL
 
 function App() {
   const toast = useToast();
-  const [teacherName, setTeacherName] = useState('');
+  const [instructor, setInstructor] = useState('');
   const [course, setCourse] = useState('');
   const [loading, setLoading] = useState(false);
-  const [rateMyProfessorRating, setRateMyProfessorRating] = useState(defaultRating);
-  const [gradeDistribution, setGradeDistribution] = useState(defaultGrades);
+  const [professorInfo, setProfessorInfo] = useState(defaultTeacher); 
 
 
   const showErrorToast = (description) => {
@@ -36,33 +36,22 @@ function App() {
     setLoading(true);
   
     try {
-      const ratingsResponse = await axios.get(`${API_URL}/ratings?teacher=${teacherName}&course=${course}`);
-      setRateMyProfessorRating(ratingsResponse.data);
+      const ratingsResponse = await axios.get(`${API_URL}/professor_info?teacher=${instructor}&course=${course}`);
+      setProfessorInfo(ratingsResponse.data);
       
-      try {
-        if (ratingsResponse.data) {
-          const gradesResponse = await axios.get(`${API_URL}/grades?teacher=${ratingsResponse.data.name}&course=${course}`);
-          setGradeDistribution(gradesResponse.data);
-        } else {
-          setGradeDistribution([]);
-          showErrorToast('No grades found');
-        }
-      } catch (error) {
-        setGradeDistribution([]);
-        showErrorToast('No grades found');
+      if (ratingsResponse.data.grades["No data found"] === 0) {
+        showErrorToast('No data found');
       }
     } catch (error) {
-      console.error('Error fetching data:', error.message);
-      setRateMyProfessorRating(null);
-      setGradeDistribution([]);
-      showErrorToast('No data found');
+      setProfessorInfo(null);
     } finally {
       setLoading(false);
     }
   };
   
   const handleSubmit = () => {
-    if (!teacherName) {
+    setInstructor(instructor.trim());
+    if (!instructor.trim()) {
       showErrorToast('Teacher name is required');
       return;
     }
@@ -70,33 +59,47 @@ function App() {
     fetchData();
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      handleSubmit()
+    }
+  }
+
   return (
-    <Box>
-      <GithubIcon />
+    <Box onKeyDown={handleKeyDown}>
+      <InfoIcon />
       <Stack pt={2} spacing={2} width={300} align="center">
         <Input
-          required
+          height={8}
           placeholder="Enter Teacher Name ex. Jason Smith"
-          value={teacherName}
-          onChange={(e) => setTeacherName(e.target.value)}
+          value={instructor}
+          onChange={(e) => setInstructor(e.target.value)}
         />
         <Input
+          height={8}
           placeholder="Specify a Course? ex. CS 1337"
           value={course}
           onChange={(e) => setCourse(e.target.value)}
         />
-        <Button onClick={handleSubmit} isLoading={loading}>
+        <Button onClick={handleSubmit} isLoading={loading} height={8}>
           Submit
         </Button>
-        {rateMyProfessorRating && (
+        {professorInfo ? (
           <ProfResults
-            rateMyProfessorRating={rateMyProfessorRating}
-            gradeDistribution={gradeDistribution}
+            professorInfo={professorInfo}
           />
-        )}
+        ) : <NotFoundPage /> }
       </Stack>
     </Box>
   );
 }
 
 export default App;
+
+if(typeof(String.prototype.trim) === "undefined")
+{
+  String.prototype.trim = function() 
+  {
+    return String(this).replace(/^\s+|\s+$/g, '');
+  };
+}

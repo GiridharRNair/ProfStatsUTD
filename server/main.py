@@ -1,13 +1,14 @@
-from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from fastapi import FastAPI, HTTPException
-from collections import OrderedDict
 from professor import Professor
+from dotenv import load_dotenv
 import sqlite3
 import string
 import os
 import re
 
+load_dotenv()
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 db_path = os.path.join(current_dir, "utdgrades.sqlite3")
@@ -21,18 +22,17 @@ app.add_middleware(
     allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*"],
+    allow_headers=["*"], 
 )
 
 
-def run_sql_query(instructor: str, subject: str = None, course_section: str = None):
+def run_sql_query(instructor: str, subject: str, course_number: str):
     """
-    Run an SQL query on the SQLite database and aggregate the results.
+    Runs a SQL query to retrieve grades data for a professor.
 
-    :param subject: Subject code for the course.
-    :param course_section: Course section number.
-    :param instructor: Instructor's name.
-    :return: Aggregated data from the database.
+    :param instructor: Name of the professor.
+    :param subject: Subject of the course.
+    :param course_number: Course number.
     """
     with sqlite3.connect(db_path) as conn:
         modified_instructor = instructor.replace(" ", "% %")
@@ -49,9 +49,9 @@ def run_sql_query(instructor: str, subject: str = None, course_section: str = No
 
         sql_params = [modified_instructor]
 
-        if subject and course_section:
+        if subject and course_number:
             sql_query = f"{sql_query_base} AND gs.subject = ? AND catalogNumber = ?"
-            sql_params.extend([subject.upper(), course_section])
+            sql_params.extend([subject.upper(), course_number])
         else:
             sql_query = sql_query_base
 
@@ -60,113 +60,52 @@ def run_sql_query(instructor: str, subject: str = None, course_section: str = No
 
         columns = [column[0] for column in cursor.description]
 
-        aggregated_data = OrderedDict()
-        for column in columns:
-            column_sum = sum(row[columns.index(column)] for row in results)
-            if column_sum:
-                aggregated_data[column] = column_sum
+        aggregated_data = {column: sum(row[index] for row in results) for index, column in enumerate(columns) if sum(row[index] for row in results)}
 
-        if aggregated_data:
+        if results:
             return aggregated_data
         else:
-            raise ValueError("No data! Make sure you have the correct teacher name or course number")
-   
+            return {"No data found": 0}
+        
 
-@app.get('/grades', response_class=JSONResponse)
-def get_grades(teacher: str, course: str = None):
+@app.get('/professor_info', response_class=JSONResponse)
+def get_professor_information(teacher: str, course: str = None):
     """
-    Endpoint to retrieve aggregated grades data based on parameters.
+    Endpoint to retrieve information about a professor including grades and ratings.
 
     :param teacher: Name of the professor.
     :param course: Name of the course (optional).
-    :return: JSON response with aggregated data.
+    :return: JSON response with professor information.
     """
     try:
         formatted_course_name = course.translate({ord(c): None for c in string.whitespace}).upper() if course else None
-        subject, course_section = None, None
+        subject, course_number = None, None
 
         if formatted_course_name:
             match = re.match(r'([a-zA-Z]+)([0-9]+)', formatted_course_name)
             if match:
-                subject, course_section = match.groups()
+                subject, course_number = match.groups()
+            else:
+                raise HTTPException(status_code=400, detail="Invalid course name.")
 
-        result_data = run_sql_query(teacher.strip(), subject, course_section)
-
-        return result_data
-
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
-    
-
-def calculate_average_ratings(ratings):
-    """
-    Calculate the average ratings for a professor.
-
-    :param ratings: List of ratings.
-    :return: Average ratings.
-    """
-    total_ratings = len(ratings)
-    if total_ratings > 0:
-        total_rating = sum(rating.rating for rating in ratings)
-        total_difficulty = sum(rating.difficulty for rating in ratings)
-        would_take_again = sum(1 if rating.take_again else 0 for rating in ratings)
-        
-        return (
-            round(total_rating / total_ratings, 1), 
-            round(total_difficulty / total_ratings, 1), 
-            round((would_take_again / total_ratings) * 100, 1)
-        )
-    else:
-        raise ValueError("No ratings found for this professor")
-
-
-def get_tags(ratings):
-    """
-    Get the tags for a professor.
-
-    :param ratings: List of ratings.
-    :return: Tags.
-    """
-    tags = set()
-    for rating in ratings:
-        tags = tags.union(rating.tags)
-    tags = set([string.capwords(tag) for tag in tags if tag != ""])
-    return list(tags)[:5] if len(tags) > 5 else list(tags)
-
-
-@app.get('/ratings', response_class=JSONResponse)
-def get_ratings(teacher: str, course: str = None):
-    """
-    Endpoint to retrieve professor ratings data based on parameters.
-
-    :param teacher: Name of the professor.
-    :param course: Name of the course (optional).
-    :return: JSON response with professor ratings data.
-    """
-    try:
         professor = Professor(teacher.strip())
 
-        if course:
-            formatted_course_name = course.translate({ord(c): None for c in string.whitespace}).upper()
-            ratings = professor.get_ratings(formatted_course_name)
-            rating, difficulty, would_take_again = calculate_average_ratings(ratings)
-        else:
-            ratings = professor.get_ratings()
-            rating, difficulty, would_take_again = professor.rating, professor.difficulty, round(professor.would_take_again, 1)
-
-        tags = get_tags(ratings)
+        grades_data = run_sql_query(professor.name, subject, course_number)
 
         result_data = {
             'id': professor.id,
             'name': professor.name,
             'department': professor.department,
-            'rating': rating,
-            'difficulty': difficulty,
-            'would_take_again': would_take_again,
-            'tags': tags,
+            'grades': grades_data,
+            'subject': subject,
+            'course_number': course_number,
+            'rating': professor.rating,
+            'difficulty': professor.difficulty,
+            'would_take_again': professor.would_take_again,
+            'tags': professor.tags,
         }
 
         return result_data
 
     except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e))
