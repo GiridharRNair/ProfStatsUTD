@@ -6,36 +6,48 @@ This repository contains the frontend code for ProfStatsUTD, a Chrome extension 
   <img src="../assets/extension-screenshot-2.jpg" alt="Screenshot" width="400">
 </p>
 
-## Installation and Setup
+## Features
 
-To set up the ProfStatsUTD Frontend on your local machine, follow these steps:
+- **Interactive UI:** Utilizes Chakra UI for a responsive and user-friendly interface.
+- **API Integration:** Fetches professor information from the backend API using Axios.
+- **Data Visualization:** Utilizes Chakra UI to display professor ratings, department information, tags, while employing Chart.js for presenting grade distribution charts.
 
-1. Clone the repository: `git clone https://github.com/GiridharRNair/ProfStatsUTD`
-2. Change into the working directory: `cd extension`
-3. Install the required dependencies using `npm install`.
-4. Start the development server with `npm run dev`.
-5. Access the app in your browser at `http://localhost:5173/`.
+## Components
 
-**Note:** Alternatively, this will also simultaneously start the React frontend and the FastAPI backend:
+### 1. [App.jsx](src/App.jsx)
 
-```bash
-npm run start
+Main component for the extension popup. Handles data fetching and UI rendering.
+
+### 2. [InfoIcon.jsx](src/components/InfoIcon.jsx)
+
+Component rendering an information icon with options such as submitting feedback through GitHub and toggling between light and dark color modes.
+
+### 3. [NotFound.jsx](src/components/NotFound.jsx)
+
+Custom 404 error page displaying an image, error message, and GitHub issue submission button.
+
+### 4. [ProfResults.jsx](src/components/ProfResults.jsx)
+
+Component responsible for rendering professor results fetched from the backend API, including ratings, department information, tags, and grade distribution charts.
+
+## Environment Configuration
+
+To manage environment variables for different deployment scenarios, this project utilizes `.env` files. Ensure that the following configurations are set based on your development and production needs:
+
+### Development Environment
+
+For local development, when running the backend on port `8000`, make sure your `.env` file contains:
+
+```env
+VITE_API_URL=http://127.0.0.1:8000
 ```
 
-## Testing the App
+### Production Environment
 
-To test the ProfStatsUTD Chrome extension in your Chrome browser, enable developer mode and unpack the `dist` folder after running `npm run build`. Follow these steps:
+When building and deploying the backend using Docker, update your `.env.production` file to reflect the appropriate API URL, typically using `0.0.0.0`:
 
-1. Build the app with `npm run build` to generate the `dist` folder.
-2. Open your Chrome browser.
-3. Navigate to `chrome://extensions/`.
-4. Enable "Developer mode" using the toggle switch.
-5. Click on "Load unpacked" and select the `dist` folder within the `extension` directory in your cloned repository.
-6. The ProfStatsUTD Chrome extension will be loaded and ready for use.
-
-**Note:** Alternatively, this will also simultaneously build the React frontend and start the FastAPI backend:
-
-```bash
-npm run build
+```env
+VITE_API_URL=http://0.0.0.0
 ```
 
+Please note that the `.env` files are already configured, so you may not need to modify them unless there are specific changes in your deployment setup.

@@ -7,9 +7,9 @@
       "start": "concurrently \"npm run start-react\" \"npm run start-fastapi\"",
       "start-react": "cd extension && npm run dev",
       "start-fastapi": "cd server && uvicorn main:app --reload",
-      "build": "concurrently \"npm run run-extension\" \"npm run run-docker\"",
+      "build": "concurrently \"npm run build-extension\" \"npm run run-docker\"",
       "run-docker": "docker build -t profstats:latest . && docker run -p 80:80 profstats:latest",
-      "run-extension": "cd extension && npm run build"
+      "build-extension": "cd extension && npm run build"
     }
   }
   

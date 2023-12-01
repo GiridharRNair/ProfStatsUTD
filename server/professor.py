@@ -1,5 +1,6 @@
 # This code was adapted from the RateMyProfessorAPI for Python, with modifications to focus on The University of Texas at Dallas.
 # Original source: https://github.com/Nobelz/RateMyProfessorAPI
+from fastapi import HTTPException
 from collections import Counter
 import requests
 import string
@@ -8,12 +9,12 @@ import json
 import os
 import re
 
-SCHOOL_ID = "U2Nob29sLTEyNzM=" # U2Nob29sLTEyNzM= is UT Dallas's school ID
 
 def load_json(file_path):
     with open(file_path, 'r') as f:
         return json.load(f)
-
+    
+SCHOOL_ID = "U2Nob29sLTEyNzM=" # U2Nob29sLTEyNzM= is UT Dallas's school ID
 current_path = os.path.dirname(__file__)
 ratings_query = load_json(os.path.join(current_path, "json/ratingsquery.json"))
 professor_query = load_json(os.path.join(current_path, "json/professorquery.json"))
@@ -43,7 +44,7 @@ class Professor:
         page = requests.get(f'https://www.ratemyprofessors.com/search/professors/{SCHOOL_ID}?q={professor_name}')
         prof_id_match = re.search(r'"legacyId":(\d+)', page.text)
         if not prof_id_match:
-            raise ValueError("Professor not found with that name.")
+            raise HTTPException(status_code=404, detail="Professor not found")
         return prof_id_match.group(1)
 
 
@@ -54,7 +55,7 @@ class Professor:
         professor_query["variables"]["id"] = base64.b64encode(f"Teacher-{self.id}".encode('ascii')).decode('ascii')
         data = requests.post(url="https://www.ratemyprofessors.com/graphql", json=professor_query, headers=headers)
         if data is None or json.loads(data.text)["data"]["node"] is None:
-            raise ValueError("Professor not found with that id or bad request.")
+            raise HTTPException(status_code=404, detail="Professor not found")
 
         professor_data = json.loads(data.text)["data"]["node"]
 
