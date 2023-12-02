@@ -24,6 +24,7 @@ ReactDOM.createRoot(rootElement).render(
 
     {/* Provide the Chakra UI theme to the entire React application */}
     <ChakraProvider theme={theme}>
+      
       {/* Render the main application component */}
       <App />
     </ChakraProvider>

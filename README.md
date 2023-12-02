@@ -21,11 +21,7 @@ ProfStats is an extension that combines professor ratings from RateMyProfessor.c
 [![Static Badge](https://img.shields.io/badge/Containerized_with-Docker-2496ED?style=for-the-badge)](https://www.docker.com/)
 [![Static Badge](https://img.shields.io/badge/CI/CD_with-GitHub_Actions-2088FF?style=for-the-badge)](https://github.com/features/actions)
 
-The ProfStatsUTD Backend, powered by FastAPI, serves as the backbone for the Chrome extension, providing consolidated UTD course grades and professor ratings. In a strategic decision, the backend houses more functionality to prevent dependencies solely on the frontend. This approach minimizes the need for frequent Chrome extension updates on the web store in case of issues, ensuring a more efficient and hassle-free maintenance process.
-
-Utilizing an SQLite database from utd-grades, the backend exposes key endpoints (/grades and /ratings) for data retrieval, requiring teacher names and optional course details.
-
-Backend deployment is automated through a CI/CD pipeline (main_profstatsutd.yml), streamlining Docker image creation, Azure Container Registry upload, and Azure Web App deployment. This ensures a smooth development-to-production workflow.
+The ProfStatsUTD Backend, powered by FastAPI, serves as the foundation for the Chrome extension. It consolidates UTD course grades and professor ratings, minimizing dependencies on the frontend for more efficient maintenance. The backend utilizes an SQLite database from utd-grades, providing data retrieval through /professor_info, requiring teacher names and optional course details. Deployment is automated through a CI/CD pipeline, facilitating Docker image creation, Azure Container Registry upload, and Azure Web App deployment, ensuring a smooth development-to-production workflow.
 
 ## [Frontend Overview](/extension/README.md)
 
@@ -39,6 +35,8 @@ The ProfStatsUTD Frontend drives the Chrome extension, providing an intuitive in
 </p>
 
 ## Installation and Local Development
+
+This project uses the `concurrently` package to run the backend and frontend concurrently, look at the `package.json` file for more details.
 
 ### Setting up ProfStatsUTD
 
@@ -72,13 +70,15 @@ The ProfStatsUTD Frontend drives the Chrome extension, providing an intuitive in
      ```
    - Load the extension in Chrome from the `dist` folder.
 
-**Note:** Ensure Node is installed, and Docker is required for backend (dockerized during build). Reach out for assistance if needed.
+**Note:** Ensure Node and Docker are installed. Reach out for assistance if needed.
 
 ## Acknowledgments
 
 - [UTD Grades](https://utdgrades.com/)
 - [The Rate My Professor Python Package](https://github.com/Nobelz/RateMyProfessorAPI)
 
-## License
+## To-Do
 
-This project is licensed under the [MIT](LICENSE) License.
+- [ ] Add tests
+- [ ] Add search query autocomplete
+
