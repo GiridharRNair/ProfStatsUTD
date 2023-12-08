@@ -6,13 +6,16 @@ WORKDIR /app
 RUN pip install --no-cache-dir --upgrade pip
 
 # Copy only the requirements file first to leverage Docker cache
-COPY ./server/requirements.txt .
+COPY requirements.txt .
 
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the entire application code
-COPY ./server/ .
+COPY . .
+
+# Change directory to 'src'
+WORKDIR /app/src
 
 # Expose port 80
 EXPOSE 80

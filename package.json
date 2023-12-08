@@ -1,15 +1,17 @@
 {
     "devDependencies": {
-      "concurrently": "^8.2.2"
+        "concurrently": "^8.2.2"
     },
     "scripts": {
-      "install-packages": "npm install && cd extension && npm install && cd ../server && pip install -r requirements.txt",
-      "start": "concurrently \"npm run start-react\" \"npm run start-fastapi\"",
-      "start-react": "cd extension && npm run dev",
-      "start-fastapi": "cd server && uvicorn main:app --reload",
-      "build": "concurrently \"npm run build-extension\" \"npm run run-docker\"",
-      "run-docker": "docker build -t profstats:latest . && docker run -p 80:80 profstats:latest",
-      "build-extension": "cd extension && npm run build"
+        "install-packages": "npm install && npm run install-extension && npm run install-api",
+        "install-extension": "cd extension && npm install",
+        "install-api": "cd api && pip install -r requirements.txt",
+        "start": "concurrently \"npm run start-react\" \"npm run start-fastapi\"",
+        "start-react": "cd extension && npm run dev",
+        "start-fastapi": "cd api && cd src && uvicorn main:app --reload",
+        "preview": "concurrently \"npm run build-extension\" \"npm run build-docker && npm run run-docker\"",
+        "build-extension": "cd extension && npm run build",
+        "build-docker": "cd api && docker build -t profstats:latest .",
+        "run-docker": "cd api && docker run -p 80:80 profstats:latest"
     }
-  }
-  
+}

@@ -4,21 +4,23 @@ from fastapi import FastAPI, HTTPException
 from typing import Dict, Optional, List
 from professor import Professor
 from pydantic import BaseModel
-from dotenv import load_dotenv
 import sqlite3
 import string
 import os
 import re
 
-load_dotenv()
-
 current_dir = os.path.dirname(os.path.abspath(__file__))
-db_path = os.path.join(current_dir, "utdgrades.sqlite3")
+db_path = os.path.join(current_dir, "../utdgrades.sqlite3")
+
+origins = [
+    "chrome-extension://doilmgfedjlpepeaolcfpdmkehecdaff",
+    "http://localhost:5173",
+]
 
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=['*'],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"], 
@@ -26,9 +28,6 @@ app.add_middleware(
 
 
 class ProfessorInfo(BaseModel):
-    """
-    Pydantic model for Professor information.
-    """
     id: int
     name: str
     department: str
@@ -41,26 +40,17 @@ class ProfessorInfo(BaseModel):
     tags: List[str]
 
 
-def run_sql_query(instructor: str, subject: str, course_number: str):
-    """
-    Runs a SQL query to aggregate grades data for a professor.
-
-    :param instructor: Name of the professor.
-    :param subject: Subject of the course.
-    :param course_number: Course number.
-    """
-
+def aggregate_grades(professor: str, subject: str, course_number: str):
     query = f"""
-        SELECT gp.aPlus, gp.a, gp.aMinus, gp.bPlus, gp.b, gp.bMinus,
-               gp.cPlus, gp.c, gp.cMinus, gp.dPlus, gp.d, gp.dMinus,
-               gp.f, gp.cr, gp.nc, gp.p, gp.w, gp.i, gp.nf
+        SELECT aPlus, a, aMinus, bPlus, b, bMinus,
+               cPlus, c, cMinus, dPlus, d, dMinus,
+               f, cr, nc, p, w, i, nf
         FROM grades_populated gp
-        JOIN grades_strings gs ON gp.gradesId = gs.id
-        WHERE TRIM(gs.instructor1) LIKE ?
-        {' AND gs.subject = ? AND catalogNumber = ?' if subject and course_number else ''}
+        WHERE TRIM(instructor1) LIKE ?
+        {' AND subject = ? AND catalogNumber = ?' if subject and course_number else ''}
     """
 
-    params = [instructor.replace(" ", "% %")]
+    params = [professor.replace(" ", "%")]
 
     if subject and course_number:
         params.extend([subject.upper(), course_number])
@@ -77,7 +67,6 @@ def run_sql_query(instructor: str, subject: str, course_number: str):
     return aggregated_data if results else {"No data found": 0}
 
         
-
 @app.get(
     "/professor_info",
     response_class=JSONResponse,
@@ -96,26 +85,21 @@ def run_sql_query(instructor: str, subject: str, course_number: str):
     }
 )
 def get_professor_information(teacher: str, course: Optional[str] = None):
-    """
-    Endpoint to retrieve information about a professor including grades and ratings.
-
-    :param teacher: Name of the professor.
-    :param course: Name of the course (optional).
-    :return: JSON response with professor information.
-    """
     try:
         formatted_course_name = course.translate({ord(c): None for c in string.whitespace}).upper() if course else None
         subject, course_number = None, None
 
         if formatted_course_name:
             match = re.match(r'([a-zA-Z]+)([0-9]+)', formatted_course_name)
+
             if not match or len(match.group(2)) != 4:
                 raise HTTPException(status_code=400, detail="Invalid course name")
+            
             subject, course_number = match.groups()
             
         professor = Professor(teacher.strip())
 
-        grades_data = run_sql_query(professor.name, subject, course_number)
+        grades_data = aggregate_grades(professor.name, subject, course_number)
 
         result_data = {
             'id': professor.id,
@@ -131,6 +115,48 @@ def get_professor_information(teacher: str, course: Optional[str] = None):
         }
 
         return ProfessorInfo(**result_data)
+
+    except Exception as e:
+        raise e
+    
+
+@app.get(
+    "/professor_suggestions",
+    response_class=JSONResponse,
+    summary="Get Professor suggestions for autocomplete",
+    description="Retrieve a list of professors that match the given query.",
+    response_model=List[str]
+)
+def get_professor_suggestions(teacher: str):
+    professor = teacher.replace(" ", "%")
+    try:
+        with sqlite3.connect(db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT DISTINCT TRIM(instructor1) FROM grades_populated WHERE TRIM(instructor1) LIKE ? LIMIT 5", (f"%{professor}%",))
+            results = cursor.fetchall()
+
+            return set(full_name.split()[0] + " " + full_name.split()[-1] for result in results for full_name in result)
+
+    except Exception as e:
+        raise e
+    
+
+@app.get(
+    "/professor_courses",
+    response_class=JSONResponse,
+    summary="Get Professor's courses taught",
+    description="Retrieve a list of courses taught by the given professor.",
+    response_model=List[str]
+)
+def get_professor_courses(teacher: str):
+    professor = teacher.replace(" ", "%")
+    try:
+        with sqlite3.connect(db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT DISTINCT subject, catalogNumber FROM grades_populated WHERE TRIM(instructor1) LIKE ?", (f"%{professor}%",))
+            results = cursor.fetchall()
+
+            return [f"{result[0]} {result[1]}" for result in results]
 
     except Exception as e:
         raise e

@@ -1,12 +1,4 @@
-/* *
-* ProfResults component
-*
-* This component is responsible for rendering the professor results fetched from the backend API.
-* It renders the professor's name, department, tags, ratings, and grade distribution.
-*/
-
 import React from 'react';
-import { Bar } from "react-chartjs-2";
 import { gradeMappings, colorMap } from '../../data/data.js';
 import {
     Text,
@@ -28,6 +20,7 @@ import {
     Image,
     useColorMode
 } from '@chakra-ui/react';
+import { Bar } from "react-chartjs-2";
 import {
     BarElement,
     CategoryScale,
@@ -36,8 +29,6 @@ import {
     Tooltip,
 } from "chart.js";
 
-
-// Register required Chart.js components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip);
 
 function ProfResults({ professorInfo }) {
@@ -45,12 +36,6 @@ function ProfResults({ professorInfo }) {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const { colorMode } = useColorMode();
 
-    /**
-     * Render rating information with circular progress bars.
-     * @param {string} label - Rating label (e.g., Quality, Difficulty, Enjoyment).
-     * @param {number} value - Rating value.
-     * @returns {JSX.Element} - Circular progress bar component.
-     */
     const renderRating = (label, value) => {
         let color;
         if (label === 'Difficulty') {
@@ -74,12 +59,6 @@ function ProfResults({ professorInfo }) {
         );
     };
 
-    
-    /**
-     * Get colors based on provided labels using a color map from the data directory.
-     * @param {string[]} labels - Array of labels.
-     * @returns {string[]} - Array of corresponding colors.
-     */
     const getColors = (labels) => { return labels.map(label => colorMap[label]) };
 
     const gradeLabels = Object.keys(grades).map((grade) => gradeMappings[grade] || grade);
@@ -98,11 +77,19 @@ function ProfResults({ professorInfo }) {
                 enabled: true,
                 mode: "nearest",
                 intersect: true,
+                backgroundColor: colorMode === 'light' ? 'rgba(240, 240, 240, 0.8)' : 'rgba(0, 0, 0, 0.8)',
                 callbacks: {
                     label: (context) => [
+                        // `${subject} ${course_number}`,
                         `Students: ${context.parsed.y}`,
                         `Percentage: ${((context.parsed.y / Object.values(grades).reduce((acc, count) => acc + count, 0)) * 100).toFixed(2)}%`,
                     ],
+                },
+                titleColor: () => {
+                    return colorMode === 'light' ? 'black' : 'white';
+                },
+                bodyColor: () => {
+                    return colorMode === 'light' ? 'black' : 'white';
                 },
             },
         },
@@ -111,25 +98,22 @@ function ProfResults({ professorInfo }) {
             y: { grid: { color: colorMode === 'light' ? 'rgb(245, 245, 245)' : "#2D3748" }, ticks: { color: colorMode === 'light' ? '#2D3748' : 'white' } },
         }
     };
+    
 
     return (
         <VStack width={325}>
-            {/* Professor name with tooltip for additional information */}
             <ChakraTooltip label='More Information?' placement='bottom'>
                 <Text fontSize="lg" _hover={{ color: '#3182CE' }} onClick={onOpen}>
                     {name}
                 </Text>
             </ChakraTooltip>
 
-            {/* Display department information */}
             <Text fontSize="md">{department}</Text>
 
-            {/* Modal for additional information */}
             <Drawer isOpen={isOpen} onClose={onClose} placement="bottom" size='md'>
                 <DrawerOverlay />
                 <DrawerContent>
                     <DrawerBody>
-                        {/* Buttons for external links */}
                         <VStack>
                             <Button leftIcon={<Image src='/RMPIcon.png' height={46}/>} width={240} onClick={() => (window.open(`https://www.ratemyprofessors.com/professor/${id}`, '_blank'))}>
                                 Rate My Professor
@@ -138,14 +122,13 @@ function ProfResults({ professorInfo }) {
                                 UTD Grades
                             </Button>
                             <Button leftIcon={<Image src='/UTDIcon.png' height={25}/>} width={240} onClick={() => (window.open(`https://profiles.utdallas.edu/browse?search=${name.split(" ")[0]}+${name.split(" ")[1]}`, '_blank'))}>
-                                UTD Proflile
+                                UTD Profile
                             </Button>
                         </VStack>
                     </DrawerBody>
                 </DrawerContent>
             </ Drawer>
 
-            {/* Display tags, if available */}
             {tags &&
                 <Wrap justify={"center"}>
                     {tags.map((tag, index) => (
@@ -158,7 +141,6 @@ function ProfResults({ professorInfo }) {
                 </Wrap>
             }
 
-            {/* Display ratings using circular progress bars */}
             <HStack width={300}>
                 {renderRating('Quality', rating)}
                 <Spacer />
@@ -167,7 +149,6 @@ function ProfResults({ professorInfo }) {
                 {renderRating('Enjoyment', would_take_again)}
             </HStack>
 
-            {/* Display grade distribution chart */}
             {chartData && <Bar data={chartData} options={options}/>}
         </VStack>
     )
