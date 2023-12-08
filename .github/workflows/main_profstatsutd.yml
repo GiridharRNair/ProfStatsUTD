@@ -34,6 +34,7 @@ jobs:
     - name: Build and push container image to registry
       uses: docker/build-push-action@v3
       with:
+        context: api
         push: true
         tags: profstatsutd.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_dad78c03511a49a890d56e29b1d04379 }}/profstatsutd:${{ github.sha }}
         file: api/Dockerfile
