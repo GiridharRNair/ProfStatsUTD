@@ -28,7 +28,7 @@ function Inputs({ selectedProfessor, selectedCourse }) {
         }
     }
 
-    const debouncedGetProfessorDropdown = useCallback(_debounce((value) => getProfessorDropdown(value), 500), []);
+    const debouncedGetProfessorDropdown = useCallback(_debounce((value) => getProfessorDropdown(value), 450), []);
 
     const handleInstructorChange = (value) => {
         selectedProfessor(value);
@@ -44,6 +44,7 @@ function Inputs({ selectedProfessor, selectedCourse }) {
                     getProfessorCourseDropdown(value.item.label);
                     setCourse('');
                 }}
+                focusInputOnSelect={false}
                 closeOnSelect={true}
                 suggestWhenEmpty={true}
                 disableFilter={true}
