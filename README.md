@@ -61,3 +61,7 @@ ProfStats is a powerful Chrome extension that seamlessly integrates professor ra
 
 **Version 1.0.0:**
 - 🚀 Launched ProfStats: Your Ultimate Course Registration Companion!
+
+## Contribution
+
+We welcome contributions from the community! If you're interested in contributing to ProfStatsUTD, please check our [contributing guidelines](CONTRIBUTING.md) in the repository for detailed information on how to get started. Your support is invaluable to the growth and improvement of ProfStatsUTD. Thank you for considering contributing!
