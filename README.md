@@ -10,38 +10,42 @@ ProfStats is a powerful Chrome extension that seamlessly integrates professor ra
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](https://raw.githubusercontent.com/GiridharRNair/ProfStatsUTD/main/LICENSE)
 
 ## Overview
-
 ### Extension Features:
 
-- **Aggregated Insights:** Combine RateMyProfessor ratings and UTDgrades grade distributions for a comprehensive view.
-  
-- **User-Friendly Interface:** Access professor profiles effortlessly with one click for a smoother registration experience.
+- **Aggregated Insights:** 📊 Combine RateMyProfessor ratings and UTDgrades grade distributions for a comprehensive view.
 
-- **Dark Mode:** Enjoy a sleek, eye-friendly browsing experience with our stylish dark mode.
+- **User-Friendly Interface:** 🎨 Access professor profiles effortlessly with one click for a smoother registration experience.
 
-- **Autocomplete:** Save time by using our autocomplete feature to quickly find your professor.
+- **Dark Mode:** 🌙 Enjoy a sleek, eye-friendly browsing experience with our stylish dark mode.
+
+- **Autocomplete:** 🔍 Save time by using our autocomplete feature to quickly find your professor.
 
 ### API Backend:
 
-- **Backend with FastAPI:** Developed using FastAPI, a modern web framework for high-performance APIs with Python 3.7+.
+- **Backend with FastAPI:** 🚀 Developed using FastAPI, a modern web framework for high-performance APIs with Python 3.7+.
 
-- **Azure Deployment:** Hosted on Azure Web App, ensuring reliable service courtesy of our Azure Student Developer account.
+- **Azure Deployment:** ☁️ Hosted on Azure Web App, ensuring reliable service courtesy of my Azure Student Developer account.
 
-- **SQLite Database:** Empowered by SQLite, a lightweight, serverless, and self-contained SQL database engine.
+- **SQLite Database:** 🗃️ Empowered by SQLite, a lightweight, serverless, and self-contained SQL database engine.
 
-- **Containerized with Docker:** Utilizing Docker for efficient containerization.
+- **Containerized with Docker:** 🐳 Utilizing Docker for efficient containerization.
 
-- **CI/CD with GitHub Actions:** Ensuring seamless integration and deployment.
+- **CI/CD with GitHub Actions:** 🔄 Ensuring seamless integration and deployment.
 
 ### Extension Frontend:
 
-- **Powered by Chakra UI:** Enhance the user interface with the flexibility and style of Chakra UI components.
-  
-- **Vite for Development:** Streamline development with Vite's hot module reloading for a faster iteration cycle.
+- **Powered by Chakra UI:** 💅 Enhance the user interface with the flexibility and style of Chakra UI components.
 
-- **Debouncing Mechanism:** Optimize performance by preventing frequent backend requests through debouncing.
+- **Vite for Development:** 🔧 Streamline development with Vite's hot module reloading for a faster iteration cycle.
 
-- **Client-Side Validation:** Reduce backend requests with invalid inputs by validating queries on the client side.
+- **Debouncing Mechanism:** ⏳ Optimize performance by preventing frequent backend requests through debouncing.
+
+- **Client-Side Validation:** ✅ Reduce backend requests with invalid inputs by validating queries on the client side.
+
+
+<p align="center">
+  <img src="assets/extension-screenshot-1.jpg" alt="Screenshot" width="400">
+</p>
 
 ## Changelog:
 

@@ -48,11 +48,15 @@ function Inputs({ selectedProfessor, selectedCourse }) {
                 closeOnSelect={true}
                 suggestWhenEmpty={true}
                 disableFilter={true}
+                freeSolo={true}
             >
                 <AutoCompleteInput
                     height={8}
                     placeholder="Enter Teacher Name ex. Jason Smith"
-                    onChange={(e) => handleInstructorChange(e.target.value)}
+                    onChange={(e) => {
+                        handleInstructorChange(e.target.value)
+                        setCourseDropdown([]);
+                    }}
                 />
                 {professorDropdown.length > 0 && (
                     <AutoCompleteList>
@@ -74,9 +78,11 @@ function Inputs({ selectedProfessor, selectedCourse }) {
                     selectedCourse(value.item.label);
                     setCourse(value.item.label); 
                 }}
-                emptyState={'Course not found for this professor'}
-                suggestWhenEmpty={true}
+                focusInputOnSelect={false}
                 closeOnSelect={true}
+                suggestWhenEmpty={true}
+                emptyState={'Course not found for this professor'}
+                freeSolo={true}
             >
                 <AutoCompleteInput
                     height={8}

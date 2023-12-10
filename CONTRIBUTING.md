@@ -1,5 +1,5 @@
 
-### Prerequisites
+## Prerequisites
 
 Before you begin contributing to this project, make sure you have the following software installed on your machine:
 
@@ -7,7 +7,7 @@ Before you begin contributing to this project, make sure you have the following 
 - Node.js
 - Python
 
-**Installation and Setup Guide for ProfStatsUTD Project**
+## Installation and Setup Guide for ProfStatsUTD Project
 
 To successfully set up the ProfStatsUTD project on your local machine, follow the steps outlined below:
 
@@ -65,7 +65,7 @@ To successfully set up the ProfStatsUTD project on your local machine, follow th
 
 You are now set up and ready to contribute to the ProfStatsUTD project. If you encounter any issues or have questions, don't hesitate to seek assistance from the project maintainers. 
 
-### Configuration
+## Configuration
 
 The project does not demand any particular configuration. However, take note of the following environment variables:
 
@@ -75,11 +75,11 @@ In the `.env.production` file, the backend endpoint aligns with the Docker file 
 
 Modify the environment variables within these files according to your specific use case.
 
-### Testcases
+## Testcases
 
 Please note that currently, there are no test cases available in the ProfStatsUTD project. However, we highly encourage contributions in this area. If you are interested in enhancing the project by introducing test cases, your efforts would be greatly appreciated.
 
-### Contributing Workflow
+## Contributing Workflow
 
 1. Fork the repository on GitHub.
 2. Create a new branch for your feature or bug fix.
