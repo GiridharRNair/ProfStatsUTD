@@ -28,16 +28,16 @@ app.add_middleware(
 
 
 class ProfessorInfo(BaseModel):
-    id: int
-    name: str
-    department: str
-    grades: Dict[str, int]
-    subject: Optional[str]
-    course_number: Optional[str]
-    rating: float
-    difficulty: float
-    would_take_again: int
-    tags: List[str]
+    id: int = None
+    name: str = None
+    department: str = None
+    grades: Dict[str, int] = None
+    subject: Optional[str] = None
+    course_number: Optional[str] = None
+    rating: float = None
+    difficulty: float = None
+    would_take_again: int = None
+    tags: List[str] = None
 
 
 def aggregate_grades(professor: str, subject: str, course_number: str):

@@ -18,14 +18,6 @@ function InfoIcon() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { colorMode, toggleColorMode } = useColorMode();
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
   return (
     <>
       <IconButton
@@ -35,21 +27,25 @@ function InfoIcon() {
         position="fixed"
         top="1"
         left="1"
-        onClick={openModal}
+        onClick={() => setIsModalOpen(true)}
       />
 
-      <Modal isOpen={isModalOpen} onClose={closeModal} size="sm">
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} size="sm">
         <ModalOverlay />
         <ModalContent maxW={'20rem'}>
-          <ModalHeader>Options</ModalHeader>
+          <ModalHeader>
+            Options
+          </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <ChakraTooltip label="Submit bug reports and feature requests through Github" placement='bottom'>
-              <Button leftIcon={<Image src='/OctoCat.svg' height={8} />} variant="outline" onClick={() => window.open('https://github.com/GiridharRNair/ProfStatsUTD/issues/new/choose', '_blank')} mr={3}>
+              <Button leftIcon={<Image src={colorMode === 'dark' ? 'OctoCat-Light.png' : 'OctoCat-Dark.svg'} height={8} />} variant="outline" onClick={() => window.open('https://github.com/GiridharRNair/ProfStatsUTD/issues/new/choose', '_blank')} mr={3}>
                 GitHub
               </Button>
             </ChakraTooltip>
-            <Button onClick={toggleColorMode}>Toggle {colorMode === 'light' ? 'Dark' : 'Light'}</Button>
+            <Button onClick={toggleColorMode}>
+              Toggle {colorMode === 'light' ? 'Dark' : 'Light'}
+            </Button>
           </ModalBody>
         </ModalContent>
       </Modal>

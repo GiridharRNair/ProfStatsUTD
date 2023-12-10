@@ -1,5 +1,4 @@
 import React from 'react';
-import { gradeMappings, colorMap } from '../../data/data.js';
 import {
     Text,
     HStack,
@@ -20,7 +19,6 @@ import {
     Image,
     useColorMode
 } from '@chakra-ui/react';
-import { Bar } from "react-chartjs-2";
 import {
     BarElement,
     CategoryScale,
@@ -28,36 +26,38 @@ import {
     LinearScale,
     Tooltip,
 } from "chart.js";
+import { Bar } from "react-chartjs-2";
+import { gradeMappings, colorMap } from '../../data/data.js';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip);
+
+const RenderRatingCircle = (label, value) => {
+    let color;
+    if (label === 'Difficulty') {
+        color = `hsl(${((5 - value) / 5) * 100}, 90%, 50%)`;
+    } else {
+        color = value <= 5 ? `hsl(${(value / 5) * 100}, 90%, 50%)` : `hsl(${(value / 100) * 100}, 90%, 50%)`;
+    }
+  
+    return (
+      <VStack>
+        <Text>{label}</Text>
+        <CircularProgress 
+            size='55px' 
+            thickness='10px' 
+            value={(value <= 5) ? ((value / 5) * 100) : value} 
+            color={color}
+        >
+            <CircularProgressLabel>{value}</CircularProgressLabel>
+        </CircularProgress>
+      </VStack>
+    );
+};
 
 function ProfResults({ professorInfo }) {
     const { name, department, id, subject, course_number, tags, rating, difficulty, would_take_again, grades } = professorInfo;
     const { isOpen, onOpen, onClose } = useDisclosure()
     const { colorMode } = useColorMode();
-
-    const renderRating = (label, value) => {
-        let color;
-        if (label === 'Difficulty') {
-            color = `hsl(${((5 - value) / 5) * 100}, 90%, 50%)`;
-        } else {
-            color = value <= 5 ? `hsl(${(value / 5) * 100}, 90%, 50%)` : `hsl(${(value / 100) * 100}, 90%, 50%)`;
-        }
-      
-        return (
-          <VStack>
-            <Text>{label}</Text>
-            <CircularProgress 
-                size='55px' 
-                thickness='10px' 
-                value={(value <= 5) ? ((value / 5) * 100) : value} 
-                color={color}
-            >
-                <CircularProgressLabel>{value}</CircularProgressLabel>
-            </CircularProgress>
-          </VStack>
-        );
-    };
 
     const getColors = (labels) => { return labels.map(label => colorMap[label]) };
 
@@ -80,7 +80,6 @@ function ProfResults({ professorInfo }) {
                 backgroundColor: colorMode === 'light' ? 'rgba(240, 240, 240, 0.8)' : 'rgba(0, 0, 0, 0.8)',
                 callbacks: {
                     label: (context) => [
-                        // `${subject} ${course_number}`,
                         `Students: ${context.parsed.y}`,
                         `Percentage: ${((context.parsed.y / Object.values(grades).reduce((acc, count) => acc + count, 0)) * 100).toFixed(2)}%`,
                     ],
@@ -142,14 +141,14 @@ function ProfResults({ professorInfo }) {
             }
 
             <HStack width={300}>
-                {renderRating('Quality', rating)}
+                {RenderRatingCircle('Quality', rating)}
                 <Spacer />
-                {renderRating('Difficulty', difficulty)}
+                {RenderRatingCircle('Difficulty', difficulty)}
                 <Spacer />
-                {renderRating('Enjoyment', would_take_again)}
+                {RenderRatingCircle('Enjoyment', would_take_again)}
             </HStack>
 
-            {chartData && <Bar data={chartData} options={options}/>}
+            <Bar data={chartData} options={options}/>
         </VStack>
     )
 }
