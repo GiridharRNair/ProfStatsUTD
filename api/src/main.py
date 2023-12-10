@@ -1,3 +1,4 @@
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi import FastAPI, HTTPException
@@ -12,15 +13,10 @@ import re
 current_dir = os.path.dirname(os.path.abspath(__file__))
 db_path = os.path.join(current_dir, "../utdgrades.sqlite3")
 
-origins = [
-    "chrome-extension://doilmgfedjlpepeaolcfpdmkehecdaff",
-    "http://localhost:5173",
-]
-
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"], 
@@ -90,7 +86,7 @@ def get_professor_information(teacher: str, course: Optional[str] = None):
         subject, course_number = None, None
 
         if formatted_course_name:
-            match = re.match(r'([a-zA-Z]+)([0-9]+)', formatted_course_name)
+            match = re.match(r'([a-zA-Z]+)([0-9Vv]+)', formatted_course_name)
 
             if not match or len(match.group(2)) != 4:
                 raise HTTPException(status_code=400, detail="Invalid course name")

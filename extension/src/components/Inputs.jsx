@@ -44,7 +44,6 @@ function Inputs({ selectedProfessor, selectedCourse }) {
                     getProfessorCourseDropdown(value.item.label);
                     setCourse('');
                 }}
-                focusInputOnSelect={false}
                 closeOnSelect={true}
                 suggestWhenEmpty={true}
                 disableFilter={true}
@@ -78,7 +77,6 @@ function Inputs({ selectedProfessor, selectedCourse }) {
                     selectedCourse(value.item.label);
                     setCourse(value.item.label); 
                 }}
-                focusInputOnSelect={false}
                 closeOnSelect={true}
                 suggestWhenEmpty={true}
                 emptyState={'Course not found for this professor'}
@@ -87,7 +85,6 @@ function Inputs({ selectedProfessor, selectedCourse }) {
                 <AutoCompleteInput
                     height={8}
                     placeholder="Specify a Course? ex. CS 1337"
-                    value={course}
                     onChange={(e) => {
                         selectedCourse(e.target.value)
                         setCourse(e.target.value)

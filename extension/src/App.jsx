@@ -61,10 +61,10 @@ function App() {
     }
 
     const formattedCourseName = course.replace(/\s/g, '').toUpperCase().trim();
-    if (formattedCourseName && !(formattedCourseName.match('([a-zA-Z]+)([0-9]+)')?.[2]?.length === 4)) {
+    if (formattedCourseName && !(formattedCourseName.match('([a-zA-Z]+)([0-9Vv]+)')?.[2]?.length === 4)) {
       showErrorToast('Invalid course name');
       return;
-    }
+    }    
 
     getProfessorData();
   };
