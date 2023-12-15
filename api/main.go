@@ -92,7 +92,7 @@ func allowedOrigins() gin.HandlerFunc {
 		if stringInSlice(origin, allowedOrigins) {
 			c.Next()
 		} else {
-			c.JSON(http.StatusForbidden, gin.H{"error": "Not allowed"})
+			c.JSON(http.StatusForbidden, gin.H{"detail": "Not allowed"})
 			c.Abort()
 		}
 	}

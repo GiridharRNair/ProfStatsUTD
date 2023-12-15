@@ -47,44 +47,55 @@ ProfStats is a handy Chrome extension that puts professor ratings and grade dist
 ## Local Installation
 
 > [!NOTE]  
-> This project utilizes the concurrent execution of the server and extension, along with the beta version of the Vite CRX plugin for seamless hot reloading of the extension without the need for rebuilding.
+> This project leverages concurrent execution for both the server and extension, utilizing the beta version of the Vite CRX plugin to seamlessly incorporate hot reloading. This eliminates the need for manual rebuilding during development.
 
-Ensure that you have the following software installed on your machine:
+Make sure you have the following software installed on your machine:
 
 - Docker
 - Node.js
 - Golang
 
-1. Clone the repository:
+### Steps:
 
-  ```bash
-  git clone https://github.com/GiridharRNair/ProfStatsUTD
-  ```
+1. **Clone the repository:**
 
-2. Navigate to the project directory:
+    ```bash
+    git clone https://github.com/GiridharRNair/ProfStatsUTD
+    ```
 
-  ```bash
-  cd ProfStatsUTD
-  ```
+2. **Navigate to the project directory:**
 
-3. Install dependencies:
+    ```bash
+    cd ProfStatsUTD
+    ```
 
-  ```bash
-  npm install-packages
-  ```
+3. **Install dependencies:**
 
-4. Start the server and extension concurrently:
+    ```bash
+    npm install-packages
+    ```
 
-  ```bash
-  npm run dev
-  ```
+4. **Start the server and extension concurrently:**
 
-5. Enable devloper mode and unpack the `dist` folder for the Chrome extension.
+    ```bash
+    npm run dev
+    ```
+
+5. **Enable Developer Mode in Chrome:**
+
+    - Navigate to `chrome://extensions/`.
+    - Enable Developer Mode.
+
+6. **Load the extension:**
+
+    - Unpack the `dist` folder.
+    - Start using the extension for seamless testing and development.
 
 ## Deployment
 
-Deployment is automated using Docker and Azure Web App, managed through a concise CI/CD pipeline with GitHub Actions. Commits trigger seamless updates, handling Docker image creation, Azure Container Registry push, and deployment to Azure Web App with ease. No manual steps required.
+Backend deployment is automated using Docker and Azure Web App, managed through a concise CI/CD pipeline with GitHub Actions. Commits trigger seamless updates, handling Docker image creation, Azure Container Registry push, and deployment to Azure Web App with ease. No manual steps required.
 
+The frontend deployment is a manual process, I need to zip the `dist` folder and upload it to the Chrome Web Store to publish a new version.
 
 ## Acknowledgements
 
