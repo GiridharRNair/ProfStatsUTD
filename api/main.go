@@ -6,7 +6,6 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -82,15 +81,28 @@ func getProfessorCoursesRoute(c *gin.Context) {
 	c.JSON(http.StatusOK, suggestions)
 }
 
+func allowedOrigins() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET")
+
+		allowedOrigins := []string{"http://localhost:5173", "chrome-extension://doilmgfedjlpepeaolcfpdmkehecdaff"}
+		origin := c.GetHeader("Origin")
+
+		if stringInSlice(origin, allowedOrigins) {
+			c.Next()
+		} else {
+			c.JSON(http.StatusForbidden, gin.H{"error": "Not allowed"})
+			c.Abort()
+		}
+	}
+}
+
 func main() {
 	defer db.Close()
 
 	router := gin.Default()
-	config := cors.DefaultConfig()
-	config.AllowAllOrigins = true
-	config.AllowCredentials = true
-	config.AddAllowHeaders("*")
-	router.Use(cors.New(config))
+	router.Use(allowedOrigins())
 
 	router.GET("/professor_info", getProfessorInformation)
 	router.GET("/professor_suggestions", getProfessorSuggestionsRoute)

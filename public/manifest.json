@@ -14,6 +14,6 @@
     "48": "extension-icons/icon48.png",
     "128": "extension-icons/icon128.png"
   },
-  "permissions": ["storage"],
-  "key":"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiVTEGXe9B6uvezY/ZoevozdoGvxkBGF/FUcPNgtDl+CVJ+aYKxfFYYGiJA1vJgJoUGOp/DOkZ8yWtkfjF6bSqTk5U4zNVs9AeVcW/2uX7DqWkdaUNR4YxdFizeOSANfOvJrv6SMbJU6YtLD0lszakcXsyp+EM+HUmMFkivFp7CIgB5HvUcdMqeYkpdGIqG5pbroqKo/zWwVAUIBCg1UqIcpTIBQEgMbE0K/9oGSM3x5IFNWJMsfbL4/y1+QUwzCSg6XoD3MUgbpNM78gJkKsV2BdGWcnfVYaWKIWjy9zFz48BCQvkNqby+6VWHJvzotCJsx/SwxbF2UevV09wwjqDQIDAQAB"
+  "key":"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiVTEGXe9B6uvezY/ZoevozdoGvxkBGF/FUcPNgtDl+CVJ+aYKxfFYYGiJA1vJgJoUGOp/DOkZ8yWtkfjF6bSqTk5U4zNVs9AeVcW/2uX7DqWkdaUNR4YxdFizeOSANfOvJrv6SMbJU6YtLD0lszakcXsyp+EM+HUmMFkivFp7CIgB5HvUcdMqeYkpdGIqG5pbroqKo/zWwVAUIBCg1UqIcpTIBQEgMbE0K/9oGSM3x5IFNWJMsfbL4/y1+QUwzCSg6XoD3MUgbpNM78gJkKsV2BdGWcnfVYaWKIWjy9zFz48BCQvkNqby+6VWHJvzotCJsx/SwxbF2UevV09wwjqDQIDAQAB",
+  "permissions": ["storage"]
 }

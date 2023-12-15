@@ -23,4 +23,8 @@ dist-ssr
 
 go.work
 
+*.DS_Store
+
+.env
+
 */tmp

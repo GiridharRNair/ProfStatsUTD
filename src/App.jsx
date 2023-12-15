@@ -8,7 +8,9 @@ import ProfResults from './components/ProfResults.jsx';
 import NotFoundPage from './components/NotFound.jsx';
 import './styles/App.css';
 
-const API_URL = 'http://localhost:80'
+const API_URL = import.meta.env.DEV ? 'http://localhost:80' : import.meta.env.VITE_API_URL;
+
+console.log(API_URL);
 
 function App() {
   const toast = useToast();
@@ -45,8 +47,8 @@ function App() {
         showErrorToast('No grades found');
       }
     } catch (error) {
-      console.error(error.response?.data.error);
-      showErrorToast(error.response.data.error);
+      console.error(error.response?.data.detail);
+      showErrorToast(error.response.data.detail);
       setProfessorInfo(null);
       localStorage.removeItem('professorInfo');
     } finally {

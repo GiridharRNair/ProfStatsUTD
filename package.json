@@ -4,13 +4,11 @@
   "version": "1.0.3",
   "type": "module",
   "scripts": {
-    "install-packages": "npm install && npm run install-api-packages",
-    "install-api-packages": "cd api && pip install -r requirements.txt",
+    "install-packages": "npm install && npm run install-go-packages",
+    "install-go-packages": "cd api && go mod download",
     "dev": "concurrently \"vite\" \"npm run start-api\"",
-    "start-api": "air -v",
-    "build": "concurrently \"vite build\" && \"npm run build-docker && npm run run-docker\"",
-    "build-docker": "cd api && docker build -t profstats:latest .",
-    "run-docker": "cd api && docker run -p 80:80 profstats:latest",
+    "start-api": "cd api && nodemon --exec go run main.go professor.go sqlite_queries.go --signal SIGTERM",
+    "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -30,6 +28,7 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@crxjs/vite-plugin": "^2.0.0-beta.21",
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
     "@vitejs/plugin-react": "^4.2.0",

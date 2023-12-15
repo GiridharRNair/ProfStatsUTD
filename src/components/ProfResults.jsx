@@ -12,8 +12,6 @@ import {
     DrawerOverlay,
     DrawerContent,
     Button,
-    CircularProgress,
-    CircularProgressLabel,
     useDisclosure,
     Image,
     useColorMode
@@ -25,32 +23,26 @@ import {
     LinearScale,
     Tooltip,
 } from "chart.js";
+import RenderRatingCircle from './RatingCircles.jsx';
 import { Bar } from "react-chartjs-2";
+import PropTypes from 'prop-types';
 import { gradeMappings, colorMap } from '../../utils/defaults.js';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip);
 
-const RenderRatingCircle = (label, value) => {
-    let color;
-    if (label === 'Difficulty') {
-        color = `hsl(${((5 - value) / 5) * 100}, 90%, 50%)`;
-    } else {
-        color = value <= 5 ? `hsl(${(value / 5) * 100}, 90%, 50%)` : `hsl(${(value / 100) * 100}, 90%, 50%)`;
-    }
-  
-    return (
-      <VStack w={15}>
-        <Text>{label}</Text>
-        <CircularProgress 
-            size='55px' 
-            thickness='10px' 
-            value={(value <= 5) ? ((value / 5) * 100) : value} 
-            color={color}
-        >
-            <CircularProgressLabel>{value}</CircularProgressLabel>
-        </CircularProgress>
-      </VStack>
-    );
+ProfResults.propTypes = {
+    professorInfo: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        department: PropTypes.string.isRequired,
+        id: PropTypes.string.isRequired,
+        subject: PropTypes.string,
+        course_number: PropTypes.string,
+        tags: PropTypes.arrayOf(PropTypes.string),
+        rating: PropTypes.number.isRequired,
+        difficulty: PropTypes.number.isRequired,
+        would_take_again: PropTypes.number.isRequired,
+        grades: PropTypes.object.isRequired,
+    }).isRequired,
 };
 
 function ProfResults({ professorInfo }) {
@@ -58,15 +50,13 @@ function ProfResults({ professorInfo }) {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const { colorMode } = useColorMode();
 
-    const getColors = (labels) => { return labels.map(label => colorMap[label]) };
-
-    const gradeLabels = Object.keys(grades).map((grade) => gradeMappings[grade] || grade);
+    const gradeLabels = Object.keys(grades).map((grade) => gradeMappings[grade] || grade)
       
     const chartData = {
         labels: gradeLabels,
         datasets: [{
             data: Object.values(grades),
-            backgroundColor: getColors(gradeLabels),
+            backgroundColor: gradeLabels.map(label => colorMap[label]),
         }],
     };
     
@@ -97,7 +87,6 @@ function ProfResults({ professorInfo }) {
         }
     };
     
-
     return (
         <VStack width={325}>
             <ChakraTooltip label='More Information?' placement='bottom'>
@@ -113,13 +102,19 @@ function ProfResults({ professorInfo }) {
                 <DrawerContent>
                     <DrawerBody>
                         <VStack>
-                            <Button leftIcon={<Image src='extension-images/RMPIcon.png' height={46}/>} width={240} onClick={() => (window.open(`https://www.ratemyprofessors.com/professor/${id}`, '_blank'))}>
+                            <Button 
+                                leftIcon={<Image src='extension-images/RMPIcon.png' height={46}/>} width={240} 
+                                onClick={() => (window.open(`https://www.ratemyprofessors.com/professor/${id}`, '_blank'))}>
                                 Rate My Professor
                             </Button>
-                            <Button leftIcon={<Image src='extension-images/UTDGradesIcon.png' height={22} />} width={240} onClick={() => (window.open(`https://utdgrades.com/results?search=${subject ? subject : '%20'}+${course_number ? course_number : '%20'}+${name.split(" ")[0]}+${name.split(" ")[1]}`, '_blank'))}>
+                            <Button 
+                                leftIcon={<Image src='extension-images/UTDGradesIcon.png' height={22} />} width={240} 
+                                onClick={() => (window.open(`https://utdgrades.com/results?search=${subject ? subject : '%20'}+${course_number ? course_number : '%20'}+${name.split(" ")[0]}+${name.split(" ")[1]}`, '_blank'))}>
                                 UTD Grades
                             </Button>
-                            <Button leftIcon={<Image src='extension-images/UTDIcon.png' height={25}/>} width={240} onClick={() => (window.open(`https://profiles.utdallas.edu/browse?search=${name.split(" ")[0]}+${name.split(" ")[1]}`, '_blank'))}>
+                            <Button 
+                                leftIcon={<Image src='extension-images/UTDIcon.png' height={25}/>} width={240} 
+                                onClick={() => (window.open(`https://profiles.utdallas.edu/browse?search=${name.split(" ")[0]}+${name.split(" ")[1]}`, '_blank'))}>
                                 UTD Profile
                             </Button>
                         </VStack>

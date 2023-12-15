@@ -4,53 +4,31 @@
   <img src="assets/marquee-promo-tile.jpg" alt="Screenshot" width="400">
 </p>
 
-ProfStats is a powerful Chrome extension that seamlessly integrates professor ratings from RateMyProfessor.com and grade distributions from UTDgrades.com into a single, convenient hub. This allows students to access vital information about their professors effortlessly during the course registration season.
-
 [![Chrome Web Store](https://img.shields.io/badge/Featured_on-Chrome_Web_Store-cce7e8?style=for-the-badge)](https://chromewebstore.google.com/detail/profstats-ut-dallas/doilmgfedjlpepeaolcfpdmkehecdaff)
-[![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](https://raw.githubusercontent.com/GiridharRNair/ProfStatsUTD/main/LICENSE)
 
-## Overview
-### Extension Features:
+ProfStats is a handy Chrome extension that puts professor ratings and grade distributions together in one place, making it easy for students to get important info during course registration.
 
-- **Aggregated Insights:** 📊 Combine RateMyProfessor ratings and UTDgrades grade distributions for a comprehensive view.
+## Built With
 
-- **User-Friendly Interface:** 🎨 Access professor profiles effortlessly with one click for a smoother registration experience.
+[![Golang](https://img.shields.io/badge/Powered_by-Golang-00ADD8?style=for-the-badge&logo=go)](https://golang.org/)
 
-- **Dark Mode:** 🌙 Enjoy a sleek, eye-friendly browsing experience with our stylish dark mode.
+[![Azure](https://img.shields.io/badge/Hosted_on-Azure-0089D6?style=for-the-badge&logo=microsoft-azure)](https://azure.microsoft.com/en-us/)
 
-- **Autocomplete:** 🔍 Save time by using our autocomplete feature to quickly find your professor.
+[![SQLite](https://img.shields.io/badge/Database-SQLite-003B57?style=for-the-badge&logo=sqlite)](https://www.sqlite.org/index.html)
 
-### API Backend:
+[![Docker](https://img.shields.io/badge/Containerized_with-Docker-2496ED?style=for-the-badge&logo=docker)](https://www.docker.com/)
 
-- **Backend with FastAPI:** 🚀 Developed using FastAPI, a modern web framework for high-performance APIs with Python 3.7+.
+[![Static Badge](https://img.shields.io/badge/CI/CD_with-GitHub_Actions-2088FF?style=for-the-badge)](https://github.com/features/actions)
 
-- **Azure Deployment:** ☁️ Hosted on Azure Web App, ensuring reliable service courtesy of my Azure Student Developer account.
+[![Static Badge](https://img.shields.io/badge/Powered_by-Chakra_UI-319795?style=for-the-badge)](https://chakra-ui.com/)
 
-- **SQLite Database:** 🗃️ Empowered by SQLite, a lightweight, serverless, and self-contained SQL database engine.
-
-- **Containerized with Docker:** 🐳 Utilizing Docker for efficient containerization.
-
-- **CI/CD with GitHub Actions:** 🔄 Ensuring seamless integration and deployment.
-
-### Extension Frontend:
-
-- **Powered by Chakra UI:** 💅 Enhance the user interface with the flexibility and style of Chakra UI components.
-
-- **Vite for Development:** 🔧 Streamline development with Vite's hot module reloading for a faster iteration cycle.
-
-- **Debouncing Mechanism:** ⏳ Optimize performance by preventing frequent backend requests through debouncing.
-
-- **Client-Side Validation:** ✅ Reduce backend requests with invalid inputs by validating queries on the client side.
-
-
-<p align="center">
-  <img src="assets/extension-screenshot-1.jpg" alt="Screenshot" width="400">
-</p>
+[![Static Badge](https://img.shields.io/badge/Powered_by-Vite-646CFF?style=for-the-badge)](https://vitejs.dev/)
 
 ## Changelog:
 
 **Version 1.0.3:**
 - Added autocomplete for search queries.
+- Migrated the backend to Golang for improved performance.
 
 **Version 1.0.2:**
 - Improved UI for a more user-friendly experience.
@@ -66,6 +44,55 @@ ProfStats is a powerful Chrome extension that seamlessly integrates professor ra
 **Version 1.0.0:**
 - 🚀 Launched ProfStats: Your Ultimate Course Registration Companion!
 
-## Contribution
+## Local Installation
 
-We welcome contributions from the community! If you're interested in contributing to ProfStatsUTD, please check our [contributing guidelines](CONTRIBUTING.md) in the repository for detailed information on how to get started. Your support is invaluable to the growth and improvement of ProfStatsUTD. Thank you for considering contributing!
+> [!NOTE]  
+> This project utilizes the concurrent execution of the server and extension, along with the beta version of the Vite CRX plugin for seamless hot reloading of the extension without the need for rebuilding.
+
+Ensure that you have the following software installed on your machine:
+
+- Docker
+- Node.js
+- Golang
+
+1. Clone the repository:
+
+  ```bash
+  git clone https://github.com/GiridharRNair/ProfStatsUTD
+  ```
+
+2. Navigate to the project directory:
+
+  ```bash
+  cd ProfStatsUTD
+  ```
+
+3. Install dependencies:
+
+  ```bash
+  npm install-packages
+  ```
+
+4. Start the server and extension concurrently:
+
+  ```bash
+  npm run dev
+  ```
+
+5. Enable devloper mode and unpack the `dist` folder for the Chrome extension.
+
+## Deployment
+
+Deployment is automated using Docker and Azure Web App, managed through a concise CI/CD pipeline with GitHub Actions. Commits trigger seamless updates, handling Docker image creation, Azure Container Registry push, and deployment to Azure Web App with ease. No manual steps required.
+
+
+## Acknowledgements
+
+ - [UTD Grades](https://github.com/acmutd/utd-grades)
+ - [CRX JS Vite Plugin](https://crxjs.dev/vite-plugin)
+
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
+

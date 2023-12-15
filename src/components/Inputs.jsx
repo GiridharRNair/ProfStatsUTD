@@ -6,7 +6,7 @@ import _debounce from 'lodash/debounce';
 import axios from 'axios'; 
 import { defaultTeacherSuggestions } from '../../utils/defaults';
 
-const API_URL = 'http://localhost:80'
+const API_URL = import.meta.env.DEV ? 'http://localhost:80' : import.meta.env.VITE_API_URL;
 
 Inputs.propTypes = {
     selectedProfessor: PropTypes.func.isRequired, 
@@ -53,6 +53,7 @@ function Inputs({ selectedProfessor, selectedCourse }) {
                 onSelectOption={(value) => {
                     selectedProfessor(value.item.label);
                     getProfessorCourseDropdown(value.item.label);
+                    selectedCourse('');
                     setCourse('');
                 }}
             >
@@ -65,6 +66,7 @@ function Inputs({ selectedProfessor, selectedCourse }) {
                         selectedProfessor(e.target.value);
                         debouncedGetProfessorDropdown(e.target.value);
                         setCourseDropdown([]);
+                        selectedCourse('');
                         setCourse('');
                     }}
                 />

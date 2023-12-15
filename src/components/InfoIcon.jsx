@@ -39,7 +39,12 @@ function InfoIcon() {
           <ModalCloseButton />
           <ModalBody>
             <ChakraTooltip label="Submit bug reports and feature requests through Github" placement='bottom'>
-              <Button leftIcon={<Image src={colorMode === 'dark' ? 'extension-images/OctoCat-Light.png' : 'extension-images/OctoCat-Dark.svg'} height={8} />} variant="outline" onClick={() => window.open('https://github.com/GiridharRNair/ProfStatsUTD/issues/new/choose', '_blank')} mr={3}>
+              <Button 
+                leftIcon={<Image src={colorMode === 'dark' ? 'extension-images/OctoCat-Light.png' : 'extension-images/OctoCat-Dark.svg'} height={8} />} 
+                onClick={() => window.open('https://github.com/GiridharRNair/ProfStatsUTD/issues/new/choose', '_blank')} 
+                variant="outline" 
+                mr={3}
+              >
                 GitHub
               </Button>
             </ChakraTooltip>
