@@ -1,14 +1,23 @@
-import React, { useState, useCallback } from 'react';
+import { useState, useMemo } from 'react';
+import PropTypes from 'prop-types'; 
 import { AutoComplete, AutoCompleteInput, AutoCompleteItem, AutoCompleteList } from "@choc-ui/chakra-autocomplete";
-import axios from 'axios'; 
+import { Spinner } from '@chakra-ui/react';
 import _debounce from 'lodash/debounce';
+import axios from 'axios'; 
+import { defaultTeacherSuggestions } from '../../utils/defaults';
 
-const API_URL = import.meta.env.VITE_API_URL
+const API_URL = 'http://localhost:80'
+
+Inputs.propTypes = {
+    selectedProfessor: PropTypes.func.isRequired, 
+    selectedCourse: PropTypes.func.isRequired,
+};
 
 function Inputs({ selectedProfessor, selectedCourse }) {
-    const [professorDropdown, setProfessorDropdown] = useState([]);
+    const [professorDropdown, setProfessorDropdown] = useState(defaultTeacherSuggestions);
     const [courseDropdown, setCourseDropdown] = useState([]);
     const [course, setCourse] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const getProfessorDropdown = async (value) => {
         try {
@@ -17,6 +26,7 @@ function Inputs({ selectedProfessor, selectedCourse }) {
         } catch (error) {
             console.error(error.response?.data.detail);
         }
+        setLoading(false);
     };
 
     const getProfessorCourseDropdown = async (value) => {
@@ -28,36 +38,37 @@ function Inputs({ selectedProfessor, selectedCourse }) {
         }
     }
 
-    const debouncedGetProfessorDropdown = useCallback(_debounce((value) => getProfessorDropdown(value), 450), []);
-
-    const handleInstructorChange = (value) => {
-        selectedProfessor(value);
-        debouncedGetProfessorDropdown(value);
-    };
+    const debouncedGetProfessorDropdown = useMemo(() => _debounce((value) => getProfessorDropdown(value), 300), []);
 
     return (
         <>
             <AutoComplete
                 openOnFocus
+                closeOnSelect={true}
+                emptyState={'Professor not found'}
+                suggestWhenEmpty={true}
+                disableFilter={true}
+                freeSolo={true}
+                isLoading={loading}
                 onSelectOption={(value) => {
                     selectedProfessor(value.item.label);
                     getProfessorCourseDropdown(value.item.label);
                     setCourse('');
                 }}
-                closeOnSelect={true}
-                suggestWhenEmpty={true}
-                disableFilter={true}
-                freeSolo={true}
             >
                 <AutoCompleteInput
                     height={8}
                     placeholder="Enter Teacher Name ex. Jason Smith"
+                    loadingIcon={<Spinner size={'xs'} mb={2}/>}
                     onChange={(e) => {
-                        handleInstructorChange(e.target.value)
+                        setLoading(true);
+                        selectedProfessor(e.target.value);
+                        debouncedGetProfessorDropdown(e.target.value);
                         setCourseDropdown([]);
+                        setCourse('');
                     }}
                 />
-                {professorDropdown.length > 0 && (
+                {!loading && (
                     <AutoCompleteList>
                         {professorDropdown.map((professorOption) => (
                             <AutoCompleteItem 
@@ -73,18 +84,19 @@ function Inputs({ selectedProfessor, selectedCourse }) {
             
             <AutoComplete 
                 openOnFocus
-                onSelectOption={(value) => {
-                    selectedCourse(value.item.label);
-                    setCourse(value.item.label); 
-                }}
                 closeOnSelect={true}
                 suggestWhenEmpty={true}
                 emptyState={'Course not found for this professor'}
                 freeSolo={true}
+                onSelectOption={(value) => {
+                    selectedCourse(value.item.label);
+                    setCourse(value.item.label); 
+                }}
             >
                 <AutoCompleteInput
                     height={8}
                     placeholder="Specify a Course? ex. CS 1337"
+                    value={course}
                     onChange={(e) => {
                         selectedCourse(e.target.value)
                         setCourse(e.target.value)

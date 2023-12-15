@@ -1,24 +1,20 @@
-FROM python:3.11-slim-bookworm
+# Use the official Golang base image
+FROM golang:1.21.4
 
+# Set the working directory inside the container
 WORKDIR /app
 
-# Upgrade pip
-RUN pip install --no-cache-dir --upgrade pip
-
-# Copy only the requirements file first to leverage Docker cache
-COPY requirements.txt .
-
-# Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy the entire application code
+# Copy the local package files to the container's workspace
 COPY . .
 
-# Change directory to 'src'
-WORKDIR /app/src
+# Download and install any required dependencies
+RUN go mod download
+
+# Build the Go application
+RUN go build -o main .
 
 # Expose port 80
 EXPOSE 80
 
-# Use uvicorn to run the FastAPI app
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]
+# Run the application
+CMD ["./main"]

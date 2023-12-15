@@ -1,4 +1,3 @@
-import React from 'react';
 import {
     Text,
     HStack,
@@ -27,7 +26,7 @@ import {
     Tooltip,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
-import { gradeMappings, colorMap } from '../../data/data.js';
+import { gradeMappings, colorMap } from '../../utils/defaults.js';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip);
 
@@ -40,7 +39,7 @@ const RenderRatingCircle = (label, value) => {
     }
   
     return (
-      <VStack>
+      <VStack w={15}>
         <Text>{label}</Text>
         <CircularProgress 
             size='55px' 
@@ -114,13 +113,13 @@ function ProfResults({ professorInfo }) {
                 <DrawerContent>
                     <DrawerBody>
                         <VStack>
-                            <Button leftIcon={<Image src='/RMPIcon.png' height={46}/>} width={240} onClick={() => (window.open(`https://www.ratemyprofessors.com/professor/${id}`, '_blank'))}>
+                            <Button leftIcon={<Image src='extension-images/RMPIcon.png' height={46}/>} width={240} onClick={() => (window.open(`https://www.ratemyprofessors.com/professor/${id}`, '_blank'))}>
                                 Rate My Professor
                             </Button>
-                            <Button leftIcon={<Image src='/UTDGradesIcon.png' height={22} />} width={240} onClick={() => (window.open(`https://utdgrades.com/results?search=${subject ? subject : '%20'}+${course_number ? course_number : '%20'}+${name.split(" ")[0]}+${name.split(" ")[1]}`, '_blank'))}>
+                            <Button leftIcon={<Image src='extension-images/UTDGradesIcon.png' height={22} />} width={240} onClick={() => (window.open(`https://utdgrades.com/results?search=${subject ? subject : '%20'}+${course_number ? course_number : '%20'}+${name.split(" ")[0]}+${name.split(" ")[1]}`, '_blank'))}>
                                 UTD Grades
                             </Button>
-                            <Button leftIcon={<Image src='/UTDIcon.png' height={25}/>} width={240} onClick={() => (window.open(`https://profiles.utdallas.edu/browse?search=${name.split(" ")[0]}+${name.split(" ")[1]}`, '_blank'))}>
+                            <Button leftIcon={<Image src='extension-images/UTDIcon.png' height={25}/>} width={240} onClick={() => (window.open(`https://profiles.utdallas.edu/browse?search=${name.split(" ")[0]}+${name.split(" ")[1]}`, '_blank'))}>
                                 UTD Profile
                             </Button>
                         </VStack>
@@ -140,7 +139,7 @@ function ProfResults({ professorInfo }) {
                 </Wrap>
             }
 
-            <HStack width={300}>
+            <HStack w={250}>
                 {RenderRatingCircle('Quality', rating)}
                 <Spacer />
                 {RenderRatingCircle('Difficulty', difficulty)}

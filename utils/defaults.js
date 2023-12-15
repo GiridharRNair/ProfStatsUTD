@@ -19,7 +19,7 @@ export const gradeMappings = {
   i: 'I',
   nf: 'NF',
 };
-  
+    
 export const colorMap = {
   "A+": "rgb(45, 179, 63)",
   "A": "rgb(48, 199, 55)",
@@ -41,5 +41,43 @@ export const colorMap = {
   "I": "rgb(102, 102, 102)",
   "NF": "rgb(102, 102, 102)",
 };
+  
+export const defaultTeacher = {
+  "course_number": "",
+  "department": "Computer Science",
+  "difficulty": 2.1,
+  "grades": {
+    "aPlus": 561,
+    "a": 814,
+    "aMinus": 544,
+    "bPlus": 336,
+    "b": 337,
+    "bMinus": 187,
+    "cPlus": 91,
+    "c": 91,
+    "cMinus": 53,
+    "dPlus": 13,
+    "d": 31,
+    "dMinus": 24,
+    "f": 39,
+    "cr": 82,
+    "nc": 8,
+    "p": 11,
+    "w": 26,
+    "i": 5
+  },
+  "id": "1208870",
+  "name": "Michael Christiansen",
+  "rating": 2.8,
+  "subject": "",
+  "tags": [
+    "Group Projects",
+    "Lecture Heavy",
+    "Graded By Few Things",
+    "Clear Grading Criteria",
+    "Gives Good Feedback"
+  ],
+  "would_take_again": 47
+}
 
-export const defaultTeacher = {"id":"1984439","name":"James Willson","department":"Computer Science","grades":{"aPlus":294,"a":683,"aMinus":361,"bPlus":279,"b":300,"bMinus":210,"cPlus":131,"c":172,"cMinus":67,"dPlus":60,"d":57,"dMinus":35,"f":143,"cr":134,"nc":33,"w":83,"i":1},"subject":null,"course_number":null,"rating":5,"difficulty":3.5,"would_take_again":85,"tags":["Test Heavy","Hilarious","Amazing Lectures","Graded By Few Things","Lecture Heavy"]}
+export const defaultTeacherSuggestions = ["Melissa Johnson", "John Petty", "Yvonne Johnson", "John Healy", "John Santrock"]

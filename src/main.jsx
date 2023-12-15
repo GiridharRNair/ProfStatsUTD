@@ -1,10 +1,8 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom/client'
-import { ColorModeScript } from '@chakra-ui/react'
-import { extendTheme } from '@chakra-ui/react'
-import { ChakraProvider } from '@chakra-ui/react'
+import { ColorModeScript, extendTheme, ChakraProvider } from '@chakra-ui/react'
 import App from './App'
-import './styles/index.css';
+import './styles/index.css'
 
 const config = {
   initialColorMode: 'system',

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { defaultTeacher } from '../data/data.js';
+import { useState, useEffect } from 'react';
+import { defaultTeacher } from '../utils/defaults.js';
 import { Button, useToast, Stack, Box } from '@chakra-ui/react';
 import axios from 'axios';
 import Inputs from './components/Inputs';
@@ -8,7 +8,7 @@ import ProfResults from './components/ProfResults.jsx';
 import NotFoundPage from './components/NotFound.jsx';
 import './styles/App.css';
 
-const API_URL = import.meta.env.VITE_API_URL
+const API_URL = 'http://localhost:80'
 
 function App() {
   const toast = useToast();
@@ -40,12 +40,13 @@ function App() {
       const ratingsResponse = await axios.get(`${API_URL}/professor_info?teacher=${instructor}&course=${course}`);
       setProfessorInfo(ratingsResponse.data);
       localStorage.setItem('professorInfo', JSON.stringify(ratingsResponse.data));
-  
-      if (ratingsResponse.data.grades["No data found"] === 0) {
+
+      if (Object.keys(ratingsResponse.data.grades).length === 0) {
         showErrorToast('No grades found');
       }
     } catch (error) {
-      showErrorToast(error.response.data.detail);
+      console.error(error.response?.data.error);
+      showErrorToast(error.response.data.error);
       setProfessorInfo(null);
       localStorage.removeItem('professorInfo');
     } finally {
