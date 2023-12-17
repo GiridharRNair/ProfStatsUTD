@@ -203,10 +203,6 @@ func getRMPInfo(professorName string) (*Professor, error) {
 		WouldTakeAgain: int(node["wouldTakeAgainPercent"].(float64)),
 	}
 
-	if p.WouldTakeAgain == -1 {
-		p.WouldTakeAgain = 0
-	}
-
 	p.getProfessorTags()
 
 	return p, nil

@@ -10,8 +10,6 @@ import './styles/App.css';
 
 const API_URL = import.meta.env.DEV ? 'http://localhost:80' : import.meta.env.VITE_API_URL;
 
-console.log(API_URL);
-
 function App() {
   const toast = useToast();
   const [professorInfo, setProfessorInfo] = useState(defaultTeacher); 

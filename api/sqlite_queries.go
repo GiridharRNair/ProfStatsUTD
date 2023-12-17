@@ -39,7 +39,7 @@ func init() {
 		fmt.Print(err)
 	}
 
-	db, err = sql.Open("sqlite3", fmt.Sprintf("%s/utdgrades.sqlite3", currentDir))
+	db, err = sql.Open("sqlite3", fmt.Sprintf("%s/utdgrades.db", currentDir))
 	if err != nil {
 		fmt.Print(err)
 	}
@@ -54,7 +54,7 @@ func aggregateGrades(professor, subject, courseNumber string) (GradeStruct, erro
         WHERE (TRIM(instructor1) LIKE ? OR TRIM(instructor1) LIKE ?)
     `
 
-	// The database sometimes stores the professor's name as "Last, First" and sometimes as "First Last"
+	// The database sometimes stores the professor's name as "Last, First" or sometimes as "First Last"
 	sqlParams := []interface{}{
 		"%" + strings.ReplaceAll(professor, " ", "%") + "%",
 		"%" + strings.Join(strings.Split(professor, " ")[1:], "") + "%" + strings.Join(strings.Split(professor, " ")[:1], "") + "%",

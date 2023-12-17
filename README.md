@@ -47,13 +47,14 @@ ProfStats is a handy Chrome extension that puts professor ratings and grade dist
 ## Local Installation
 
 > [!NOTE]  
-> This project leverages concurrent execution for both the server and extension, utilizing the beta version of the Vite CRX plugin to seamlessly incorporate hot reloading. This eliminates the need for manual rebuilding during development.
+> This project leverages concurrent execution for both the server and extension, utilizing the beta version of the Vite CRX plugin to seamlessly incorporate hot reloading. This eliminates the need for manual rebuilding during development. Check out the `package.json` file for more details.
 
 Make sure you have the following software installed on your machine:
 
 - Docker
 - Node.js
 - Golang
+- Python
 
 ### Steps:
 
@@ -95,15 +96,22 @@ Make sure you have the following software installed on your machine:
 
 Backend deployment is automated using Docker and Azure Web App, managed through a concise CI/CD pipeline with GitHub Actions. Commits trigger seamless updates, handling Docker image creation, Azure Container Registry push, and deployment to Azure Web App with ease. No manual steps required.
 
-The frontend deployment is a manual process, I need to zip the `dist` folder and upload it to the Chrome Web Store to publish a new version.
+The frontend deployment is a manual process, I need to zip the `dist` folder and upload it to the Chrome Web Store to publish a new version. The review process takes about 2-3 days, depending on the permissions requested in the manifest.
 
 ## Acknowledgements
 
  - [UTD Grades](https://github.com/acmutd/utd-grades)
  - [CRX JS Vite Plugin](https://crxjs.dev/vite-plugin)
 
-
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
+
+ ## Contributors
+
+<a href="https://github.com/GiridharRNair/ProfStatsUTD/graphs/contributors">
+    <img src="https://contrib.rocks/image?repo=GiridharRNair/ProfStatsUTD" />
+</a>
+
+Made with [contrib.rocks](https://contrib.rocks).
 
