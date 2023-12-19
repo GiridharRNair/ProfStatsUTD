@@ -1,19 +1,77 @@
-# Author: Gautham Nair
-# Github: https://github.com/GauthamRNair
+"""
+Author: Gautham Nair
+Github: https://github.com/GauthamRNair
 
+This script processes CSV files containing academic grades data and populates an SQLite database with the information.
+
+Run this script from the root directory of the project.
+
+Example: python db_setup/create_db.py
+"""
 import sqlite3
 import csv
 import os
 
+
+DB_PATH = 'api/utdgrades.db'
+RAW_DATA_PATH = 'raw_data'
+
+SQL_CREATE_TABLE = '''
+    CREATE TABLE IF NOT EXISTS grades_populated(   
+    aPlus INTEGER,
+    a INTEGER,
+    aMinus INTEGER,
+    bPlus INTEGER,
+    b INTEGER,
+    bMinus INTEGER,
+    cPlus INTEGER,
+    c INTEGER,
+    cMinus INTEGER,
+    dPlus INTEGER,
+    d INTEGER,
+    dMinus INTEGER,
+    f INTEGER,
+    cr INTEGER,
+    nc INTEGER,
+    p INTEGER,
+    w INTEGER,
+    i INTEGER,
+    nf INTEGER NOT NULL,
+    instructor1 VARCHAR(255),
+    subject VARCHAR(255),
+    catalogNumber VARCHAR(255),
+    section VARCHAR(255))
+'''
+
+SQL_INSERT_ROW = '''
+    INSERT INTO grades_populated
+    (aPlus, a, aMinus, 
+    bPlus, b, bMinus, 
+    cPlus, c, cMinus, 
+    dPlus, d, dMinus, 
+    f, cr, nc, p, w, i, nf, 
+    instructor1, 
+    subject, 
+    catalogNumber,
+    section)
+    VALUES
+    (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+'''
+
+
 class GradesRow:
-    def __init__(self, subject, course_num, grades, instructor):
+    def __init__(self, subject, course_num, section, grades, instructor):
         self.subject = subject
         self.course_num = course_num
+        self.section = section
         self.grades = grades
         self.instructor = instructor
 
 
 def index_row(row, *columns):
+    """
+    Due to the inconsistent naming of columns in the CSV files.
+    """
     for column in columns:
         try:
             value = row[column]
@@ -31,9 +89,8 @@ def reorder_name(name):
 def parse_data(data_dir):
     rows = []
     with os.scandir(data_dir) as entries:
-        print(f"Reading data from {data_dir}")
         for entry in entries:
-            print(f"Reading {entry.name}")
+            print(f"Parsing {entry.name}")
             with open(os.path.join(data_dir, entry.name), 'r') as csvfile:
                 for row in csv.DictReader(csvfile):
                     grades = {
@@ -53,56 +110,19 @@ def parse_data(data_dir):
                         'CR': index_row(row, 'CR'),
                         'NC': index_row(row, 'NC'),
                         'P': index_row(row, 'P'),
-                        'W': index_row(row, 'W', "Total W"),
+                        'W': index_row(row, 'W', "Total W", "W Total"),
                         'I': index_row(row, 'I'),
                         'NF': index_row(row, 'NF')
                     }
                     instructor = reorder_name(row['Instructor 1'])
-                    rows.append(GradesRow(row['Subject'], index_row(row, 'Catalog Nbr', 'Catalog Number'), grades, instructor))
+                    rows.append(GradesRow(row['Subject'], index_row(row, 'Catalog Nbr', 'Catalog Number'), row['Section'], grades, instructor))
     return rows
 
 
 def create_table(cursor, rows):
-    cursor.execute( '''
-                    CREATE TABLE IF NOT EXISTS grades_populated(   
-                    aPlus INTEGER,
-                    a INTEGER,
-                    aMinus INTEGER,
-                    bPlus INTEGER,
-                    b INTEGER,
-                    bMinus INTEGER,
-                    cPlus INTEGER,
-                    c INTEGER,
-                    cMinus INTEGER,
-                    dPlus INTEGER,
-                    d INTEGER,
-                    dMinus INTEGER,
-                    f INTEGER,
-                    cr INTEGER,
-                    nc INTEGER,
-                    p INTEGER,
-                    w INTEGER,
-                    i INTEGER,
-                    nf INTEGER NOT NULL,
-                    instructor1 VARCHAR(255),
-                    subject VARCHAR(255),
-                    catalogNumber VARCHAR(255))
-                   ''') 
-    statement = '''
-                INSERT INTO grades_populated
-                (aPlus, a, aMinus, 
-                bPlus, b, bMinus, 
-                cPlus, c, cMinus, 
-                dPlus, d, dMinus, 
-                f, cr, nc, p, w, i, nf, 
-                instructor1, 
-                subject, 
-                catalogNumber)
-                VALUES
-                (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
-                '''
+    cursor.execute(SQL_CREATE_TABLE) 
     for row in rows:
-        cursor.execute(statement, 
+        cursor.execute(SQL_INSERT_ROW, 
                        (row.grades['A+'], row.grades['A'], row.grades['A-'],
                         row.grades['B+'], row.grades['B'], row.grades['B-'],
                         row.grades['C+'], row.grades['C'], row.grades['C-'],
@@ -112,14 +132,14 @@ def create_table(cursor, rows):
                         row.grades['NF'],
                         row.instructor,
                         row.subject,
-                        row.course_num))
+                        row.course_num,
+                        row.section))
     cursor.connection.commit()
 
 
 if __name__ == "__main__":
-    print("Creating database")
-    cur = sqlite3.connect('api/utdgrades.db').cursor()
+    cur = sqlite3.connect(DB_PATH).cursor()
     cur.execute('''DROP TABLE IF EXISTS grades_populated''')
-    rows = parse_data("raw_data")
+    rows = parse_data(RAW_DATA_PATH)
     create_table(cur, rows)
-    print("Created database at api/utdgrades.db")
+    print(f"Created database at {DB_PATH}")

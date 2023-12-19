@@ -37,11 +37,7 @@ func getProfessorInformation(c *gin.Context) {
 		return
 	}
 
-	gradesData, err := aggregateGrades(professor.Name, subject, courseNumber)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"detail": err.Error()})
-		return
-	}
+	gradesData := aggregateGrades(professor.Name, subject, courseNumber)
 
 	resultData := gin.H{
 		"id":               professor.ID,

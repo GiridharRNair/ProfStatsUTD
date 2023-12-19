@@ -6,7 +6,8 @@
   "scripts": {
     "install-packages": "npm install && npm run install-go-packages",
     "install-go-packages": "cd api && go mod download",
-    "dev": "concurrently \"vite\" \"python create_db.py && npm run start-api\"",
+    "dev": "concurrently \"vite\" \"npm run create-db && npm run start-api\"",
+    "create-db": "python db_setup/create_db.py && python db_setup/test_db.py",
     "start-api": "cd api && nodemon --exec go run main.go professor.go sqlite_queries.go --signal SIGTERM",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",

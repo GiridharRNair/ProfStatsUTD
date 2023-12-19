@@ -109,7 +109,7 @@ function ProfResults({ professorInfo }) {
                             </Button>
                             <Button 
                                 leftIcon={<Image src='extension-images/UTDGradesIcon.png' height={22} />} width={240} 
-                                onClick={() => (window.open(`https://utdgrades.com/results?search=${subject ? subject : '%20'}+${course_number ? course_number : '%20'}+${name.split(" ")[0]}+${name.split(" ")[1]}`, '_blank'))}>
+                                onClick={() => (window.open(`https://utdgrades.com/results?search=${subject ? subject + course_number: '%20'}+${name.split(" ")[0]}+${name.split(" ")[1]}`, '_blank'))}>
                                 UTD Grades
                             </Button>
                             <Button 

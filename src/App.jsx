@@ -45,7 +45,6 @@ function App() {
         showErrorToast('No grades found');
       }
     } catch (error) {
-      console.error(error.response?.data.detail);
       showErrorToast(error.response.data.detail);
       setProfessorInfo(null);
       localStorage.removeItem('professorInfo');

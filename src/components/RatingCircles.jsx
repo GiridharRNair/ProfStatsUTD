@@ -1,7 +1,6 @@
 import { Text, VStack, CircularProgress, CircularProgressLabel } from '@chakra-ui/react';
 
 const RenderRatingCircle = (label, value) => {
-    console.log(label, value);
     const getHSLColor = (value, factor) => (value === -1) ? 0 : `hsl(${factor(value) * 100}, 90%, 50%)`;
 
     const getColor = () => {

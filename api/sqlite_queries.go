@@ -45,12 +45,38 @@ func init() {
 	}
 }
 
-func aggregateGrades(professor, subject, courseNumber string) (GradeStruct, error) {
+func stringInSlice(a string, list []string) bool {
+	for _, b := range list {
+		if b == a {
+			return true
+		}
+	}
+	return false
+}
+
+func aggregateGrades(professor, subject, courseNumber string) GradeStruct {
 	sqlQueryBase := `
-        SELECT aPlus, a, aMinus, bPlus, b, bMinus,
-               cPlus, c, cMinus, dPlus, d, dMinus,
-               f, cr, nc, p, w, i, nf
-        FROM grades_populated 
+		SELECT 
+			SUM(aPlus) as APlus, 
+			SUM(a) as A, 
+			SUM(aMinus) as AMinus, 
+			SUM(bPlus) as BPlus, 
+			SUM(b) as B, 
+			SUM(bMinus) as BMinus,
+			SUM(cPlus) as CPlus, 
+			SUM(c) as C, 
+			SUM(cMinus) as CMinus, 
+			SUM(dPlus) as DPlus, 
+			SUM(d) as D, 
+			SUM(dMinus) as DMinus,
+			SUM(f) as F, 
+			SUM(cr) as CR, 
+			SUM(nc) as NC, 
+			SUM(p) as P, 
+			SUM(w) as W, 
+			SUM(i) as I, 
+			SUM(nf) as NF
+		FROM grades_populated 
         WHERE (TRIM(instructor1) LIKE ? OR TRIM(instructor1) LIKE ?)
     `
 
@@ -69,69 +95,35 @@ func aggregateGrades(professor, subject, courseNumber string) (GradeStruct, erro
 		sqlQuery = sqlQueryBase
 	}
 
-	rows, err := db.Query(sqlQuery, sqlParams...)
+	var aggregatedData GradeStruct
+
+	err := db.QueryRow(sqlQuery, sqlParams...).Scan(
+		&aggregatedData.APlus,
+		&aggregatedData.A,
+		&aggregatedData.AMinus,
+		&aggregatedData.BPlus,
+		&aggregatedData.B,
+		&aggregatedData.BMinus,
+		&aggregatedData.CPlus,
+		&aggregatedData.C,
+		&aggregatedData.CMinus,
+		&aggregatedData.DPlus,
+		&aggregatedData.D,
+		&aggregatedData.DMinus,
+		&aggregatedData.F,
+		&aggregatedData.CR,
+		&aggregatedData.NC,
+		&aggregatedData.P,
+		&aggregatedData.W,
+		&aggregatedData.I,
+		&aggregatedData.NF,
+	)
+
 	if err != nil {
-		return GradeStruct{}, err
-	}
-	defer rows.Close()
-
-	columns, err := rows.Columns()
-	if err != nil {
-		return GradeStruct{}, err
+		return GradeStruct{}
 	}
 
-	values := make([]interface{}, len(columns))
-	for i := range values {
-		values[i] = new(int)
-	}
-
-	aggregatedData := GradeStruct{}
-
-	for rows.Next() {
-		err := rows.Scan(values...)
-		if err != nil {
-			return aggregatedData, err
-		}
-
-		gradeMappings := map[string]*int{
-			"aPlus":  &aggregatedData.APlus,
-			"a":      &aggregatedData.A,
-			"aMinus": &aggregatedData.AMinus,
-			"bPlus":  &aggregatedData.BPlus,
-			"b":      &aggregatedData.B,
-			"bMinus": &aggregatedData.BMinus,
-			"cPlus":  &aggregatedData.CPlus,
-			"c":      &aggregatedData.C,
-			"cMinus": &aggregatedData.CMinus,
-			"dPlus":  &aggregatedData.DPlus,
-			"d":      &aggregatedData.D,
-			"dMinus": &aggregatedData.DMinus,
-			"f":      &aggregatedData.F,
-			"cr":     &aggregatedData.CR,
-			"nc":     &aggregatedData.NC,
-			"p":      &aggregatedData.P,
-			"w":      &aggregatedData.W,
-			"i":      &aggregatedData.I,
-			"nf":     &aggregatedData.NF,
-		}
-
-		for i, column := range columns {
-			if field, ok := gradeMappings[column]; ok {
-				*field += *(values[i].(*int))
-			}
-		}
-	}
-
-	return aggregatedData, nil
-}
-
-func stringInSlice(a string, list []string) bool {
-	for _, b := range list {
-		if b == a {
-			return true
-		}
-	}
-	return false
+	return aggregatedData
 }
 
 func getProfessorSuggestions(teacher string) ([]string, error) {

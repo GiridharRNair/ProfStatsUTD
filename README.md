@@ -103,10 +103,6 @@ The frontend deployment is a manual process, I need to zip the `dist` folder and
  - [UTD Grades](https://github.com/acmutd/utd-grades)
  - [CRX JS Vite Plugin](https://crxjs.dev/vite-plugin)
 
-## License
-
-[MIT](https://choosealicense.com/licenses/mit/)
-
  ## Contributors
 
 <a href="https://github.com/GiridharRNair/ProfStatsUTD/graphs/contributors">
