@@ -129,8 +129,7 @@ func aggregateGrades(professor, subject, courseNumber string) GradeStruct {
 func getProfessorSuggestions(teacher string) ([]string, error) {
 	professor := strings.ReplaceAll(teacher, " ", "%")
 
-	query := "SELECT DISTINCT instructor1 FROM grades_populated WHERE TRIM(instructor1) LIKE ? LIMIT 5"
-	rows, err := db.Query(query, "%"+professor+"%")
+	rows, err := db.Query("SELECT DISTINCT instructor1 FROM grades_populated WHERE TRIM(instructor1) LIKE ? LIMIT 5", "%"+professor+"%")
 	if err != nil {
 		return nil, err
 	}

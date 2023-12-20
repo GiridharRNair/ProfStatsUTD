@@ -80,4 +80,4 @@ export const defaultTeacher = {
   "would_take_again": 47
 }
 
-export const defaultTeacherSuggestions = ["Melissa Johnson", "John Petty", "Yvonne Johnson", "John Healy", "John Santrock"]
+export const defaultTeacherSuggestions = ["John Cole", "Jeyakesavan Veerasamy", "Timothy Farage", "James Willson", "Doug DeGroot"]

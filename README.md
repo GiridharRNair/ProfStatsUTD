@@ -10,19 +10,16 @@ ProfStats is a handy Chrome extension that puts professor ratings and grade dist
 
 ## Built With
 
-[![Golang](https://img.shields.io/badge/Powered_by-Golang-00ADD8?style=for-the-badge&logo=go)](https://golang.org/)
+
+[![Gin Gonic](https://img.shields.io/badge/Powered_by-Gin_Gonic-00ADD8?style=for-the-badge&logo=go)](https://gin-gonic.com/)
+
+[![Vite](https://img.shields.io/badge/Powered_by-Vite-646CFF?style=for-the-badge&logo=vite)](https://vitejs.dev/)
 
 [![Azure](https://img.shields.io/badge/Hosted_on-Azure-0089D6?style=for-the-badge&logo=microsoft-azure)](https://azure.microsoft.com/en-us/)
 
 [![SQLite](https://img.shields.io/badge/Database-SQLite-003B57?style=for-the-badge&logo=sqlite)](https://www.sqlite.org/index.html)
 
 [![Docker](https://img.shields.io/badge/Containerized_with-Docker-2496ED?style=for-the-badge&logo=docker)](https://www.docker.com/)
-
-[![Static Badge](https://img.shields.io/badge/CI/CD_with-GitHub_Actions-2088FF?style=for-the-badge)](https://github.com/features/actions)
-
-[![Static Badge](https://img.shields.io/badge/Powered_by-Chakra_UI-319795?style=for-the-badge)](https://chakra-ui.com/)
-
-[![Static Badge](https://img.shields.io/badge/Powered_by-Vite-646CFF?style=for-the-badge)](https://vitejs.dev/)
 
 ## Changelog:
 
@@ -44,10 +41,20 @@ ProfStats is a handy Chrome extension that puts professor ratings and grade dist
 **Version 1.0.0:**
 - 🚀 Launched ProfStats: Your Ultimate Course Registration Companion!
 
-## Local Installation
+## Overview
+
+### Frontend
+
+The frontend is constructed using Vite + React, incorporating Chakra UI for a sleek interface. It incorporates debouncing to optimize backend requests and client-side validation for data accuracy. To update the Chrome Web Store version, a manual process is followed: zipping the `dist` folder, uploading it to the Chrome Developer Dashboard, and awaiting a 2-3 day review period before it becomes publicly available.
+
+### Backend
+
+The backend is developed in Golang with the Gin framework, dockerized, and deployed on Azure Web App. It utilizes a SQLite database, populated from CSV files in the `/raw_data` directory through Python scripts in `/db_setup`. The functionality includes retrieving professor ratings, grade distributions, and conducting searches for professors and their courses.
+
+## Getting Started
 
 > [!NOTE]  
-> This project leverages concurrent execution for both the server and extension, utilizing the beta version of the Vite CRX plugin to seamlessly incorporate hot reloading. This eliminates the need for manual rebuilding during development. Check out the `package.json` file for more details.
+> This project uses concurrently to run the server and extension concurrently. Check out the `package.json` file for more details.
 
 Make sure you have the following software installed on your machine:
 
@@ -92,22 +99,5 @@ Make sure you have the following software installed on your machine:
     - Unpack the `dist` folder.
     - Start using the extension for seamless testing and development.
 
-## Deployment
 
-Backend deployment is automated using Docker and Azure Web App, managed through a concise CI/CD pipeline with GitHub Actions. Commits trigger seamless updates, handling Docker image creation, Azure Container Registry push, and deployment to Azure Web App with ease. No manual steps required.
-
-The frontend deployment is a manual process, I need to zip the `dist` folder and upload it to the Chrome Web Store to publish a new version. The review process takes about 2-3 days, depending on the permissions requested in the manifest.
-
-## Acknowledgements
-
- - [UTD Grades](https://github.com/acmutd/utd-grades)
- - [CRX JS Vite Plugin](https://crxjs.dev/vite-plugin)
-
- ## Contributors
-
-<a href="https://github.com/GiridharRNair/ProfStatsUTD/graphs/contributors">
-    <img src="https://contrib.rocks/image?repo=GiridharRNair/ProfStatsUTD" />
-</a>
-
-Made with [contrib.rocks](https://contrib.rocks).
 

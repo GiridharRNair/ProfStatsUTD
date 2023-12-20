@@ -28,7 +28,7 @@ type Professor struct {
 	NumRatings     int
 }
 
-const SchoolID = "U2Nob29sLTEyNzM="
+const SchoolID = "U2Nob29sLTEyNzM=" // UTDallas's school id on RateMyProfessor
 
 func getRatingsQuery(professorID string, numRatings int) map[string]interface{} {
 	return map[string]interface{}{

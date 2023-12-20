@@ -23,10 +23,10 @@ import {
     LinearScale,
     Tooltip,
 } from "chart.js";
-import RenderRatingCircle from './RatingCircles.jsx';
 import { Bar } from "react-chartjs-2";
 import PropTypes from 'prop-types';
 import { gradeMappings, colorMap } from '../../utils/defaults.js';
+import RenderRatingCircle from './RatingCircles.jsx';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip);
 

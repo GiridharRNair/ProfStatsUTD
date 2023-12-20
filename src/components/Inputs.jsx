@@ -38,7 +38,7 @@ function Inputs({ selectedProfessor, selectedCourse }) {
         }
     }
 
-    const debouncedGetProfessorDropdown = useMemo(() => _debounce((value) => getProfessorDropdown(value), 300), []);
+    const debouncedGetProfessorDropdown = useMemo(() => _debounce((value) => getProfessorDropdown(value), 250), []);
 
     return (
         <>
