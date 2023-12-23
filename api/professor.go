@@ -203,6 +203,19 @@ func getRMPInfo(professorName string) (*Professor, error) {
 		WouldTakeAgain: int(node["wouldTakeAgainPercent"].(float64)),
 	}
 
+	// RateMyProfessor bug where ratings are over their max value
+	if p.Rating > 5 {
+		p.Rating = 5
+	}
+
+	if p.Difficulty > 5 {
+		p.Difficulty = 5
+	}
+
+	if p.WouldTakeAgain > 100 {
+		p.WouldTakeAgain = 100
+	}
+
 	p.getProfessorTags()
 
 	return p, nil
