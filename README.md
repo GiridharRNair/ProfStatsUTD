@@ -10,7 +10,6 @@ ProfStats is a handy Chrome extension that puts professor ratings and grade dist
 
 ## Built With
 
-
 [![Gin Gonic](https://img.shields.io/badge/Powered_by-Gin_Gonic-00ADD8?style=for-the-badge&logo=go)](https://gin-gonic.com/)
 
 [![Vite](https://img.shields.io/badge/Powered_by-Vite-646CFF?style=for-the-badge&logo=vite)](https://vitejs.dev/)
@@ -22,6 +21,10 @@ ProfStats is a handy Chrome extension that puts professor ratings and grade dist
 [![Docker](https://img.shields.io/badge/Containerized_with-Docker-2496ED?style=for-the-badge&logo=docker)](https://www.docker.com/)
 
 ## Changelog:
+
+**Version 1.0.4:**
+- Minor bug fixes.
+- Minor UI improvements.
 
 **Version 1.0.3:**
 - Added autocomplete for search queries.
@@ -45,13 +48,21 @@ ProfStats is a handy Chrome extension that puts professor ratings and grade dist
 
 ### Frontend
 
-The frontend is constructed using Vite + React, incorporating Chakra UI for a sleek interface. It incorporates debouncing to optimize backend requests and client-side validation for data accuracy. To update the Chrome Web Store version, a manual process is followed: zipping the `dist` folder, uploading it to the Chrome Developer Dashboard, and awaiting a 2-3 day review period before it becomes publicly available.
+The frontend is constructed using Vite + React, incorporating Chakra UI for a sleek interface. 
+
+Incorporates debouncing to optimize backend requests and client-side validation for data accuracy. 
+
+Publishing new versions requires a manual build and upload to the Chrome Web Store.
 
 ### Backend
 
-The backend is developed in Golang with the Gin framework, dockerized, and deployed on Azure Web App. It utilizes a SQLite database, populated from CSV files in the `/raw_data` directory through Python scripts in `/db_setup`. The functionality includes retrieving professor ratings, grade distributions, and conducting searches for professors and their courses.
+Developed in Golang with the Gin framework, dockerized, and deployed on Azure Web App through GitHub Actions. 
 
-## Getting Started
+Utilizes a SQLite database, created from CSV files in the `/raw_data` directory through the Python scripts in `/db_setup`. 
+
+Functionality involves retrieving professor ratings, grade distributions, and searching for professors and their courses.
+
+## Local Development
 
 > [!NOTE]  
 > This project uses concurrently to run the server and extension concurrently. Check out the `package.json` file for more details.
@@ -98,6 +109,8 @@ Make sure you have the following software installed on your machine:
 
     - Unpack the `dist` folder.
     - Start using the extension for seamless testing and development.
+
+Please feel free to open an issue or submit a pull request if you have any suggestions or feedback. 
 
 
 

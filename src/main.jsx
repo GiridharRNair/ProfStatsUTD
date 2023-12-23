@@ -5,17 +5,17 @@ import App from './App'
 import './styles/index.css'
 
 const config = {
-  initialColorMode: 'system',
-  useSystemColorMode: false,
+    initialColorMode: 'system',
+    useSystemColorMode: false,
 }
 const theme = extendTheme({ config })
 
 const rootElement = document.getElementById('root')
 ReactDOM.createRoot(rootElement).render(
-  <React.StrictMode>
-    <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-    <ChakraProvider theme={theme}>
-      <App />
-    </ChakraProvider>
-  </React.StrictMode>,
+    <React.StrictMode>
+        <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+        <ChakraProvider theme={theme}>
+            <App />
+        </ChakraProvider>
+    </React.StrictMode>,
 )

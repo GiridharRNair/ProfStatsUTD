@@ -1,6 +1,10 @@
 import { Text, VStack, CircularProgress, CircularProgressLabel } from '@chakra-ui/react';
 
 const RenderRatingCircle = (label, value) => {
+    if ((label === 'Quality' || label === 'Difficulty') && value > 5) {
+        value = 5; // Weird bug in Rate My Professors API where ratings can be > 5
+    }
+
     const getHSLColor = (value, factor) => (value === -1) ? 0 : `hsl(${factor(value) * 100}, 90%, 50%)`;
 
     const getColor = () => {

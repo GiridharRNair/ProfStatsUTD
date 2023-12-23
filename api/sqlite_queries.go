@@ -77,8 +77,7 @@ func aggregateGrades(professor, subject, courseNumber string) GradeStruct {
 			SUM(i) as I, 
 			SUM(nf) as NF
 		FROM grades_populated 
-        WHERE (TRIM(instructor1) LIKE ? OR TRIM(instructor1) LIKE ?)
-    `
+        WHERE (TRIM(instructor1) LIKE ? OR TRIM(instructor1) LIKE ?)`
 
 	// The database sometimes stores the professor's name as "Last, First" or sometimes as "First Last"
 	sqlParams := []interface{}{

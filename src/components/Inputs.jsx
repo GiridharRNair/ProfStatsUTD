@@ -1,7 +1,8 @@
 import { useState, useMemo } from 'react';
-import PropTypes from 'prop-types'; 
 import { AutoComplete, AutoCompleteInput, AutoCompleteItem, AutoCompleteList } from "@choc-ui/chakra-autocomplete";
+import { VStack, Tooltip } from '@chakra-ui/react';
 import { Spinner } from '@chakra-ui/react';
+import PropTypes from 'prop-types'; 
 import _debounce from 'lodash/debounce';
 import axios from 'axios'; 
 import { defaultTeacherSuggestions } from '../../utils/defaults';
@@ -41,12 +42,11 @@ function Inputs({ selectedProfessor, selectedCourse }) {
     const debouncedGetProfessorDropdown = useMemo(() => _debounce((value) => getProfessorDropdown(value), 250), []);
 
     return (
-        <>
+        <VStack pt={1} width={325}>
             <AutoComplete
                 openOnFocus
                 closeOnSelect={true}
                 emptyState={'Professor not found'}
-                suggestWhenEmpty={true}
                 disableFilter={true}
                 freeSolo={true}
                 isLoading={loading}
@@ -57,19 +57,21 @@ function Inputs({ selectedProfessor, selectedCourse }) {
                     setCourse('');
                 }}
             >
-                <AutoCompleteInput
-                    height={8}
-                    placeholder="Enter Teacher Name ex. Jason Smith"
-                    loadingIcon={<Spinner size={'xs'} mb={2}/>}
-                    onChange={(e) => {
-                        setLoading(true);
-                        selectedProfessor(e.target.value);
-                        debouncedGetProfessorDropdown(e.target.value);
-                        setCourseDropdown([]);
-                        selectedCourse('');
-                        setCourse('');
-                    }}
-                />
+                <Tooltip label="Ignore middle names and suffixes" placement="top">
+                    <AutoCompleteInput
+                        height={8}
+                        placeholder="Enter Teacher Name ex. Jason Smith"
+                        loadingIcon={<Spinner size={'xs'} mb={2}/>}
+                        onChange={(e) => {
+                            setLoading(true);
+                            selectedProfessor(e.target.value);
+                            debouncedGetProfessorDropdown(e.target.value);
+                            setCourseDropdown([]);
+                            selectedCourse('');
+                            setCourse('');
+                        }}
+                    />
+                </Tooltip>
                 {!loading && (
                     <AutoCompleteList>
                         {professorDropdown.map((professorOption) => (
@@ -117,7 +119,7 @@ function Inputs({ selectedProfessor, selectedCourse }) {
                     </AutoCompleteList>
                 )}
             </AutoComplete>
-        </>
+        </ VStack>
     );
 }
 

@@ -1,13 +1,11 @@
 """
-Author: Gautham Nair
-Github: https://github.com/GauthamRNair
+Author: Gautham Nair (https://github.com/GauthamRNair)
 
-This script processes CSV files containing academic grades data and populates an SQLite database with the information.
+This script processes CSV files with academic grades data and populates an SQLite database.
 
-Run this script from the root directory of the project.
-
-Example: python db_setup/create_db.py
+Usage: python db_setup/create_db.py
 """
+
 import sqlite3
 import csv
 import os

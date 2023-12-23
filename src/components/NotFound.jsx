@@ -7,7 +7,10 @@ const NotFoundPage = () => {
         <Box textAlign="center" pt={3} pb={8}>
             <Image 
                 src={colorMode === 'dark' ? 'extension-images/404-light.png' : 'extension-images/404-dark.png'} 
-                height={'10rem'} mx="auto" mt={3} alt="404 Error Illustration" 
+                alt="404 Error Illustration" 
+                height={'10rem'} 
+                mx="auto" 
+                mt={3} 
             />
             <Text mt={2}>
                 Oops! It seems like there&#39;s no data. Please double check your inputs and try again.

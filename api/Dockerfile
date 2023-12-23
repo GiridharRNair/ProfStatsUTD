@@ -13,6 +13,9 @@ RUN go mod download
 # Build the Go application
 RUN go build -o main .
 
+# Set Gin to production mode
+ENV GIN_MODE=release
+
 # Expose port 80
 EXPOSE 80
 

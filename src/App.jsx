@@ -11,79 +11,79 @@ import './styles/App.css';
 const API_URL = import.meta.env.DEV ? 'http://localhost:80' : import.meta.env.VITE_API_URL;
 
 function App() {
-  const toast = useToast();
-  const [professorInfo, setProfessorInfo] = useState(defaultTeacher); 
-  const [instructor, setInstructor] = useState('');
-  const [course, setCourse] = useState('');
-  const [loading, setLoading] = useState(false);
+    const toast = useToast();
+    const [professorInfo, setProfessorInfo] = useState(defaultTeacher); 
+    const [instructor, setInstructor] = useState('');
+    const [course, setCourse] = useState('');
+    const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const storedProfessorInfo = localStorage.getItem('professorInfo');
-    if (storedProfessorInfo) {
-      setProfessorInfo(JSON.parse(storedProfessorInfo));
-    }
-  }, []);
+    useEffect(() => {
+        const storedProfessorInfo = localStorage.getItem('professorInfo');
+        if (storedProfessorInfo) {
+            setProfessorInfo(JSON.parse(storedProfessorInfo));
+        }
+    }, []);
 
-  const showErrorToast = (description) => {
-    toast({
-      description: description,
-      status: 'error',
-      duration: 5000,
-      isClosable: true,
-    });
-  };
+    const showErrorToast = (description) => {
+        toast({
+            description: description,
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+        });
+    };
 
-  const getProfessorData = async () => {
-    setLoading(true);
+    const getProfessorData = async () => {
+        setLoading(true);
 
-    try {
-      const ratingsResponse = await axios.get(`${API_URL}/professor_info?teacher=${instructor}&course=${course}`);
-      setProfessorInfo(ratingsResponse.data);
-      localStorage.setItem('professorInfo', JSON.stringify(ratingsResponse.data));
+        try {
+            const ratingsResponse = await axios.get(`${API_URL}/professor_info?teacher=${instructor}&course=${course}`);
+            setProfessorInfo(ratingsResponse.data);
+            localStorage.setItem('professorInfo', JSON.stringify(ratingsResponse.data));
 
-      if (Object.keys(ratingsResponse.data.grades).length === 0) {
-        showErrorToast('No grades found');
-      }
-    } catch (error) {
-      showErrorToast(error.response.data.detail);
-      setProfessorInfo(null);
-      localStorage.removeItem('professorInfo');
-    } finally {
-      setLoading(false);
-    }
-  };
+            if (Object.keys(ratingsResponse.data.grades).length === 0) {
+                showErrorToast('No grades found');
+            }
+        } catch (error) {
+            showErrorToast(error.response.data.detail);
+            setProfessorInfo(null);
+            localStorage.removeItem('professorInfo');
+        } finally {
+            setLoading(false);
+        }
+    };
   
-  const handleSubmit = () => {
-    setInstructor(instructor.trim());
-    if (!instructor.trim()) {
-      showErrorToast('Teacher name is required');
-      return;
-    }
+    const handleSubmit = () => {
+        setInstructor(instructor.trim());
+        if (!instructor.trim()) {
+            showErrorToast('Teacher name is required');
+            return;
+        }
 
-    const formattedCourseName = course.replace(/\s/g, '').toUpperCase().trim();
-    if (formattedCourseName && !(formattedCourseName.match('([a-zA-Z]+)([0-9Vv]+)')?.[2]?.length === 4)) {
-      showErrorToast('Invalid course name');
-      return;
-    }    
+        const formattedCourseName = course.replace(/\s/g, '').toUpperCase().trim();
+        if (formattedCourseName && !(formattedCourseName.match('([a-zA-Z]+)([0-9Vv]+)')?.[2]?.length === 4)) {
+            showErrorToast('Invalid course name');
+            return;
+        }    
 
-    getProfessorData();
-  };
+        getProfessorData();
+    };
 
-  return (
-    <Box>
-      <InfoIcon />
-      
-      <Stack pt={2} spacing={2} width={300} align="center">
-        <Inputs selectedProfessor={setInstructor} selectedCourse={setCourse} />
+    return (
+        <Box>
+            <InfoIcon />
+        
+            <Stack pt={2} spacing={2} width={300} align="center">
+                <Inputs selectedProfessor={setInstructor} selectedCourse={setCourse} />
 
-        <Button onClick={handleSubmit} isLoading={loading} height={8}>
-          Submit
-        </Button>
+                <Button onClick={handleSubmit} isLoading={loading} height={8}>
+                    Submit
+                </Button>
 
-        {professorInfo ? <ProfResults professorInfo={professorInfo} /> : <NotFoundPage />}
-      </Stack>
-    </Box>
-  );
+                {professorInfo ? <ProfResults professorInfo={professorInfo} /> : <NotFoundPage />}
+            </Stack>
+        </Box>
+    );
 }
 
 export default App;

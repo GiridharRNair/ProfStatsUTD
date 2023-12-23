@@ -1,7 +1,5 @@
 """
-Run this script from the root directory of the project.
-
-Example: python db_setup/test_db.py
+Usage: python db_setup/test_db.py
 """
 
 import unittest
