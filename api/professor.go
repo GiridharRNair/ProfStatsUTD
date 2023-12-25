@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"math"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -198,22 +199,9 @@ func getRMPInfo(professorName string) (*Professor, error) {
 		NumRatings:     int(node["numRatings"].(float64)),
 		Name:           fmt.Sprintf("%s %s", node["firstName"], node["lastName"]),
 		Department:     node["department"].(string),
-		Difficulty:     node["avgDifficulty"].(float64),
-		Rating:         node["avgRating"].(float64),
-		WouldTakeAgain: int(node["wouldTakeAgainPercent"].(float64)),
-	}
-
-	// RateMyProfessor bug where ratings are over their max value
-	if p.Rating > 5 {
-		p.Rating = 5
-	}
-
-	if p.Difficulty > 5 {
-		p.Difficulty = 5
-	}
-
-	if p.WouldTakeAgain > 100 {
-		p.WouldTakeAgain = 100
+		Difficulty:     math.Min(5, node["avgDifficulty"].(float64)),
+		Rating:         math.Min(5, node["avgRating"].(float64)),
+		WouldTakeAgain: int(math.Min(100, node["wouldTakeAgainPercent"].(float64))),
 	}
 
 	p.getProfessorTags()
