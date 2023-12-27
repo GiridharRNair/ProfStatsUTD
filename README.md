@@ -23,42 +23,47 @@ ProfStats is a handy Chrome extension that puts professor ratings and grade dist
 ## Changelog:
 
 **Version 1.0.4:**
-- Minor bug fixes.
-- Minor UI improvements.
+
+-   Minor bug fixes.
+-   Minor UI improvements.
 
 **Version 1.0.3:**
-- Added autocomplete for search queries.
-- Migrated the backend to Golang for improved performance.
+
+-   Added autocomplete for search queries.
+-   Migrated the backend to Golang for improved performance.
 
 **Version 1.0.2:**
-- Improved UI for a more user-friendly experience.
-- Fixed minor bugs.
+
+-   Improved UI for a more user-friendly experience.
+-   Fixed minor bugs.
 
 **Version 1.0.1:**
-- Introduced dark mode and enhanced UI.
-- Added access to professors' UTDgrades and UTD employee profiles.
-- Included popular professor tags from Rate My Professor.
-- Enhanced 404 error handling for smoother navigation.
-- Added Info icon for feature requests, bug reports, and toggling dark/light mode.
+
+-   Introduced dark mode and enhanced UI.
+-   Added access to professors' UTDgrades and UTD employee profiles.
+-   Included popular professor tags from Rate My Professor.
+-   Enhanced 404 error handling for smoother navigation.
+-   Added Info icon for feature requests, bug reports, and toggling dark/light mode.
 
 **Version 1.0.0:**
-- 🚀 Launched ProfStats: Your Ultimate Course Registration Companion!
+
+-   🚀 Launched ProfStats: Your Ultimate Course Registration Companion!
 
 ## Overview
 
 ### Frontend
 
-The frontend is constructed using Vite + React, incorporating Chakra UI for a sleek interface. 
+The frontend is constructed using Vite + React, incorporating Chakra UI for a sleek interface.
 
-Incorporates debouncing to optimize backend requests and client-side validation for data accuracy. 
+Incorporates debouncing to optimize backend requests and client-side validation for data accuracy.
 
 Publishing new versions requires a manual build and upload to the Chrome Web Store.
 
 ### Backend
 
-Developed in Golang with the Gin framework, dockerized, and deployed on Azure Web App through GitHub Actions. 
+Developed in Golang with the Gin framework, dockerized, and deployed on Azure Web App through GitHub Actions.
 
-Utilizes a SQLite database, created from CSV files in the `/raw_data` directory through the Python scripts in `/db_setup`. 
+Utilizes a SQLite database, created from CSV files in the `/raw_data` directory through the Python scripts in `/db_setup`.
 
 Functionality involves retrieving professor ratings, grade distributions, and searching for professors and their courses.
 
@@ -69,10 +74,10 @@ Functionality involves retrieving professor ratings, grade distributions, and se
 
 Make sure you have the following software installed on your machine:
 
-- Docker
-- Node.js
-- Golang
-- Python
+-   Docker
+-   Node.js
+-   Golang
+-   Python
 
 ### Steps:
 
@@ -110,7 +115,4 @@ Make sure you have the following software installed on your machine:
     - Unpack the `dist` folder.
     - Start using the extension for seamless testing and development.
 
-Please feel free to open an issue or submit a pull request if you have any suggestions or feedback. 
-
-
-
+Please feel free to open an issue or submit a pull request if you have any suggestions or feedback.

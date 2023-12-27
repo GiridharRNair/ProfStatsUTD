@@ -1,16 +1,16 @@
-import * as React from 'react'
-import * as ReactDOM from 'react-dom/client'
-import { ColorModeScript, extendTheme, ChakraProvider } from '@chakra-ui/react'
-import App from './App'
-import './styles/index.css'
+import * as React from "react";
+import * as ReactDOM from "react-dom/client";
+import { ColorModeScript, extendTheme, ChakraProvider } from "@chakra-ui/react";
+import App from "./App.jsx";
+import "./styles/index.css";
 
 const config = {
-    initialColorMode: 'system',
+    initialColorMode: "system",
     useSystemColorMode: false,
-}
-const theme = extendTheme({ config })
+};
+const theme = extendTheme({ config });
 
-const rootElement = document.getElementById('root')
+const rootElement = document.getElementById("root");
 ReactDOM.createRoot(rootElement).render(
     <React.StrictMode>
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
@@ -18,4 +18,4 @@ ReactDOM.createRoot(rootElement).render(
             <App />
         </ChakraProvider>
     </React.StrictMode>,
-)
+);

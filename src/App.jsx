@@ -1,24 +1,24 @@
-import { useState, useEffect } from 'react';
-import { defaultTeacher } from '../utils/defaults.js';
-import { Button, useToast, Stack, Box } from '@chakra-ui/react';
-import axios from 'axios';
-import Inputs from './components/Inputs';
-import InfoIcon from './components/InfoIcon.jsx';
-import ProfResults from './components/ProfResults.jsx';
-import NotFoundPage from './components/NotFound.jsx';
-import './styles/App.css';
+import { useState, useEffect } from "react";
+import { defaultTeacher } from "../utils/defaults.js";
+import { Button, useToast, Stack, Box } from "@chakra-ui/react";
+import axios from "axios";
+import Inputs from "./components/Inputs.jsx";
+import InfoIcon from "./components/InfoIcon.jsx";
+import ProfResults from "./components/ProfResults.jsx";
+import NotFoundPage from "./components/NotFound.jsx";
+import "./styles/App.css";
 
-const API_URL = import.meta.env.DEV ? 'http://localhost:80' : import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.DEV ? "http://localhost:80" : import.meta.env.VITE_API_URL;
 
 function App() {
     const toast = useToast();
-    const [professorInfo, setProfessorInfo] = useState(defaultTeacher); 
-    const [instructor, setInstructor] = useState('');
-    const [course, setCourse] = useState('');
+    const [professorInfo, setProfessorInfo] = useState(defaultTeacher);
+    const [instructor, setInstructor] = useState("");
+    const [course, setCourse] = useState("");
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        const storedProfessorInfo = localStorage.getItem('professorInfo');
+        const storedProfessorInfo = localStorage.getItem("professorInfo");
         if (storedProfessorInfo) {
             setProfessorInfo(JSON.parse(storedProfessorInfo));
         }
@@ -27,7 +27,7 @@ function App() {
     const showErrorToast = (description) => {
         toast({
             description: description,
-            status: 'error',
+            status: "error",
             duration: 5000,
             isClosable: true,
         });
@@ -39,32 +39,32 @@ function App() {
         try {
             const ratingsResponse = await axios.get(`${API_URL}/professor_info?teacher=${instructor}&course=${course}`);
             setProfessorInfo(ratingsResponse.data);
-            localStorage.setItem('professorInfo', JSON.stringify(ratingsResponse.data));
+            localStorage.setItem("professorInfo", JSON.stringify(ratingsResponse.data));
 
             if (Object.keys(ratingsResponse.data.grades).length === 0) {
-                showErrorToast('No grades found');
+                showErrorToast("No grades found");
             }
         } catch (error) {
             showErrorToast(error.response.data.detail);
             setProfessorInfo(null);
-            localStorage.removeItem('professorInfo');
+            localStorage.removeItem("professorInfo");
         } finally {
             setLoading(false);
         }
     };
-  
+
     const handleSubmit = () => {
         setInstructor(instructor.trim());
         if (!instructor.trim()) {
-            showErrorToast('Teacher name is required');
+            showErrorToast("Teacher name is required");
             return;
         }
 
-        const formattedCourseName = course.replace(/\s/g, '').toUpperCase().trim();
-        if (formattedCourseName && !(formattedCourseName.match('([a-zA-Z]+)([0-9Vv]+)')?.[2]?.length === 4)) {
-            showErrorToast('Invalid course name');
+        const formattedCourseName = course.replace(/\s/g, "").toUpperCase().trim();
+        if (formattedCourseName && !(formattedCourseName.match("([a-zA-Z]+)([0-9Vv]+)")?.[2]?.length === 4)) {
+            showErrorToast("Invalid course name");
             return;
-        }    
+        }
 
         getProfessorData();
     };
@@ -72,7 +72,7 @@ function App() {
     return (
         <Box>
             <InfoIcon />
-        
+
             <Stack pt={2} spacing={2} width={300} align="center">
                 <Inputs selectedProfessor={setInstructor} selectedCourse={setCourse} />
 
