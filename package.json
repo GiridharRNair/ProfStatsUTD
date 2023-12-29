@@ -4,11 +4,11 @@
     "version": "1.0.4",
     "type": "module",
     "scripts": {
-        "install-packages": "npm install && npm run install-go-packages",
         "install-go-packages": "cd api && go mod download",
-        "dev": "concurrently \"vite\" \"npm run create-db && npm run start-api\"",
+        "install-packages": "npm install && npm run install-go-packages",
         "create-db": "python db_setup/create_db.py && python db_setup/test_db.py",
         "start-api": "cd api && nodemon --exec go run main.go professor.go sqlite_queries.go --signal SIGTERM",
+        "dev": "concurrently \"vite\" \"npm run create-db && npm run start-api\"",
         "build": "vite build",
         "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
         "format": "prettier --write 'src/**/*.{js,jsx}'",
@@ -22,10 +22,7 @@
         "@emotion/styled": "^11.11.0",
         "axios": "^1.6.2",
         "chart.js": "^4.4.0",
-        "concurrently": "^8.2.2",
         "framer-motion": "^10.16.5",
-        "nodemon": "^3.0.2",
-        "prettier": "^3.1.1",
         "react": "^18.2.0",
         "react-chartjs-2": "^5.2.0",
         "react-dom": "^18.2.0"
@@ -35,10 +32,13 @@
         "@types/react": "^18.2.37",
         "@types/react-dom": "^18.2.15",
         "@vitejs/plugin-react": "^4.2.0",
+        "concurrently": "^8.2.2",
         "eslint": "^8.53.0",
         "eslint-plugin-react": "^7.33.2",
         "eslint-plugin-react-hooks": "^4.6.0",
         "eslint-plugin-react-refresh": "^0.4.4",
+        "nodemon": "^3.0.2",
+        "prettier": "^3.1.1",
         "vite": "^5.0.0"
     }
 }

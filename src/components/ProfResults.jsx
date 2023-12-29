@@ -39,6 +39,10 @@ ProfResults.propTypes = {
     }).isRequired,
 };
 
+const rateMyProfessorUrl = "https://www.ratemyprofessors.com/professor/";
+const utdGradesUrl = "https://utdgrades.com/results?search=";
+const utdProfileUrl = "https://profiles.utdallas.edu/browse?search=";
+
 function ProfResults({ professorInfo }) {
     const { name, department, id, subject, course_number, tags, rating, difficulty, would_take_again, grades } = professorInfo;
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -64,7 +68,10 @@ function ProfResults({ professorInfo }) {
                 intersect: true,
                 backgroundColor: colorMode === "light" ? "rgba(240, 240, 240, 0.8)" : "rgba(0, 0, 0, 0.8)",
                 callbacks: {
-                    label: (context) => [`Students: ${context.parsed.y}`, `Percentage: ${((context.parsed.y / Object.values(grades).reduce((acc, count) => acc + count, 0)) * 100).toFixed(2)}%`],
+                    label: (context) => [
+                        `Students: ${context.parsed.y}`,
+                        `Percentage: ${((context.parsed.y / Object.values(grades).reduce((acc, count) => acc + count, 0)) * 100).toFixed(2)}%`,
+                    ],
                 },
                 titleColor: () => {
                     return colorMode === "light" ? "black" : "white";
@@ -104,21 +111,23 @@ function ProfResults({ professorInfo }) {
                             <Button
                                 leftIcon={<Image src="extension-images/RMPIcon.png" height={46} />}
                                 width={240}
-                                onClick={() => window.open(`https://www.ratemyprofessors.com/professor/${id}`, "_blank")}
+                                onClick={() => window.open(`${rateMyProfessorUrl}${id}`, "_blank")}
                             >
                                 Rate My Professor
                             </Button>
                             <Button
                                 leftIcon={<Image src="extension-images/UTDGradesIcon.png" height={22} />}
                                 width={240}
-                                onClick={() => window.open(`https://utdgrades.com/results?search=${subject ? subject + course_number : ""}+${name.split(" ")[0]}+${name.split(" ")[1]}`, "_blank")}
+                                onClick={() =>
+                                    window.open(`${utdGradesUrl}${subject ? subject + course_number : ""}+${name.replace(" ", "+")}`, "_blank")
+                                }
                             >
                                 UTD Grades
                             </Button>
                             <Button
                                 leftIcon={<Image src="extension-images/UTDIcon.png" height={25} />}
                                 width={240}
-                                onClick={() => window.open(`https://profiles.utdallas.edu/browse?search=${name.split(" ")[0]}+${name.split(" ")[1]}`, "_blank")}
+                                onClick={() => window.open(`${utdProfileUrl}${name.replace(" ", "+")}`, "_blank")}
                             >
                                 UTD Profile
                             </Button>

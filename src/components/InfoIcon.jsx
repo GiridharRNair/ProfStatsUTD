@@ -1,5 +1,17 @@
 import { useState } from "react";
-import { IconButton, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, Button, useColorMode, Image, Tooltip as ChakraTooltip } from "@chakra-ui/react";
+import {
+    IconButton,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalBody,
+    ModalCloseButton,
+    Button,
+    useColorMode,
+    Image,
+    Tooltip as ChakraTooltip,
+} from "@chakra-ui/react";
 import { InfoOutlineIcon } from "@chakra-ui/icons";
 
 function InfoIcon() {
@@ -8,7 +20,15 @@ function InfoIcon() {
 
     return (
         <>
-            <IconButton aria-label="Feedback?" icon={<InfoOutlineIcon />} size={"sm"} position="fixed" top="1" left="1" onClick={() => setIsModalOpen(true)} />
+            <IconButton
+                aria-label="Feedback?"
+                icon={<InfoOutlineIcon />}
+                size={"sm"}
+                position="fixed"
+                top="1"
+                left="1"
+                onClick={() => setIsModalOpen(true)}
+            />
 
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} size="sm">
                 <ModalOverlay />
@@ -18,7 +38,12 @@ function InfoIcon() {
                     <ModalBody>
                         <ChakraTooltip label="Submit bug reports and feature requests through Github" placement="bottom">
                             <Button
-                                leftIcon={<Image src={colorMode === "dark" ? "extension-images/OctoCat-Light.png" : "extension-images/OctoCat-Dark.svg"} height={8} />}
+                                leftIcon={
+                                    <Image
+                                        src={colorMode === "dark" ? "extension-images/OctoCat-Light.png" : "extension-images/OctoCat-Dark.svg"}
+                                        height={8}
+                                    />
+                                }
                                 onClick={() => window.open("https://github.com/GiridharRNair/ProfStatsUTD/issues/new/choose", "_blank")}
                                 variant="outline"
                                 mr={3}
