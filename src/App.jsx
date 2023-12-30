@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { defaultTeacher } from "../utils/defaults.js";
-import { Button, useToast, Stack, Box } from "@chakra-ui/react";
+import { Button, IconButton, useToast, Stack, Box, useColorMode } from "@chakra-ui/react";
+import { FiMoon } from "react-icons/fi";
+import { SunIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import Inputs from "./components/Inputs.jsx";
 import InfoIcon from "./components/InfoIcon.jsx";
-import ProfResults from "./components/ProfResults.jsx";
+import ProfResults from "./components/ProfessorResults.jsx";
 import NotFoundPage from "./components/NotFound.jsx";
 import "./styles/App.css";
 
@@ -12,6 +14,7 @@ const API_URL = import.meta.env.DEV ? "http://localhost:80" : import.meta.env.VI
 
 function App() {
     const toast = useToast();
+    const { colorMode, toggleColorMode } = useColorMode();
     const [professorInfo, setProfessorInfo] = useState(defaultTeacher);
     const [instructor, setInstructor] = useState("");
     const [course, setCourse] = useState("");
@@ -72,11 +75,20 @@ function App() {
     return (
         <Box>
             <InfoIcon />
+            <IconButton
+                aria-label="Toogle Theme"
+                icon={colorMode === "dark" ? <SunIcon /> : <FiMoon />}
+                size={"sm"}
+                position="fixed"
+                top="1"
+                right="1"
+                onClick={toggleColorMode}
+            />
 
-            <Stack pt={2} spacing={2} width={300} align="center">
+            <Stack pt={2} spacing={2} width={300} align={"center"}>
                 <Inputs selectedProfessor={setInstructor} selectedCourse={setCourse} />
 
-                <Button onClick={handleSubmit} isLoading={loading} height={8}>
+                <Button onClick={handleSubmit} isLoading={loading} height={8} fontSize={"sm"}>
                     Submit
                 </Button>
 

@@ -9,11 +9,6 @@ import { defaultTeacherSuggestions } from "../../utils/defaults";
 
 const API_URL = import.meta.env.DEV ? "http://localhost:80" : import.meta.env.VITE_API_URL;
 
-Inputs.propTypes = {
-    selectedProfessor: PropTypes.func.isRequired,
-    selectedCourse: PropTypes.func.isRequired,
-};
-
 function Inputs({ selectedProfessor, selectedCourse }) {
     const [professorDropdown, setProfessorDropdown] = useState(defaultTeacherSuggestions);
     const [courseDropdown, setCourseDropdown] = useState([]);
@@ -57,7 +52,7 @@ function Inputs({ selectedProfessor, selectedCourse }) {
                     setCourse("");
                 }}
             >
-                <Tooltip label="Ignore middle names and suffixes" placement="top">
+                <Tooltip placement="top" label="Ignore middle names">
                     <AutoCompleteInput
                         height={8}
                         placeholder="Enter Teacher Name ex. Jason Smith"
@@ -116,5 +111,10 @@ function Inputs({ selectedProfessor, selectedCourse }) {
         </VStack>
     );
 }
+
+Inputs.propTypes = {
+    selectedProfessor: PropTypes.func.isRequired,
+    selectedCourse: PropTypes.func.isRequired,
+};
 
 export default Inputs;
