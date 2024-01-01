@@ -76,7 +76,6 @@ function App() {
         <Box>
             <InfoIcon />
             <IconButton
-                aria-label="Toogle Theme"
                 icon={colorMode === "dark" ? <SunIcon /> : <FiMoon />}
                 size={"sm"}
                 position="fixed"

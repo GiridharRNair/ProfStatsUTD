@@ -14,18 +14,18 @@ const ProfessorDrawer = ({ isOpen, onClose, id, subject, courseNumber, name, col
                 <DrawerBody>
                     <VStack>
                         <Button
-                            leftIcon={<Image src="extension-images/RMPIcon.png" boxSize={46} />}
-                            width={240}
+                            leftIcon={<Image src="extension-images/RMPIcon.png" boxSize={42} />}
                             onClick={() => window.open(`${RateMyProfessorUrl}${id}`, "_blank")}
                             variant={"outline"}
+                            width={240}
                         >
                             Rate My Professor
                         </Button>
                         <Button
                             leftIcon={<Image src="extension-images/UTDGradesIcon.png" boxSize={22} />}
-                            width={240}
                             onClick={() => window.open(`${UTDGradesUrl}${subject ? subject + courseNumber : ""}+${name.replace(" ", "+")}`, "_blank")}
                             variant={"outline"}
+                            width={240}
                         >
                             UTD Grades
                         </Button>
@@ -36,19 +36,19 @@ const ProfessorDrawer = ({ isOpen, onClose, id, subject, courseNumber, name, col
                                     boxSize={5}
                                 />
                             }
-                            width={240}
                             onClick={() =>
                                 window.open(`${UTDTrendsUrl}${subject ? subject + "+" + courseNumber : ""}+${name.replace(" ", "+")}`, "_blank")
                             }
                             variant={"outline"}
+                            width={240}
                         >
                             UTD Trends
                         </Button>
                         <Button
-                            leftIcon={<Image src="extension-images/UTDIcon.png" boxSize={25} />}
-                            width={240}
+                            leftIcon={<Image src="extension-images/UTDIcon.png" boxSize={23} />}
                             onClick={() => window.open(`${UTDProfileUrl}${name.replace(" ", "+")}`, "_blank")}
                             variant={"outline"}
+                            width={240}
                         >
                             Professor Profile
                         </Button>
