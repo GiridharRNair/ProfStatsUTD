@@ -1,43 +1,12 @@
-import {
-    Text,
-    HStack,
-    VStack,
-    Spacer,
-    Tag,
-    Wrap,
-    WrapItem,
-    Tooltip as ChakraTooltip,
-    Drawer,
-    DrawerBody,
-    DrawerOverlay,
-    DrawerContent,
-    Button,
-    useDisclosure,
-    Image,
-    useColorMode,
-} from "@chakra-ui/react";
+import { Text, HStack, VStack, Spacer, Tag, Wrap, WrapItem, Tooltip as ChakraTooltip, useDisclosure, useColorMode, Button } from "@chakra-ui/react";
 import { BarElement, CategoryScale, Chart as ChartJS, LinearScale, Tooltip } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import PropTypes from "prop-types";
 import { gradeMappings, colorMap } from "../../utils/defaults.js";
+import ProfessorDrawer from "./ProfessorDrawer.jsx";
 import RenderRatingCircle from "./RatingCircles.jsx";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip);
-
-ProfResults.propTypes = {
-    professorInfo: PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        department: PropTypes.string.isRequired,
-        id: PropTypes.string.isRequired,
-        subject: PropTypes.string,
-        course_number: PropTypes.string,
-        tags: PropTypes.arrayOf(PropTypes.string),
-        rating: PropTypes.number.isRequired,
-        difficulty: PropTypes.number.isRequired,
-        would_take_again: PropTypes.number.isRequired,
-        grades: PropTypes.object.isRequired,
-    }).isRequired,
-};
 
 function ProfResults({ professorInfo }) {
     const { name, department, id, subject, course_number, tags, rating, difficulty, would_take_again, grades } = professorInfo;
@@ -64,7 +33,10 @@ function ProfResults({ professorInfo }) {
                 intersect: true,
                 backgroundColor: colorMode === "light" ? "rgba(240, 240, 240, 0.8)" : "rgba(0, 0, 0, 0.8)",
                 callbacks: {
-                    label: (context) => [`Students: ${context.parsed.y}`, `Percentage: ${((context.parsed.y / Object.values(grades).reduce((acc, count) => acc + count, 0)) * 100).toFixed(2)}%`],
+                    label: (context) => [
+                        `Students: ${context.parsed.y}`,
+                        `Percentage: ${((context.parsed.y / Object.values(grades).reduce((acc, count) => acc + count, 0)) * 100).toFixed(2)}%`,
+                    ],
                 },
                 titleColor: () => {
                     return colorMode === "light" ? "black" : "white";
@@ -88,44 +60,32 @@ function ProfResults({ professorInfo }) {
 
     return (
         <VStack width={325}>
-            <ChakraTooltip label="More Information?" placement="bottom">
-                <Text fontSize="lg" _hover={{ color: "#3182CE" }} onClick={onOpen}>
+            <ChakraTooltip label="Click for more information" placement="bottom">
+                <Button
+                    fontSize="lg"
+                    _hover={{ color: "#3182CE" }}
+                    onClick={onOpen}
+                    variant={"link"}
+                    height={6}
+                    onFocus={(e) => e.preventDefault()}
+                    fontWeight={"normal"}
+                    textColor={colorMode === "light" ? "black" : "white"}
+                >
                     {name}
-                </Text>
+                </Button>
             </ChakraTooltip>
 
             <Text fontSize="md">{department}</Text>
 
-            <Drawer isOpen={isOpen} onClose={onClose} placement="bottom" size="md">
-                <DrawerOverlay />
-                <DrawerContent>
-                    <DrawerBody>
-                        <VStack>
-                            <Button
-                                leftIcon={<Image src="extension-images/RMPIcon.png" height={46} />}
-                                width={240}
-                                onClick={() => window.open(`https://www.ratemyprofessors.com/professor/${id}`, "_blank")}
-                            >
-                                Rate My Professor
-                            </Button>
-                            <Button
-                                leftIcon={<Image src="extension-images/UTDGradesIcon.png" height={22} />}
-                                width={240}
-                                onClick={() => window.open(`https://utdgrades.com/results?search=${subject ? subject + course_number : ""}+${name.split(" ")[0]}+${name.split(" ")[1]}`, "_blank")}
-                            >
-                                UTD Grades
-                            </Button>
-                            <Button
-                                leftIcon={<Image src="extension-images/UTDIcon.png" height={25} />}
-                                width={240}
-                                onClick={() => window.open(`https://profiles.utdallas.edu/browse?search=${name.split(" ")[0]}+${name.split(" ")[1]}`, "_blank")}
-                            >
-                                UTD Profile
-                            </Button>
-                        </VStack>
-                    </DrawerBody>
-                </DrawerContent>
-            </Drawer>
+            <ProfessorDrawer
+                isOpen={isOpen}
+                onClose={onClose}
+                id={id}
+                subject={subject}
+                courseNumber={course_number}
+                name={name}
+                colorMode={colorMode}
+            />
 
             {tags && (
                 <Wrap justify={"center"}>
@@ -151,5 +111,20 @@ function ProfResults({ professorInfo }) {
         </VStack>
     );
 }
+
+ProfResults.propTypes = {
+    professorInfo: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        department: PropTypes.string.isRequired,
+        id: PropTypes.string.isRequired,
+        subject: PropTypes.string,
+        course_number: PropTypes.string,
+        tags: PropTypes.arrayOf(PropTypes.string),
+        rating: PropTypes.number.isRequired,
+        difficulty: PropTypes.number.isRequired,
+        would_take_again: PropTypes.number.isRequired,
+        grades: PropTypes.object.isRequired,
+    }).isRequired,
+};
 
 export default ProfResults;
