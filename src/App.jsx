@@ -36,11 +36,11 @@ function App() {
         });
     };
 
-    const getProfessorData = async () => {
+    const getProfessorData = async (formattedInstructorName, formattedCourseName) => {
         setLoading(true);
 
         try {
-            const ratingsResponse = await axios.get(`${API_URL}/professor_info?teacher=${instructor}&course=${course}`);
+            const ratingsResponse = await axios.get(`${API_URL}/professor_info?teacher=${formattedInstructorName}&course=${formattedCourseName}`);
             setProfessorInfo(ratingsResponse.data);
             localStorage.setItem("professorInfo", JSON.stringify(ratingsResponse.data));
 
@@ -57,19 +57,24 @@ function App() {
     };
 
     const handleSubmit = () => {
-        setInstructor(instructor.trim());
         if (!instructor.trim()) {
             showErrorToast("Teacher name is required");
             return;
         }
 
+        if (instructor.match(/[^a-zA-Z\s-]|-.*-/)) {
+            showErrorToast("Invalid teacher name");
+            return;
+        }
+
         const formattedCourseName = course.replace(/\s/g, "").toUpperCase().trim();
+        console.log(formattedCourseName);
         if (formattedCourseName && !(formattedCourseName.match("([a-zA-Z]+)([0-9Vv]+)")?.[2]?.length === 4)) {
             showErrorToast("Invalid course name");
             return;
         }
 
-        getProfessorData();
+        getProfessorData(instructor.trim(), formattedCourseName);
     };
 
     return (
