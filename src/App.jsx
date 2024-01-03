@@ -62,13 +62,12 @@ function App() {
             return;
         }
 
-        if (instructor.match(/[^a-zA-Z\s-]|-.*-/)) {
+        if (instructor.match(/[^a-zA-Z\s.-]|.*-.*-/)) {
             showErrorToast("Invalid teacher name");
             return;
         }
 
         const formattedCourseName = course.replace(/\s/g, "").toUpperCase().trim();
-        console.log(formattedCourseName);
         if (formattedCourseName && !(formattedCourseName.match("([a-zA-Z]+)([0-9Vv]+)")?.[2]?.length === 4)) {
             showErrorToast("Invalid course name");
             return;

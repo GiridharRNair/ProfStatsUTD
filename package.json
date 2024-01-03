@@ -1,7 +1,8 @@
 {
     "name": "profstatsutd",
+    "description": "This extension offers a user-friendly interface for accessing aggregated grades and professor ratings effortlessly.",
     "private": true,
-    "version": "1.0.5",
+    "version": "1.0.6",
     "type": "module",
     "scripts": {
         "install-go-packages": "cd api && go mod download",

@@ -1,10 +1,5 @@
-"""
-Author: Gautham Nair (https://github.com/GauthamRNair)
+# Usage: python db_setup/create_db.py
 
-This script processes CSV files with academic grades data and populates an SQLite database.
-
-Usage: python db_setup/create_db.py
-"""
 
 import sqlite3
 import csv

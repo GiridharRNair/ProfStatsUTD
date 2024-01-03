@@ -13,6 +13,7 @@ const packageJson = JSON.parse(fs.readFileSync(packageJsonPath),  "utf-8");
 const dynamicManifest = {
     ...existingManifest,
     version: packageJson.version,
+    description: packageJson.description,
 };
 
 export default defineConfig({
