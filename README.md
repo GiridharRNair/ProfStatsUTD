@@ -66,7 +66,7 @@ Returns detailed information about the specified professor, including ratings, d
 
 Returns the name and grade distribution of the specified course.
 
-### 3. Search Query Suggestions
+#### 3. Search Query Suggestions
 
 #### Endpoint: `/suggestions`
 
