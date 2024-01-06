@@ -29,13 +29,13 @@ func GetCourseName(subject, courseNumber string) string {
 
 	resp, err := http.Get(url)
 	if err != nil {
-		return "No course information found"
+		return "Course name not found"
 	}
 	defer resp.Body.Close()
 
 	bodyBytes, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return "No course information found"
+		return "Course name not found"
 	}
 
 	re := regexp.MustCompile(`<title>(.*?)\s*-\s*UT Dallas 2023 (Undergraduate|Graduate) Catalog - The University of Texas at Dallas</title>`)
@@ -45,5 +45,5 @@ func GetCourseName(subject, courseNumber string) string {
 		return match[1]
 	}
 
-	return "No course information found"
+	return "Course name not found"
 }

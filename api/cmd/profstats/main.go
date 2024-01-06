@@ -17,7 +17,6 @@ func allowedOrigins() gin.HandlerFunc {
 		allowedOrigins := []string{
 			"http://localhost:5173",
 			"chrome-extension://doilmgfedjlpepeaolcfpdmkehecdaff",
-			"",
 		}
 		origin := c.GetHeader("Origin")
 

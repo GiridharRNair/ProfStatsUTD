@@ -39,8 +39,6 @@ function Inputs({ setProfessor, setCourse, professor, course }) {
             <AutoComplete
                 openOnFocus
                 closeOnSelect={true}
-                suggestWhenEmpty={true}
-                emptyState={"Professor not found"}
                 disableFilter={true}
                 freeSolo={true}
                 isLoading={professorLoading}
@@ -57,14 +55,13 @@ function Inputs({ setProfessor, setCourse, professor, course }) {
                         value={professor}
                         loadingIcon={<Spinner size={"xs"} mb={2} />}
                         onChange={(value) => {
-                            setCourse("");
                             setProfessorLoading(true);
                             setProfessor(value.target.value);
-                            debouncedAutocompleteValues(value.target.value, "");
+                            debouncedAutocompleteValues(value.target.value, course);
                         }}
                     />
                 </Tooltip>
-                {!professorLoading && (
+                {dropdown.professors.length > 0 && !professorLoading && (
                     <AutoCompleteList>
                         {dropdown.professors.map((professorOption, index) => (
                             <AutoCompleteItem value={professorOption} key={index}>
@@ -78,8 +75,6 @@ function Inputs({ setProfessor, setCourse, professor, course }) {
             <AutoComplete
                 openOnFocus
                 closeOnSelect={true}
-                suggestWhenEmpty={true}
-                emptyState={`Course not found ${professor ? `for ${professor}` : ""}`}
                 disableFilter={true}
                 freeSolo={true}
                 isLoading={courseLoading}
@@ -99,7 +94,7 @@ function Inputs({ setProfessor, setCourse, professor, course }) {
                         debouncedAutocompleteValues(professor, value.target.value);
                     }}
                 />
-                {!courseLoading && (
+                {dropdown.courses.length > 0 && !courseLoading && (
                     <AutoCompleteList>
                         {dropdown.courses.map((course, index) => (
                             <AutoCompleteItem value={course} key={index}>
