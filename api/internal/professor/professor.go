@@ -1,8 +1,6 @@
-package main
+package professor
 
 import (
-	"bytes"
-	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -30,59 +28,6 @@ type Professor struct {
 }
 
 const SchoolID = "U2Nob29sLTEyNzM=" // UTDallas's school id on RateMyProfessor
-
-func getRatingsQuery(professorID string, numRatings int) map[string]interface{} {
-	return map[string]interface{}{
-		"query": "query RatingsListQuery($count: Int! $id: ID! $courseFilter: String $cursor: String) {node(id: $id) {... on Teacher {ratings(first: $count, after: $cursor, courseFilter: $courseFilter) {edges {node {ratingTags}}}}}}",
-		"variables": map[string]interface{}{
-			"id":    base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("Teacher-%s", professorID))),
-			"count": numRatings,
-		},
-	}
-}
-
-func getProfessorQuery(professorID string) map[string]interface{} {
-	return map[string]interface{}{
-		"query": "query RatingsListQuery($id: ID!) {node(id: $id) {... on Teacher {school {id} courseCodes {courseName courseCount} firstName lastName numRatings avgDifficulty avgRating department wouldTakeAgainPercent}}}",
-		"variables": map[string]interface{}{
-			"id": base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("Teacher-%s", professorID))),
-		},
-	}
-}
-
-func getHeaderQuery(professorID string) map[string]string {
-	return map[string]string{
-		"Authorization": "Basic dGVzdDp0ZXN0",
-		"User-Agent":    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36",
-		"Content-Type":  "application/json",
-		"Referer":       fmt.Sprintf("https://www.ratemyprofessors.com/ShowRatings.jsp?tid=%s", professorID),
-	}
-}
-
-func postData(url string, data map[string]interface{}, headers map[string]string) ([]byte, error) {
-	jsonData, err := json.Marshal(data)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Set("Content-Type", "application/json")
-	for key, value := range headers {
-		req.Header.Set(key, value)
-	}
-
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	return io.ReadAll(resp.Body)
-}
 
 func (p *Professor) setTags(tagsFrequency map[string]int) {
 	var sortedTags []string
@@ -170,7 +115,7 @@ func getProfessorID(professorName, schoolID string) (string, error) {
 	return "", fmt.Errorf("Professor not found")
 }
 
-func getRMPInfo(professorName string) (*Professor, error) {
+func GetRMPInfo(professorName string) (*Professor, error) {
 	professorID, err := getProfessorID(professorName, SchoolID)
 	if err != nil {
 		return nil, err

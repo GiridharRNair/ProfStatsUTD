@@ -75,3 +75,5 @@ export const defaultTeacher = {
 };
 
 export const defaultTeacherSuggestions = ["John Cole", "Jeyakesavan Veerasamy", "Timothy Farage", "James Willson", "Doug DeGroot"];
+
+export const defaultCourseSuggestions = ["CS 2305", "MATH 2413", "CHEM 2233", "CS 3305", "CS 1335"];

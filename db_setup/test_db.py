@@ -5,8 +5,8 @@ import unittest
 import sqlite3
 
 
-DB_PATH = 'api/utdgrades.db'
-TEST_TEACHER_DATA = [(2, 1, 2, 3, 1, 0, 2, 0, 3, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 'Giridhar R Nair', 'FAKE', '2005', '001')]
+DB_PATH = 'api/database/utdgrades.db'
+TEST_TEACHER_DATA = [(2, 1, 2, 3, 1, 0, 2, 0, 3, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 'Giridhar R Nair', 'NAIR', '2005', '001')]
 
 
 class TestDB(unittest.TestCase):
