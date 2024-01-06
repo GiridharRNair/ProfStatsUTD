@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { defaultTeacher } from "../utils/defaults.js";
 import { Button, IconButton, useToast, Stack, Box, useColorMode } from "@chakra-ui/react";
 import { FiMoon } from "react-icons/fi";
 import { SunIcon } from "@chakra-ui/icons";
@@ -7,23 +6,31 @@ import axios from "axios";
 import Inputs from "./components/Inputs.jsx";
 import InfoIcon from "./components/InfoIcon.jsx";
 import ProfResults from "./components/ProfessorResults.jsx";
-import NotFoundPage from "./components/NotFound.jsx";
+import CourseResults from "./components/CourseResults.jsx";
+import { defaultTeacher } from "../utils/defaults.js";
 import "./styles/App.css";
 
 const API_URL = import.meta.env.DEV ? "http://localhost:80" : import.meta.env.VITE_API_URL;
 
 function App() {
     const toast = useToast();
-    const { colorMode, toggleColorMode } = useColorMode();
-    const [professorInfo, setProfessorInfo] = useState(defaultTeacher);
-    const [instructor, setInstructor] = useState("");
     const [course, setCourse] = useState("");
     const [loading, setLoading] = useState(false);
+    const [professorName, setProfessorName] = useState("");
+    const [lastInputType, setLastInputType] = useState(null);
+    const [lastInputData, setLastInputData] = useState(null);
+    const { colorMode, toggleColorMode } = useColorMode();
 
     useEffect(() => {
-        const storedProfessorInfo = localStorage.getItem("professorInfo");
-        if (storedProfessorInfo) {
-            setProfessorInfo(JSON.parse(storedProfessorInfo));
+        const storedLastInputType = localStorage.getItem("lastInputType");
+        const storedLastInputData = localStorage.getItem("lastInputData");
+
+        if (storedLastInputType && storedLastInputData) {
+            setLastInputType(storedLastInputType);
+            setLastInputData(JSON.parse(storedLastInputData));
+        } else {
+            setLastInputType("professor");
+            setLastInputData(defaultTeacher);
         }
     }, []);
 
@@ -41,28 +48,47 @@ function App() {
 
         try {
             const ratingsResponse = await axios.get(`${API_URL}/professor_info?teacher=${formattedInstructorName}&course=${formattedCourseName}`);
-            setProfessorInfo(ratingsResponse.data);
             localStorage.setItem("professorInfo", JSON.stringify(ratingsResponse.data));
+
+            setLastInputType("professor");
+            setLastInputData(ratingsResponse.data);
+            localStorage.setItem("lastInputType", "professor");
+            localStorage.setItem("lastInputData", JSON.stringify(ratingsResponse.data));
 
             if (Object.keys(ratingsResponse.data.grades).length === 0) {
                 showErrorToast("No grades found");
             }
         } catch (error) {
-            showErrorToast(error.response.data.detail);
-            setProfessorInfo(null);
-            localStorage.removeItem("professorInfo");
+            showErrorToast(error?.response?.data?.detail);
         } finally {
             setLoading(false);
         }
     };
 
-    const handleSubmit = () => {
-        if (!instructor.trim()) {
-            showErrorToast("Teacher name is required");
-            return;
-        }
+    const getCourseData = async (formattedCourseName) => {
+        setLoading(true);
 
-        if (instructor.match(/[^a-zA-Z\s.-]|.*-.*-/)) {
+        try {
+            const ratingsResponse = await axios.get(`${API_URL}/course_info?course=${formattedCourseName}`);
+            localStorage.setItem("courseInfo", JSON.stringify(ratingsResponse.data));
+
+            setLastInputType("course");
+            setLastInputData(ratingsResponse.data);
+            localStorage.setItem("lastInputType", "course");
+            localStorage.setItem("lastInputData", JSON.stringify(ratingsResponse.data));
+
+            if (Object.keys(ratingsResponse.data.grades).length === 0) {
+                showErrorToast("No grades found");
+            }
+        } catch (error) {
+            showErrorToast(error?.response?.data?.detail);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleSubmit = async () => {
+        if (professorName.match(/[^a-zA-Z\s.-]|.*-.*-/)) {
             showErrorToast("Invalid teacher name");
             return;
         }
@@ -73,7 +99,15 @@ function App() {
             return;
         }
 
-        getProfessorData(instructor.trim(), formattedCourseName);
+        if (formattedCourseName && professorName.trim()) {
+            await getProfessorData(professorName.trim(), formattedCourseName);
+        } else if (formattedCourseName) {
+            await getCourseData(formattedCourseName);
+        } else if (professorName.trim()) {
+            await getProfessorData(professorName.trim(), "");
+        } else {
+            showErrorToast("Please enter either a course or a professor");
+        }
     };
 
     return (
@@ -89,13 +123,14 @@ function App() {
             />
 
             <Stack pt={2} spacing={2} width={300} align={"center"}>
-                <Inputs selectedProfessor={setInstructor} selectedCourse={setCourse} />
+                <Inputs setProfessor={setProfessorName} setCourse={setCourse} professor={professorName} course={course} />
 
                 <Button onClick={handleSubmit} isLoading={loading} height={8} fontSize={"sm"}>
                     Submit
                 </Button>
 
-                {professorInfo ? <ProfResults professorInfo={professorInfo} /> : <NotFoundPage />}
+                {lastInputType === "professor" && lastInputData && <ProfResults professorInfo={lastInputData} />}
+                {lastInputType === "course" && lastInputData && <CourseResults courseInfo={lastInputData} />}
             </Stack>
         </Box>
     );

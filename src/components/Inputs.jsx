@@ -1,76 +1,73 @@
 import { useState, useMemo } from "react";
 import { AutoComplete, AutoCompleteInput, AutoCompleteItem, AutoCompleteList } from "@choc-ui/chakra-autocomplete";
-import { VStack, Tooltip } from "@chakra-ui/react";
-import { Spinner } from "@chakra-ui/react";
+import { VStack, Tooltip, Spinner } from "@chakra-ui/react";
 import PropTypes from "prop-types";
 import _debounce from "lodash/debounce";
 import axios from "axios";
-import { defaultTeacherSuggestions } from "../../utils/defaults";
+import { defaultTeacherSuggestions, defaultCourseSuggestions } from "../../utils/defaults";
 
 const API_URL = import.meta.env.DEV ? "http://localhost:80" : import.meta.env.VITE_API_URL;
 
-function Inputs({ selectedProfessor, selectedCourse }) {
-    const [professorDropdown, setProfessorDropdown] = useState(defaultTeacherSuggestions);
-    const [courseDropdown, setCourseDropdown] = useState([]);
-    const [course, setCourse] = useState("");
-    const [loading, setLoading] = useState(false);
+function Inputs({ setProfessor, setCourse, professor, course }) {
+    const [professorLoading, setProfessorLoading] = useState(false);
+    const [courseLoading, setCourseLoading] = useState(false);
+    const [dropdown, setDropdown] = useState({
+        professors: defaultTeacherSuggestions,
+        courses: defaultCourseSuggestions,
+    });
 
-    const getProfessorDropdown = async (value) => {
+    const autocompleteValues = async (professorParam, courseParam) => {
         try {
-            const professorsResponse = await axios.get(`${API_URL}/professor_suggestions?teacher=${value}`);
-            setProfessorDropdown(professorsResponse.data);
+            const autocomplete = await axios.get(`${API_URL}/suggestions?teacher=${professorParam}&course=${courseParam}`);
+
+            setDropdown({
+                professors: autocomplete.data.professors,
+                courses: autocomplete.data.courses,
+            });
         } catch (error) {
             console.error(error.response?.data.detail);
         }
-        setLoading(false);
+
+        setProfessorLoading(false);
+        setCourseLoading(false);
     };
 
-    const getProfessorCourseDropdown = async (value) => {
-        try {
-            const coursesResponse = await axios.get(`${API_URL}/professor_courses?teacher=${value}`);
-            setCourseDropdown(coursesResponse.data);
-        } catch (error) {
-            console.error(error.response?.data.detail);
-        }
-    };
-
-    const debouncedGetProfessorDropdown = useMemo(() => _debounce((value) => getProfessorDropdown(value), 250), []);
+    const debouncedAutocompleteValues = useMemo(() => _debounce((professor, course) => autocompleteValues(professor, course), 250), []);
 
     return (
         <VStack pt={1} width={325}>
             <AutoComplete
                 openOnFocus
                 closeOnSelect={true}
+                suggestWhenEmpty={true}
                 emptyState={"Professor not found"}
                 disableFilter={true}
                 freeSolo={true}
-                isLoading={loading}
+                isLoading={professorLoading}
                 onSelectOption={(value) => {
-                    selectedProfessor(value.item.label);
-                    getProfessorCourseDropdown(value.item.label);
-                    selectedCourse("");
                     setCourse("");
+                    setProfessor(value.item.label);
+                    debouncedAutocompleteValues(value.item.label, "");
                 }}
             >
                 <Tooltip placement="top" label="Ignore middle names">
                     <AutoCompleteInput
                         height={8}
                         placeholder="Enter Teacher Name ex. Jason Smith"
+                        value={professor}
                         loadingIcon={<Spinner size={"xs"} mb={2} />}
-                        onChange={(e) => {
-                            setLoading(true);
-                            selectedProfessor(e.target.value);
-                            debouncedGetProfessorDropdown(e.target.value);
-                            setCourseDropdown([]);
-                            selectedCourse("");
+                        onChange={(value) => {
                             setCourse("");
+                            setProfessorLoading(true);
+                            setProfessor(value.target.value);
+                            debouncedAutocompleteValues(value.target.value, "");
                         }}
                     />
                 </Tooltip>
-                {!loading && (
+                {!professorLoading && (
                     <AutoCompleteList>
-                        {professorDropdown.map((professorOption) => (
-                            <AutoCompleteItem key={professorOption} value={professorOption}>
+                        {dropdown.professors.map((professorOption, index) => (
+                            <AutoCompleteItem value={professorOption} key={index}>
                                 {professorOption}
                             </AutoCompleteItem>
                         ))}
@@ -82,26 +79,30 @@ function Inputs({ selectedProfessor, selectedCourse }) {
                 openOnFocus
                 closeOnSelect={true}
                 suggestWhenEmpty={true}
-                emptyState={"Course not found for this professor"}
+                emptyState={`Course not found ${professor ? `for ${professor}` : ""}`}
+                disableFilter={true}
                 freeSolo={true}
+                isLoading={courseLoading}
                 onSelectOption={(value) => {
-                    selectedCourse(value.item.label);
                     setCourse(value.item.label);
+                    debouncedAutocompleteValues(professor, value.item.label);
                 }}
             >
                 <AutoCompleteInput
                     height={8}
                     placeholder="Specify a Course? ex. CS 1337"
                     value={course}
-                    onChange={(e) => {
-                        selectedCourse(e.target.value);
-                        setCourse(e.target.value);
+                    loadingIcon={<Spinner size={"xs"} mb={2} />}
+                    onChange={(value) => {
+                        setCourseLoading(true);
+                        setCourse(value.target.value);
+                        debouncedAutocompleteValues(professor, value.target.value);
                     }}
                 />
-                {courseDropdown.length > 0 && (
+                {!courseLoading && (
                     <AutoCompleteList>
-                        {courseDropdown.map((course) => (
-                            <AutoCompleteItem key={course} value={course}>
+                        {dropdown.courses.map((course, index) => (
+                            <AutoCompleteItem value={course} key={index}>
                                 {course}
                             </AutoCompleteItem>
                         ))}
@@ -113,8 +114,10 @@ function Inputs({ selectedProfessor, selectedCourse }) {
 }
 
 Inputs.propTypes = {
-    selectedProfessor: PropTypes.func.isRequired,
-    selectedCourse: PropTypes.func.isRequired,
+    setProfessor: PropTypes.func.isRequired,
+    setCourse: PropTypes.func.isRequired,
+    professor: PropTypes.string.isRequired,
+    course: PropTypes.string.isRequired,
 };
 
 export default Inputs;

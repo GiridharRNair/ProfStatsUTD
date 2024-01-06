@@ -1,7 +1,7 @@
-import { Drawer, DrawerBody, DrawerOverlay, DrawerContent, Button, VStack, Image } from "@chakra-ui/react";
+import { Drawer, DrawerBody, DrawerOverlay, DrawerContent, Button, VStack, Image, useColorModeValue } from "@chakra-ui/react";
 import PropTypes from "prop-types";
 
-const ProfessorDrawer = ({ isOpen, onClose, id, subject, courseNumber, name, colorMode }) => {
+const ProfessorDrawer = ({ isOpen, onClose, id, subject, courseNumber, name }) => {
     const RateMyProfessorUrl = "https://www.ratemyprofessors.com/professor/";
     const UTDGradesUrl = "https://utdgrades.com/results?search=";
     const UTDTrendsUrl = "https://trends.utdnebula.com/dashboard?searchTerms=";
@@ -32,7 +32,7 @@ const ProfessorDrawer = ({ isOpen, onClose, id, subject, courseNumber, name, col
                         <Button
                             leftIcon={
                                 <Image
-                                    src={colorMode === "dark" ? "extension-images/UTDTrendsLight.svg" : "extension-images/UTDTrendsDark.svg"}
+                                    src={useColorModeValue("extension-images/UTDTrendsDark.svg", "extension-images/UTDTrendsLight.svg")}
                                     boxSize={5}
                                 />
                             }
@@ -66,7 +66,6 @@ ProfessorDrawer.propTypes = {
     subject: PropTypes.string,
     courseNumber: PropTypes.string,
     name: PropTypes.string.isRequired,
-    colorMode: PropTypes.string.isRequired,
 };
 
 export default ProfessorDrawer;
