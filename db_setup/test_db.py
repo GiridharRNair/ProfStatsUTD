@@ -5,7 +5,7 @@ import unittest
 import sqlite3
 
 
-DB_PATH = 'api/internal/db/utdgrades.db'
+DB_PATH = 'api/db/utdgrades.db'
 TEST_TEACHER_DATA = [(2, 1, 2, 3, 1, 0, 2, 0, 3, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 'John R Doe', 'GIRI', '2005', '001')]
 
 

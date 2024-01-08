@@ -6,7 +6,7 @@ import csv
 import os
 
 
-DB_PATH = 'api/internal/db/utdgrades.db'
+DB_PATH = 'api/db/utdgrades.db'
 RAW_DATA_PATH = 'raw_data'
 
 SQL_CREATE_TABLE = '''

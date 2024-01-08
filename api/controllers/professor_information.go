@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/GiridharRNair/ProfStats-GinAPI/internal/db"
-	"github.com/GiridharRNair/ProfStats-GinAPI/internal/professor"
+	"github.com/GiridharRNair/ProfStats-GinAPI/db"
+	"github.com/GiridharRNair/ProfStats-GinAPI/professor"
 	"github.com/gin-gonic/gin"
 )
 
@@ -34,7 +34,7 @@ func GetProfessorInformation(c *gin.Context) {
 		"id":               professor.ID,
 		"name":             professor.Name,
 		"department":       professor.Department,
-		"grades":           db.GetAggregatedGrades(professor.Name, subject, courseNumber),
+		"grades":           db.GetAggregatedGrades(teacher, professor.Name, subject, courseNumber),
 		"subject":          subject,
 		"course_number":    courseNumber,
 		"rating":           professor.Rating,

@@ -14,7 +14,7 @@ RUN go mod download
 COPY . .
 
 # Build the Go application
-RUN go build -o main ./cmd/profstats
+RUN go build -o main 
 
 # Set Gin to production mode
 ENV GIN_MODE=release

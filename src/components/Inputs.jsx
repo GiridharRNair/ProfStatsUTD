@@ -80,7 +80,6 @@ function Inputs({ setProfessor, setCourse, professor, course }) {
                 suggestWhenEmpty={true}
                 freeSolo={true}
                 isLoading={courseLoading}
-                emptyState={`Course not found ${professor ? `for ${professor}` : ""}`}
                 onSelectOption={(value) => {
                     setCourse(value.item.label);
                     debouncedAutocompleteValues(professor, value.item.label);
@@ -97,7 +96,7 @@ function Inputs({ setProfessor, setCourse, professor, course }) {
                         debouncedAutocompleteValues(professor, value.target.value);
                     }}
                 />
-                {!courseLoading && (
+                {dropdown.courses.length > 0 && !courseLoading && (
                     <AutoCompleteList>
                         {dropdown.courses.map((courseOption, index) => (
                             <AutoCompleteItem value={courseOption} key={index}>

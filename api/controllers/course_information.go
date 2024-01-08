@@ -3,8 +3,8 @@ package controllers
 import (
 	"net/http"
 
-	"github.com/GiridharRNair/ProfStats-GinAPI/internal/course"
-	"github.com/GiridharRNair/ProfStats-GinAPI/internal/db"
+	"github.com/GiridharRNair/ProfStats-GinAPI/course"
+	"github.com/GiridharRNair/ProfStats-GinAPI/db"
 	"github.com/gin-gonic/gin"
 )
 
@@ -32,7 +32,7 @@ func GetCourseInformation(c *gin.Context) {
 		"subject":       subject,
 		"course_number": courseNumber,
 		"course_name":   courseName,
-		"grades":        db.GetAggregatedGrades("", subject, courseNumber),
+		"grades":        db.GetAggregatedGrades("", "", subject, courseNumber),
 	}
 
 	c.JSON(http.StatusOK, resultData)

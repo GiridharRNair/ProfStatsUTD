@@ -29,7 +29,7 @@ type GradeStruct struct {
 	NF     int `json:"nf,omitempty"`
 }
 
-func GetAggregatedGrades(professor, subject, courseNumber string) GradeStruct {
+func GetAggregatedGrades(userInputProfessor, rateMyProfessorName, subject, courseNumber string) GradeStruct {
 	sqlQueryBase := `
         SELECT 
             SUM(aPlus) as APlus, 
@@ -56,10 +56,13 @@ func GetAggregatedGrades(professor, subject, courseNumber string) GradeStruct {
 
 	sqlParams := []interface{}{}
 
-	if professor != "" {
-		sqlQueryBase += " AND (TRIM(instructor1) LIKE ? OR TRIM(instructor1) LIKE ?)"
-		sqlParams = append(sqlParams, fmt.Sprintf("%%%s%%%s%%", strings.Fields(professor)[0], strings.Fields(professor)[1]))
-		sqlParams = append(sqlParams, fmt.Sprintf("%%%s%%%s%%", strings.Fields(professor)[1], strings.Fields(professor)[0]))
+	if userInputProfessor != "" {
+		sqlQueryBase += " AND ((TRIM(instructor1) LIKE ? OR TRIM(instructor1) LIKE ?) OR (TRIM(instructor1) LIKE ? OR TRIM(instructor1) LIKE ?))"
+		sqlParams = append(sqlParams, fmt.Sprintf("%%%s%%%s%%", strings.Fields(rateMyProfessorName)[0], strings.Fields(rateMyProfessorName)[1]))
+		sqlParams = append(sqlParams, fmt.Sprintf("%%%s%%%s%%", strings.Fields(rateMyProfessorName)[1], strings.Fields(rateMyProfessorName)[0]))
+
+		sqlParams = append(sqlParams, fmt.Sprintf("%%%s%%%s%%", strings.Fields(userInputProfessor)[0], strings.Fields(userInputProfessor)[1]))
+		sqlParams = append(sqlParams, fmt.Sprintf("%%%s%%%s%%", strings.Fields(userInputProfessor)[1], strings.Fields(userInputProfessor)[0]))
 	}
 
 	if subject != "" && courseNumber != "" {

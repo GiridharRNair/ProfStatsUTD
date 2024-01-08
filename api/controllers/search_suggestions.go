@@ -3,7 +3,7 @@ package controllers
 import (
 	"net/http"
 
-	"github.com/GiridharRNair/ProfStats-GinAPI/internal/db"
+	"github.com/GiridharRNair/ProfStats-GinAPI/db"
 	"github.com/gin-gonic/gin"
 )
 
