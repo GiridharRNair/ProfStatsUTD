@@ -27,7 +27,7 @@ type Professor struct {
 	NumRatings     int
 }
 
-const SchoolID = "U2Nob29sLTEyNzM=" // UTDallas's school id on RateMyProfessor
+const UTDSchoolID = "U2Nob29sLTEyNzM="
 
 func (p *Professor) setTags(tagsFrequency map[string]int) {
 	var sortedTags []string
@@ -116,7 +116,7 @@ func getProfessorID(professorName, schoolID string) (string, error) {
 }
 
 func GetRMPInfo(professorName string) (*Professor, error) {
-	professorID, err := getProfessorID(professorName, SchoolID)
+	professorID, err := getProfessorID(professorName, UTDSchoolID)
 	if err != nil {
 		return nil, err
 	}

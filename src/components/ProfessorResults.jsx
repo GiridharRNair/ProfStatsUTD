@@ -1,26 +1,46 @@
-import { Text, HStack, VStack, Spacer, Tag, Wrap, WrapItem, Tooltip as ChakraTooltip, useDisclosure, useColorMode, Button } from "@chakra-ui/react";
+import {
+    Text,
+    HStack,
+    VStack,
+    Spacer,
+    Tag,
+    Wrap,
+    WrapItem,
+    Tooltip as ChakraTooltip,
+    useDisclosure,
+    Button,
+    Drawer,
+    DrawerBody,
+    DrawerOverlay,
+    DrawerContent,
+    Image,
+    useColorModeValue,
+} from "@chakra-ui/react";
 import PropTypes from "prop-types";
-import ProfessorDrawer from "./ProfessorDrawer.jsx";
 import RenderRatingCircle from "./RatingCircles.jsx";
 import GradesGraph from "./GradesGraph.jsx";
 
 function ProfResults({ professorInfo }) {
     const { name, department, id, subject, course_number, tags, rating, difficulty, would_take_again, grades } = professorInfo;
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const { colorMode } = useColorMode();
+
+    const RateMyProfessorUrl = `https://www.ratemyprofessors.com/professor/${id}`;
+    const UTDGradesUrl = `https://utdgrades.com/results?search=${subject ? subject + course_number + "+" : ""}${name.replace(" ", "+")}`;
+    const UTDTrendsUrl = `https://trends.utdnebula.com/dashboard?searchTerms=${subject ? subject + "+" + course_number + "+" : ""}${name.replace(" ", "+")}`;
+    const UTDProfileUrl = `https://profiles.utdallas.edu/browse?search=${name.replace(" ", "+")}`;
 
     return (
         <VStack width={325}>
             <ChakraTooltip label="Click for more information" placement="bottom">
                 <Button
                     fontSize="lg"
-                    _hover={{ color: "#3182CE" }}
-                    onClick={onOpen}
                     variant={"link"}
                     height={6}
-                    onFocus={(e) => e.preventDefault()}
                     fontWeight={"normal"}
-                    textColor={colorMode === "light" ? "black" : "white"}
+                    textColor={useColorModeValue("black", "white")}
+                    onClick={onOpen}
+                    onFocus={(e) => e.preventDefault()}
+                    _hover={{ color: "#3182CE" }}
                 >
                     {name}
                 </Button>
@@ -28,7 +48,49 @@ function ProfResults({ professorInfo }) {
 
             <Text fontSize="md">{department}</Text>
 
-            <ProfessorDrawer isOpen={isOpen} onClose={onClose} id={id} subject={subject} courseNumber={course_number} name={name} />
+            <Drawer isOpen={isOpen} onClose={onClose} placement="bottom" size="md">
+                <DrawerOverlay />
+                <DrawerContent>
+                    <DrawerBody>
+                        <VStack>
+                            <Button
+                                leftIcon={<Image src="extension-images/RMPIcon.png" boxSize={42} />}
+                                onClick={() => window.open(RateMyProfessorUrl, "_blank")}
+                                variant={"outline"}
+                                width={240}
+                            >
+                                Rate My Professor
+                            </Button>
+                            <Button
+                                leftIcon={<Image src="extension-images/UTDGradesIcon.png" boxSize={22} />}
+                                onClick={() => window.open(UTDGradesUrl, "_blank")}
+                                variant={"outline"}
+                                width={240}
+                            >
+                                UTD Grades
+                            </Button>
+                            <Button
+                                leftIcon={
+                                    <Image src={useColorModeValue("extension-images/UTDTrendsDark.svg", "extension-images/UTDTrendsLight.svg")} boxSize={5} />
+                                }
+                                onClick={() => window.open(UTDTrendsUrl, "_blank")}
+                                variant={"outline"}
+                                width={240}
+                            >
+                                UTD Trends
+                            </Button>
+                            <Button
+                                leftIcon={<Image src="extension-images/UTDIcon.png" boxSize={23} />}
+                                onClick={() => window.open(UTDProfileUrl, "_blank")}
+                                variant={"outline"}
+                                width={240}
+                            >
+                                Professor Profile
+                            </Button>
+                        </VStack>
+                    </DrawerBody>
+                </DrawerContent>
+            </Drawer>
 
             {tags && (
                 <Wrap justify={"center"}>

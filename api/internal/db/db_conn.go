@@ -1,11 +1,10 @@
-package database
+package db
 
 import (
 	"database/sql"
 	"fmt"
 	"os"
 	"path/filepath"
-	"strings"
 
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -19,18 +18,10 @@ func init() {
 		return
 	}
 
-	dbPath := filepath.Join(dir, "database/utdgrades.db")
+	dbPath := filepath.Join(dir, "internal/db/utdgrades.db")
 
 	db, err = sql.Open("sqlite3", dbPath)
 	if err != nil {
 		fmt.Print(err)
 	}
-}
-
-// Utility function to format SQL parameters
-func formatSQLParam(param string) string {
-	if param == "" {
-		return "%"
-	}
-	return "%" + strings.ReplaceAll(param, " ", "%") + "%"
 }

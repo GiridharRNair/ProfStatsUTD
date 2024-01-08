@@ -26,10 +26,10 @@ function Inputs({ setProfessor, setCourse, professor, course }) {
             });
         } catch (error) {
             console.error(error.response?.data.detail);
+        } finally {
+            setProfessorLoading(false);
+            setCourseLoading(false);
         }
-
-        setProfessorLoading(false);
-        setCourseLoading(false);
     };
 
     const debouncedAutocompleteValues = useMemo(() => _debounce((professor, course) => autocompleteValues(professor, course), 250), []);
@@ -40,6 +40,7 @@ function Inputs({ setProfessor, setCourse, professor, course }) {
                 openOnFocus
                 closeOnSelect={true}
                 disableFilter={true}
+                suggestWhenEmpty={true}
                 freeSolo={true}
                 isLoading={professorLoading}
                 onSelectOption={(value) => {
@@ -76,8 +77,10 @@ function Inputs({ setProfessor, setCourse, professor, course }) {
                 openOnFocus
                 closeOnSelect={true}
                 disableFilter={true}
+                suggestWhenEmpty={true}
                 freeSolo={true}
                 isLoading={courseLoading}
+                emptyState={`Course not found ${professor ? `for ${professor}` : ""}`}
                 onSelectOption={(value) => {
                     setCourse(value.item.label);
                     debouncedAutocompleteValues(professor, value.item.label);
@@ -94,11 +97,11 @@ function Inputs({ setProfessor, setCourse, professor, course }) {
                         debouncedAutocompleteValues(professor, value.target.value);
                     }}
                 />
-                {dropdown.courses.length > 0 && !courseLoading && (
+                {!courseLoading && (
                     <AutoCompleteList>
-                        {dropdown.courses.map((course, index) => (
-                            <AutoCompleteItem value={course} key={index}>
-                                {course}
+                        {dropdown.courses.map((courseOption, index) => (
+                            <AutoCompleteItem value={courseOption} key={index}>
+                                {courseOption}
                             </AutoCompleteItem>
                         ))}
                     </AutoCompleteList>

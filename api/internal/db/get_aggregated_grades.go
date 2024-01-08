@@ -1,4 +1,4 @@
-package database
+package db
 
 import (
 	"fmt"
@@ -52,24 +52,24 @@ func GetAggregatedGrades(professor, subject, courseNumber string) GradeStruct {
             SUM(i) as I, 
             SUM(nf) as NF
         FROM grades_populated 
-        WHERE (TRIM(instructor1) LIKE ? OR TRIM(instructor1) LIKE ?)`
+        WHERE 1 = 1`
 
-	// The database sometimes stores the professor's name as "Last, First" or sometimes as "First Last"
-	sqlParams := []interface{}{
-		formatSQLParam(professor),
-		formatSQLParam(strings.Join(strings.Split(professor, " ")[1:], "") + " " + strings.Join(strings.Split(professor, " ")[:1], "")),
+	sqlParams := []interface{}{}
+
+	if professor != "" {
+		sqlQueryBase += " AND (TRIM(instructor1) LIKE ? OR TRIM(instructor1) LIKE ?)"
+		sqlParams = append(sqlParams, fmt.Sprintf("%%%s%%%s%%", strings.Fields(professor)[0], strings.Fields(professor)[1]))
+		sqlParams = append(sqlParams, fmt.Sprintf("%%%s%%%s%%", strings.Fields(professor)[1], strings.Fields(professor)[0]))
 	}
 
-	sqlQuery := sqlQueryBase
-
 	if subject != "" && courseNumber != "" {
-		sqlQuery = fmt.Sprintf("%s AND subject = ? AND catalogNumber = ?", sqlQueryBase)
+		sqlQueryBase += " AND subject = ? AND catalogNumber = ?"
 		sqlParams = append(sqlParams, strings.ToUpper(subject), courseNumber)
 	}
 
 	var aggregatedData GradeStruct
 
-	err := db.QueryRow(sqlQuery, sqlParams...).Scan(
+	err := db.QueryRow(sqlQueryBase, sqlParams...).Scan(
 		&aggregatedData.APlus,
 		&aggregatedData.A,
 		&aggregatedData.AMinus,

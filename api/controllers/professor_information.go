@@ -1,10 +1,10 @@
-package handlers
+package controllers
 
 import (
 	"net/http"
 	"strings"
 
-	"github.com/GiridharRNair/ProfStats-GinAPI/database"
+	"github.com/GiridharRNair/ProfStats-GinAPI/internal/db"
 	"github.com/GiridharRNair/ProfStats-GinAPI/internal/professor"
 	"github.com/gin-gonic/gin"
 )
@@ -34,7 +34,7 @@ func GetProfessorInformation(c *gin.Context) {
 		"id":               professor.ID,
 		"name":             professor.Name,
 		"department":       professor.Department,
-		"grades":           database.GetAggregatedGrades(professor.Name, subject, courseNumber),
+		"grades":           db.GetAggregatedGrades(professor.Name, subject, courseNumber),
 		"subject":          subject,
 		"course_number":    courseNumber,
 		"rating":           professor.Rating,

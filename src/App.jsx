@@ -56,7 +56,7 @@ function App() {
             localStorage.setItem("lastInputData", JSON.stringify(ratingsResponse.data));
 
             if (Object.keys(ratingsResponse.data.grades).length === 0) {
-                showErrorToast("No grades found");
+                showErrorToast("No grade distribution from the specified course");
             }
         } catch (error) {
             showErrorToast(error?.response?.data?.detail);
@@ -78,7 +78,7 @@ function App() {
             localStorage.setItem("lastInputData", JSON.stringify(ratingsResponse.data));
 
             if (Object.keys(ratingsResponse.data.grades).length === 0) {
-                showErrorToast("No grades found");
+                showErrorToast("No grade distribution from the specified course");
             }
         } catch (error) {
             showErrorToast(error?.response?.data?.detail);
@@ -113,14 +113,7 @@ function App() {
     return (
         <Box>
             <InfoIcon />
-            <IconButton
-                icon={colorMode === "dark" ? <SunIcon /> : <FiMoon />}
-                size={"sm"}
-                position="fixed"
-                top="1"
-                right="1"
-                onClick={toggleColorMode}
-            />
+            <IconButton icon={colorMode === "dark" ? <SunIcon /> : <FiMoon />} size={"sm"} position="fixed" top="1" right="1" onClick={toggleColorMode} />
 
             <Stack pt={2} spacing={2} width={300} align={"center"}>
                 <Inputs setProfessor={setProfessorName} setCourse={setCourse} professor={professorName} course={course} />

@@ -62,10 +62,7 @@ function CourseResults({ courseInfo }) {
                             </Button>
                             <Button
                                 leftIcon={
-                                    <Image
-                                        src={useColorModeValue("extension-images/UTDTrendsDark.svg", "extension-images/UTDTrendsLight.svg")}
-                                        boxSize={5}
-                                    />
+                                    <Image src={useColorModeValue("extension-images/UTDTrendsDark.svg", "extension-images/UTDTrendsLight.svg")} boxSize={5} />
                                 }
                                 onClick={openUTDTrends}
                                 variant="outline"

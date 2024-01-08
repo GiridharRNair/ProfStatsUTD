@@ -74,6 +74,6 @@ export const defaultTeacher = {
     would_take_again: 47,
 };
 
-export const defaultTeacherSuggestions = ["John Cole", "Jeyakesavan Veerasamy", "Timothy Farage", "James Willson", "Doug DeGroot"];
+export const defaultTeacherSuggestions = ["Joycelyn Bell", "James Willson", "Stephanie Taylor", "Bentley Garrett", "Karl Sengupta"];
 
-export const defaultCourseSuggestions = ["CS 2305", "MATH 2413", "CHEM 2233", "CS 3305", "CS 1335"];
+export const defaultCourseSuggestions = ["CS 2305", "MATH 2418", "CHEM 2401", "ACCT 6305", "SPAN 2311"];
