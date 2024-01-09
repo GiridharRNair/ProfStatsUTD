@@ -26,7 +26,7 @@ func GetCourseName(subject, courseNumber string) (string, error) {
 		urlType = "graduate"
 	}
 
-	url := fmt.Sprintf(urlFormat, time.Now().Year()-1, urlType, strings.ToLower(subject)+courseNumber)
+	url := fmt.Sprintf(urlFormat, time.Now().Year()-1, urlType, strings.ToLower(subject)+strings.ToLower(courseNumber))
 
 	resp, err := http.Get(url)
 	if err != nil {
