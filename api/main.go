@@ -1,11 +1,10 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
+	"slices"
 
-	"github.com/GiridharRNair/ProfStats-GinAPI/handlers"
-	"github.com/GiridharRNair/ProfStats-GinAPI/utils"
+	"github.com/GiridharRNair/ProfStats-GinAPI/controllers"
 	"github.com/gin-gonic/gin"
 )
 
@@ -20,31 +19,33 @@ func allowedOrigins() gin.HandlerFunc {
 		}
 		origin := c.GetHeader("Origin")
 
-		if !utils.StringInSlice(origin, allowedOrigins) {
+		if !slices.Contains(allowedOrigins, origin) {
 			c.JSON(http.StatusForbidden, gin.H{"detail": "Not allowed"})
 			c.Abort()
 		}
 	}
 }
 
-func main() {
+func setupRouter() *gin.Engine {
 	router := gin.Default()
 	router.Use(allowedOrigins())
 
-	router.GET("/professor_info", handlers.GetProfessorInformation)
-	router.GET("/course_info", handlers.GetCourseInformation)
-	router.GET("/suggestions", handlers.SuggestionsSearchQuery)
+	router.GET("/professor_info", controllers.GetProfessorInformation)
+	router.GET("/course_info", controllers.GetCourseInformation)
+	router.GET("/suggestions", controllers.SuggestionsSearchQuery)
 
 	router.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{"detail": "Not Found"})
 	})
 
-	// Remove once all users have updated to the new extension version
-	router.GET("/professor_suggestions", handlers.GetProfessorSuggestions)
-	router.GET("/professor_courses", handlers.GetProfessorCoursesSuggestions)
+	return router
+}
+
+func main() {
+	router := setupRouter()
 
 	err := router.Run(":80")
 	if err != nil {
-		fmt.Println(err)
+		panic(err)
 	}
 }

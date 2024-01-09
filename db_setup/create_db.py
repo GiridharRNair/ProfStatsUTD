@@ -6,7 +6,7 @@ import csv
 import os
 
 
-DB_PATH = 'api/database/utdgrades.db'
+DB_PATH = 'api/db/utdgrades.db'
 RAW_DATA_PATH = 'raw_data'
 
 SQL_CREATE_TABLE = '''
@@ -62,9 +62,6 @@ class GradesRow:
 
 
 def index_row(row, *columns):
-    """
-    Due to the inconsistent naming of columns in the CSV files.
-    """
     for column in columns:
         try:
             value = row[column]

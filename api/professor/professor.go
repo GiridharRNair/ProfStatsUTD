@@ -27,7 +27,7 @@ type Professor struct {
 	NumRatings     int
 }
 
-const SchoolID = "U2Nob29sLTEyNzM=" // UTDallas's school id on RateMyProfessor
+const UTDSchoolID = "U2Nob29sLTEyNzM="
 
 func (p *Professor) setTags(tagsFrequency map[string]int) {
 	var sortedTags []string
@@ -116,7 +116,7 @@ func getProfessorID(professorName, schoolID string) (string, error) {
 }
 
 func GetRMPInfo(professorName string) (*Professor, error) {
-	professorID, err := getProfessorID(professorName, SchoolID)
+	professorID, err := getProfessorID(professorName, UTDSchoolID)
 	if err != nil {
 		return nil, err
 	}
@@ -146,7 +146,7 @@ func GetRMPInfo(professorName string) (*Professor, error) {
 		Department:     node["department"].(string),
 		Difficulty:     math.Min(5, node["avgDifficulty"].(float64)),
 		Rating:         math.Min(5, node["avgRating"].(float64)),
-		WouldTakeAgain: int(math.Min(100, node["wouldTakeAgainPercent"].(float64))),
+		WouldTakeAgain: int(math.Min(100, math.Round(node["wouldTakeAgainPercent"].(float64)))),
 	}
 
 	p.getProfessorTags()

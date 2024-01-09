@@ -7,6 +7,7 @@ import Inputs from "./components/Inputs.jsx";
 import InfoIcon from "./components/InfoIcon.jsx";
 import ProfResults from "./components/ProfessorResults.jsx";
 import CourseResults from "./components/CourseResults.jsx";
+import RateUs from "./components/RateUs.jsx";
 import { defaultTeacher } from "../utils/defaults.js";
 import "./styles/App.css";
 
@@ -19,6 +20,7 @@ function App() {
     const [professorName, setProfessorName] = useState("");
     const [lastInputType, setLastInputType] = useState(null);
     const [lastInputData, setLastInputData] = useState(null);
+    const [rateUsModalOpen, setRateUsModalOpen] = useState(localStorage.getItem("lastInputData") && !localStorage.getItem("hasRated") && Math.random() < 0.1);
     const { colorMode, toggleColorMode } = useColorMode();
 
     useEffect(() => {
@@ -43,20 +45,20 @@ function App() {
         });
     };
 
-    const getProfessorData = async (formattedInstructorName, formattedCourseName) => {
+    const getData = async (url, type) => {
         setLoading(true);
 
         try {
-            const ratingsResponse = await axios.get(`${API_URL}/professor_info?teacher=${formattedInstructorName}&course=${formattedCourseName}`);
-            localStorage.setItem("professorInfo", JSON.stringify(ratingsResponse.data));
+            const ratingsResponse = await axios.get(url);
+            localStorage.setItem(`${type}Info`, JSON.stringify(ratingsResponse.data));
 
-            setLastInputType("professor");
+            setLastInputType(type);
             setLastInputData(ratingsResponse.data);
-            localStorage.setItem("lastInputType", "professor");
+            localStorage.setItem("lastInputType", type);
             localStorage.setItem("lastInputData", JSON.stringify(ratingsResponse.data));
 
             if (Object.keys(ratingsResponse.data.grades).length === 0) {
-                showErrorToast("No grades found");
+                showErrorToast("No grade distribution from the specified query");
             }
         } catch (error) {
             showErrorToast(error?.response?.data?.detail);
@@ -65,26 +67,14 @@ function App() {
         }
     };
 
+    const getProfessorData = async (formattedInstructorName, formattedCourseName) => {
+        const url = `${API_URL}/professor_info?teacher=${formattedInstructorName}&course=${formattedCourseName}`;
+        await getData(url, "professor");
+    };
+
     const getCourseData = async (formattedCourseName) => {
-        setLoading(true);
-
-        try {
-            const ratingsResponse = await axios.get(`${API_URL}/course_info?course=${formattedCourseName}`);
-            localStorage.setItem("courseInfo", JSON.stringify(ratingsResponse.data));
-
-            setLastInputType("course");
-            setLastInputData(ratingsResponse.data);
-            localStorage.setItem("lastInputType", "course");
-            localStorage.setItem("lastInputData", JSON.stringify(ratingsResponse.data));
-
-            if (Object.keys(ratingsResponse.data.grades).length === 0) {
-                showErrorToast("No grades found");
-            }
-        } catch (error) {
-            showErrorToast(error?.response?.data?.detail);
-        } finally {
-            setLoading(false);
-        }
+        const url = `${API_URL}/course_info?course=${formattedCourseName}`;
+        await getData(url, "course");
     };
 
     const handleSubmit = async () => {
@@ -113,14 +103,9 @@ function App() {
     return (
         <Box>
             <InfoIcon />
-            <IconButton
-                icon={colorMode === "dark" ? <SunIcon /> : <FiMoon />}
-                size={"sm"}
-                position="fixed"
-                top="1"
-                right="1"
-                onClick={toggleColorMode}
-            />
+            <IconButton icon={colorMode === "dark" ? <SunIcon /> : <FiMoon />} size={"sm"} position="fixed" top="1" right="1" onClick={toggleColorMode} />
+
+            <RateUs rateUsModalOpen={rateUsModalOpen} setRateUsModalOpen={setRateUsModalOpen} />
 
             <Stack pt={2} spacing={2} width={300} align={"center"}>
                 <Inputs setProfessor={setProfessorName} setCourse={setCourse} professor={professorName} course={course} />

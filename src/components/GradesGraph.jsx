@@ -48,11 +48,7 @@ function GradesGraph({ grades }) {
         },
     };
 
-    return (
-        <>
-            <Bar data={chartData} options={options} />
-        </>
-    );
+    return <Bar data={chartData} options={options} />;
 }
 
 GradesGraph.propTypes = {

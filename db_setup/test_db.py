@@ -5,8 +5,8 @@ import unittest
 import sqlite3
 
 
-DB_PATH = 'api/database/utdgrades.db'
-TEST_TEACHER_DATA = [(2, 1, 2, 3, 1, 0, 2, 0, 3, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 'Giridhar R Nair', 'NAIR', '2005', '001')]
+DB_PATH = 'api/db/utdgrades.db'
+TEST_TEACHER_DATA = [(2, 1, 2, 3, 1, 0, 2, 0, 3, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 'John R Doe', 'GIRI', '2005', '001')]
 
 
 class TestDB(unittest.TestCase):
@@ -26,13 +26,13 @@ class TestDB(unittest.TestCase):
 
 
     def test_teacher_exists(self):
-        self.cursor.execute("SELECT * FROM grades_populated WHERE instructor1 = 'Giridhar R Nair'")
+        self.cursor.execute("SELECT * FROM grades_populated WHERE instructor1 = 'John R Doe'")
         teacher_data = self.cursor.fetchall()
         self.assertTrue(teacher_data is not None, "Teacher does not exist")
 
 
     def test_teacher_data_match(self):
-        self.cursor.execute("SELECT * FROM grades_populated WHERE instructor1 = 'Giridhar R Nair'")
+        self.cursor.execute("SELECT * FROM grades_populated WHERE instructor1 = 'John R Doe'")
         teacher_data = self.cursor.fetchall()
         self.assertEqual(teacher_data, TEST_TEACHER_DATA, "Teacher data does not match")
 
