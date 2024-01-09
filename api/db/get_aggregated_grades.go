@@ -56,13 +56,20 @@ func GetAggregatedGrades(userInputProfessor, rateMyProfessorName, subject, cours
 
 	sqlParams := []interface{}{}
 
+	// There is a possibility a professor has a different name on RateMyProfessor than in the database
+	// Also the professor name may be last name, first name or first name, last name in the database
 	if userInputProfessor != "" {
 		sqlQueryBase += " AND ((TRIM(instructor1) LIKE ? OR TRIM(instructor1) LIKE ?) OR (TRIM(instructor1) LIKE ? OR TRIM(instructor1) LIKE ?))"
 		sqlParams = append(sqlParams, fmt.Sprintf("%%%s%%%s%%", strings.Fields(rateMyProfessorName)[0], strings.Fields(rateMyProfessorName)[1]))
 		sqlParams = append(sqlParams, fmt.Sprintf("%%%s%%%s%%", strings.Fields(rateMyProfessorName)[1], strings.Fields(rateMyProfessorName)[0]))
 
-		sqlParams = append(sqlParams, fmt.Sprintf("%%%s%%%s%%", strings.Fields(userInputProfessor)[0], strings.Fields(userInputProfessor)[1]))
-		sqlParams = append(sqlParams, fmt.Sprintf("%%%s%%%s%%", strings.Fields(userInputProfessor)[1], strings.Fields(userInputProfessor)[0]))
+		if len(strings.Fields(userInputProfessor)) >= 2 {
+			sqlParams = append(sqlParams, fmt.Sprintf("%%%s%%%s%%", strings.Fields(userInputProfessor)[0], strings.Fields(userInputProfessor)[1]))
+			sqlParams = append(sqlParams, fmt.Sprintf("%%%s%%%s%%", strings.Fields(userInputProfessor)[1], strings.Fields(userInputProfessor)[0]))
+		} else {
+			sqlParams = append(sqlParams, fmt.Sprintf("%%%s%%", strings.Fields(userInputProfessor)[0]))
+			sqlParams = append(sqlParams, fmt.Sprintf("%%%s%%", strings.Fields(userInputProfessor)[0]))
+		}
 	}
 
 	if subject != "" && courseNumber != "" {

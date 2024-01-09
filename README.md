@@ -16,6 +16,8 @@ ProfStats is a handy Chrome extension that puts professor ratings and grade dist
 
 [![Vite](https://img.shields.io/badge/Powered_by-Vite-646CFF?style=for-the-badge&logo=vite)](https://vitejs.dev/)
 
+[![React](https://img.shields.io/badge/Powered_by-React-61DAFB?style=for-the-badge&logo=react)](https://reactjs.org/)
+
 [![Azure](https://img.shields.io/badge/Hosted_on-Azure-0089D6?style=for-the-badge&logo=microsoft-azure)](https://azure.microsoft.com/en-us/)
 
 [![SQLite](https://img.shields.io/badge/Database-SQLite-003B57?style=for-the-badge&logo=sqlite)](https://www.sqlite.org/index.html)

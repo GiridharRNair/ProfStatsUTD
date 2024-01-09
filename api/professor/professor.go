@@ -146,7 +146,7 @@ func GetRMPInfo(professorName string) (*Professor, error) {
 		Department:     node["department"].(string),
 		Difficulty:     math.Min(5, node["avgDifficulty"].(float64)),
 		Rating:         math.Min(5, node["avgRating"].(float64)),
-		WouldTakeAgain: int(math.Min(100, node["wouldTakeAgainPercent"].(float64))),
+		WouldTakeAgain: int(math.Min(100, math.Round(node["wouldTakeAgainPercent"].(float64)))),
 	}
 
 	p.getProfessorTags()

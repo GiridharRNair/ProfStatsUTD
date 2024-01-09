@@ -15,9 +15,10 @@ import {
     DrawerContent,
     Image,
     useColorModeValue,
+    CircularProgress,
+    CircularProgressLabel,
 } from "@chakra-ui/react";
 import PropTypes from "prop-types";
-import RenderRatingCircle from "./RatingCircles.jsx";
 import GradesGraph from "./GradesGraph.jsx";
 
 function ProfResults({ professorInfo }) {
@@ -105,11 +106,44 @@ function ProfResults({ professorInfo }) {
             )}
 
             <HStack w={250}>
-                {RenderRatingCircle("Quality", rating)}
+                <VStack w={15}>
+                    <Text>Quality</Text>
+                    <CircularProgress
+                        max={5}
+                        size="55px"
+                        thickness="10px"
+                        value={rating === 0 ? -20 : Math.max(0, rating)}
+                        color={`hsl(${(Math.max(0, rating) / 5) * 100}, 90%, 50%)`}
+                    >
+                        <CircularProgressLabel>{rating < 0 ? "N/A" : rating}</CircularProgressLabel>
+                    </CircularProgress>
+                </VStack>
                 <Spacer />
-                {RenderRatingCircle("Difficulty", difficulty)}
+                <VStack w={15}>
+                    <Text>Difficulty</Text>
+                    <CircularProgress
+                        max={5}
+                        size="55px"
+                        thickness="10px"
+                        value={difficulty === 0 ? -20 : Math.max(0, difficulty)}
+                        color={`hsl(${((5 - Math.max(0, difficulty)) / 5) * 100}, 90%, 50%)`}
+                    >
+                        <CircularProgressLabel>{difficulty < 0 ? "N/A" : difficulty}</CircularProgressLabel>
+                    </CircularProgress>
+                </VStack>
                 <Spacer />
-                {RenderRatingCircle("Enjoyment", would_take_again)}
+                <VStack w={15}>
+                    <Text>Enjoyment</Text>
+                    <CircularProgress
+                        max={100}
+                        size="55px"
+                        thickness="10px"
+                        value={would_take_again === 0 ? -20 : Math.max(0, would_take_again)}
+                        color={`hsl(${would_take_again}, 90%, 50%)`}
+                    >
+                        <CircularProgressLabel>{would_take_again < 0 ? "N/A" : would_take_again}</CircularProgressLabel>
+                    </CircularProgress>
+                </VStack>
             </HStack>
 
             <GradesGraph grades={grades} />

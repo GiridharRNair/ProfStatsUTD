@@ -34,7 +34,7 @@ function CourseResults({ courseInfo }) {
                     _hover={{ color: "#3182CE" }}
                     onClick={onOpen}
                     variant="link"
-                    height={course_name.length < 40 ? 6 : 10}
+                    height={course_name.length < 35 ? 6 : 10}
                     onFocus={(e) => e.preventDefault()}
                     fontWeight="normal"
                     textColor={useColorModeValue("black", "white")}

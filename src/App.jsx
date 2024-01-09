@@ -20,7 +20,7 @@ function App() {
     const [professorName, setProfessorName] = useState("");
     const [lastInputType, setLastInputType] = useState(null);
     const [lastInputData, setLastInputData] = useState(null);
-    const [rateUsModeOpen, setRateUsModeOpen] = useState(localStorage.getItem("lastInputData") && Math.random() < 0.1);
+    const [rateUsModalOpen, setRateUsModalOpen] = useState(localStorage.getItem("lastInputData") && !localStorage.getItem("hasRated") && Math.random() < 0.1);
     const { colorMode, toggleColorMode } = useColorMode();
 
     useEffect(() => {
@@ -58,7 +58,7 @@ function App() {
             localStorage.setItem("lastInputData", JSON.stringify(ratingsResponse.data));
 
             if (Object.keys(ratingsResponse.data.grades).length === 0) {
-                showErrorToast(`No grade distribution from the specified ${type}`);
+                showErrorToast("No grade distribution from the specified query");
             }
         } catch (error) {
             showErrorToast(error?.response?.data?.detail);
@@ -105,12 +105,15 @@ function App() {
             <InfoIcon />
             <IconButton icon={colorMode === "dark" ? <SunIcon /> : <FiMoon />} size={"sm"} position="fixed" top="1" right="1" onClick={toggleColorMode} />
 
+            <RateUs rateUsModalOpen={rateUsModalOpen} setRateUsModalOpen={setRateUsModalOpen} />
+
             <Stack pt={2} spacing={2} width={300} align={"center"}>
                 <Inputs setProfessor={setProfessorName} setCourse={setCourse} professor={professorName} course={course} />
+
                 <Button onClick={handleSubmit} isLoading={loading} height={8} fontSize={"sm"}>
                     Submit
                 </Button>
-                <RateUs rateUsModeOpen={rateUsModeOpen} setRateUsModeOpen={setRateUsModeOpen} />;
+
                 {lastInputType === "professor" && lastInputData && <ProfResults professorInfo={lastInputData} />}
                 {lastInputType === "course" && lastInputData && <CourseResults courseInfo={lastInputData} />}
             </Stack>
