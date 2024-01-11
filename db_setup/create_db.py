@@ -61,13 +61,12 @@ class GradesRow:
         self.instructor = instructor
 
 
+# Some columns have different names in different files, so we need to check for each
+# e.g. "Catalog Nbr" vs "Catalog Number"
 def index_row(row, *columns):
     for column in columns:
-        try:
-            value = row[column]
-            return 0 if value == '' else value
-        except KeyError:
-            pass
+        if column in row and row[column] != '':
+            return row[column]
     return 0
 
 

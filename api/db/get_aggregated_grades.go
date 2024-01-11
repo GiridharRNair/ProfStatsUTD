@@ -29,7 +29,27 @@ type GradeStruct struct {
 	NF     int `json:"nf,omitempty"`
 }
 
-func GetAggregatedGrades(userInputProfessor, rateMyProfessorName, subject, courseNumber string) GradeStruct {
+func appendProfessorToSQLQuery(sqlQueryBase string, sqlParams []interface{}, rateMyProfessorName string) (string, []interface{}) {
+	if rateMyProfessorName != "" {
+		sqlQueryBase += " AND (TRIM(instructor1) LIKE ? OR TRIM(instructor1) LIKE ?)"
+
+		// Sometimes the professor's name is in the format "First Last" and sometimes it's "Last, First"
+		// e.g. In the database Bhadrachalam Chitturi is "Bhadrachalam, Chitturi" but in RateMyProfessor it's "Chitturi Bhadrachalam"
+		sqlParams = append(sqlParams, fmt.Sprintf("%%%s%%%s%%", strings.Fields(rateMyProfessorName)[0], strings.Fields(rateMyProfessorName)[1]))
+		sqlParams = append(sqlParams, fmt.Sprintf("%%%s%%%s%%", strings.Fields(rateMyProfessorName)[1], strings.Fields(rateMyProfessorName)[0]))
+	}
+	return sqlQueryBase, sqlParams
+}
+
+func appendCourseToSQLQuery(sqlQueryBase string, sqlParams []interface{}, subject, courseNumber string) (string, []interface{}) {
+	if subject != "" && courseNumber != "" {
+		sqlQueryBase += " AND subject = ? AND catalogNumber = ?"
+		sqlParams = append(sqlParams, strings.ToUpper(subject), courseNumber)
+	}
+	return sqlQueryBase, sqlParams
+}
+
+func GetAggregatedGrades(rateMyProfessorName, subject, courseNumber string) GradeStruct {
 	sqlQueryBase := `
         SELECT 
             SUM(aPlus) as APlus, 
@@ -56,26 +76,8 @@ func GetAggregatedGrades(userInputProfessor, rateMyProfessorName, subject, cours
 
 	sqlParams := []interface{}{}
 
-	// There is a possibility a professor has a different name on RateMyProfessor than in the database
-	// Also the professor name may be last name, first name or first name, last name in the database
-	if userInputProfessor != "" {
-		sqlQueryBase += " AND ((TRIM(instructor1) LIKE ? OR TRIM(instructor1) LIKE ?) OR (TRIM(instructor1) LIKE ? OR TRIM(instructor1) LIKE ?))"
-		sqlParams = append(sqlParams, fmt.Sprintf("%%%s%%%s%%", strings.Fields(rateMyProfessorName)[0], strings.Fields(rateMyProfessorName)[1]))
-		sqlParams = append(sqlParams, fmt.Sprintf("%%%s%%%s%%", strings.Fields(rateMyProfessorName)[1], strings.Fields(rateMyProfessorName)[0]))
-
-		if len(strings.Fields(userInputProfessor)) >= 2 {
-			sqlParams = append(sqlParams, fmt.Sprintf("%%%s%%%s%%", strings.Fields(userInputProfessor)[0], strings.Fields(userInputProfessor)[1]))
-			sqlParams = append(sqlParams, fmt.Sprintf("%%%s%%%s%%", strings.Fields(userInputProfessor)[1], strings.Fields(userInputProfessor)[0]))
-		} else {
-			sqlParams = append(sqlParams, fmt.Sprintf("%%%s%%", strings.Fields(userInputProfessor)[0]))
-			sqlParams = append(sqlParams, fmt.Sprintf("%%%s%%", strings.Fields(userInputProfessor)[0]))
-		}
-	}
-
-	if subject != "" && courseNumber != "" {
-		sqlQueryBase += " AND subject = ? AND catalogNumber = ?"
-		sqlParams = append(sqlParams, strings.ToUpper(subject), courseNumber)
-	}
+	sqlQueryBase, sqlParams = appendProfessorToSQLQuery(sqlQueryBase, sqlParams, rateMyProfessorName)
+	sqlQueryBase, sqlParams = appendCourseToSQLQuery(sqlQueryBase, sqlParams, subject, courseNumber)
 
 	var aggregatedData GradeStruct
 

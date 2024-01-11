@@ -8,9 +8,12 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
+// Set of diverse professors to suggest if inputs are empty
+var defaultProfessorSuggestions = []string{"Joycelyn Bell", "James Willson", "Stephanie Taylor", "Bentley Garrett", "Karl Sengupta"}
+
 func GetProfessorSuggestions(professorParam string) ([]string, error) {
 	if professorParam == "" {
-		return []string{"Joycelyn Bell", "James Willson", "Stephanie Taylor", "Bentley Garrett", "Karl Sengupta"}, nil
+		return defaultProfessorSuggestions, nil
 	}
 
 	professor := "%" + strings.ReplaceAll(professorParam, " ", "%") + "%"

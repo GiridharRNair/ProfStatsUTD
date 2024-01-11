@@ -2,7 +2,7 @@ package main
 
 import (
 	"net/http"
-	"slices"
+	"strings"
 
 	"github.com/GiridharRNair/ProfStats-GinAPI/controllers"
 	"github.com/gin-gonic/gin"
@@ -13,20 +13,16 @@ func allowedOrigins() gin.HandlerFunc {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET")
 
-		allowedOrigins := []string{
-			"http://localhost:5173",
-			"chrome-extension://doilmgfedjlpepeaolcfpdmkehecdaff",
-		}
 		origin := c.GetHeader("Origin")
 
-		if !slices.Contains(allowedOrigins, origin) {
+		if origin != "http://localhost:5173" && !strings.HasPrefix(origin, "chrome-extension://") {
 			c.JSON(http.StatusForbidden, gin.H{"detail": "Not allowed"})
 			c.Abort()
 		}
 	}
 }
 
-func setupRouter() *gin.Engine {
+func SetupRouter() *gin.Engine {
 	router := gin.Default()
 	router.Use(allowedOrigins())
 
@@ -42,7 +38,7 @@ func setupRouter() *gin.Engine {
 }
 
 func main() {
-	router := setupRouter()
+	router := SetupRouter()
 
 	err := router.Run(":80")
 	if err != nil {

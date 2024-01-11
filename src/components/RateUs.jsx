@@ -7,12 +7,12 @@ function RateUs({ rateUsModalOpen, setRateUsModalOpen }) {
         <Modal isOpen={rateUsModalOpen} onClose={() => setRateUsModalOpen(false)} size="md">
             <ModalOverlay />
             <ModalContent width={300}>
-                <ModalHeader>Do you like this app?</ModalHeader>
+                <ModalHeader>How can we improve?</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
                     <Center>
                         <Heading size="xs" mb={6} fontWeight={"normal"}>
-                            What are your thoughts so far? Please consider leaving a review or feedback to help us improve!
+                            Share your thoughts! Help us improve by leaving a review or filling out the feedback form. Your input matters!
                         </Heading>
                     </Center>
                     <VStack>

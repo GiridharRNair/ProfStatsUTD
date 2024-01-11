@@ -34,7 +34,7 @@ func GetProfessorInformation(c *gin.Context) {
 		"id":               professor.ID,
 		"name":             professor.Name,
 		"department":       professor.Department,
-		"grades":           db.GetAggregatedGrades(teacher, professor.Name, subject, courseNumber),
+		"grades":           db.GetAggregatedGrades(professor.Name, subject, courseNumber),
 		"subject":          subject,
 		"course_number":    courseNumber,
 		"rating":           professor.Rating,
