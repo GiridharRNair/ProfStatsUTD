@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"net/http"
+	"regexp"
 	"strings"
 
 	"github.com/GiridharRNair/ProfStats-GinAPI/db"
@@ -9,12 +10,19 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+const validateTeacherNameRegex = `[^a-zA-Z\s.\-]|.*\-.*\-`
+
 func GetProfessorInformation(c *gin.Context) {
 	teacher := c.Query("teacher")
 	course := c.Query("course")
 
 	if teacher == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"detail": "Teacher name not provided"})
+		return
+	}
+
+	if regexp.MustCompile(validateTeacherNameRegex).MatchString(teacher) {
+		c.JSON(http.StatusBadRequest, gin.H{"detail": "Invalid teacher name"})
 		return
 	}
 

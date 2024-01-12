@@ -6,7 +6,7 @@ import sqlite3
 
 
 DB_PATH = 'api/db/utdgrades.db'
-TEST_TEACHER_DATA = [(2, 1, 2, 3, 1, 0, 2, 0, 3, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 'John R Doe', 'GIRI', '2005', '001')]
+TEST_TEACHER_DATA = [(2, 1, 2, 3, 1, 0, 2, 0, 3, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 'John R Doe', 'LATS', '6399', '001')]
 
 
 class TestDB(unittest.TestCase):

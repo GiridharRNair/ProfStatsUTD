@@ -33,8 +33,8 @@ func appendProfessorToSQLQuery(sqlQueryBase string, sqlParams []interface{}, rat
 	if rateMyProfessorName != "" {
 		sqlQueryBase += " AND (TRIM(instructor1) LIKE ? OR TRIM(instructor1) LIKE ?)"
 
-		// Sometimes the professor's name is in the format "First Last" and sometimes it's "Last, First"
-		// e.g. In the database Bhadrachalam Chitturi is "Bhadrachalam, Chitturi" but in RateMyProfessor it's "Chitturi Bhadrachalam"
+		// Sometimes professor names vary between "First Last" and "Last, First" formats.
+		// Example: In the database, Bhadrachalam Chitturi is stored as "Bhadrachalam, Chitturi", but in RateMyProfessor, it appears as "Chitturi Bhadrachalam".
 		sqlParams = append(sqlParams, fmt.Sprintf("%%%s%%%s%%", strings.Fields(rateMyProfessorName)[0], strings.Fields(rateMyProfessorName)[1]))
 		sqlParams = append(sqlParams, fmt.Sprintf("%%%s%%%s%%", strings.Fields(rateMyProfessorName)[1], strings.Fields(rateMyProfessorName)[0]))
 	}

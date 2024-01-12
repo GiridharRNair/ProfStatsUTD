@@ -112,7 +112,7 @@ function ProfResults({ professorInfo }) {
                         max={5}
                         size="55px"
                         thickness="10px"
-                        value={rating === 0 ? -20 : Math.max(0, rating)}
+                        value={rating === 0 ? -1 : Math.max(0, rating)}
                         color={`hsl(${(Math.max(0, rating) / 5) * 100}, 90%, 50%)`}
                     >
                         <CircularProgressLabel>{rating < 0 ? "N/A" : rating}</CircularProgressLabel>
@@ -125,7 +125,7 @@ function ProfResults({ professorInfo }) {
                         max={5}
                         size="55px"
                         thickness="10px"
-                        value={difficulty === 0 ? -20 : Math.max(0, difficulty)}
+                        value={difficulty === 0 ? -1 : Math.max(0, difficulty)}
                         color={`hsl(${((5 - Math.max(0, difficulty)) / 5) * 100}, 90%, 50%)`}
                     >
                         <CircularProgressLabel>{difficulty < 0 ? "N/A" : difficulty}</CircularProgressLabel>
@@ -138,7 +138,7 @@ function ProfResults({ professorInfo }) {
                         max={100}
                         size="55px"
                         thickness="10px"
-                        value={would_take_again === 0 ? -20 : Math.max(0, would_take_again)}
+                        value={would_take_again === 0 ? -1 : Math.max(0, would_take_again)}
                         color={`hsl(${would_take_again}, 90%, 50%)`}
                     >
                         <CircularProgressLabel>{would_take_again < 0 ? "N/A" : would_take_again}</CircularProgressLabel>

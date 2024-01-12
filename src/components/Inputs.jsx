@@ -40,13 +40,12 @@ function Inputs({ setProfessor, setCourse, professor, course }) {
                 freeSolo={true}
                 isLoading={professorLoading}
                 onSelectOption={(value) => {
-                    setCourse("");
                     setProfessor(value.item.label);
-                    autocompleteValues(value.item.label, "");
+                    autocompleteValues(value.item.label, course);
                 }}
             >
-                <Tooltip placement="top" label="Ignore middle names">
-                    <InputGroup>
+                <InputGroup>
+                    <Tooltip placement="top" label="Ignore middle names">
                         <AutoCompleteInput
                             height={8}
                             placeholder="Enter Teacher Name ex. Jason Smith"
@@ -58,20 +57,20 @@ function Inputs({ setProfessor, setCourse, professor, course }) {
                                 debouncedAutocompleteValues(value.target.value, course);
                             }}
                         />
-                        <InputRightElement>
-                            {!professorLoading && professor && (
-                                <CloseButton
-                                    size="sm"
-                                    mb={2}
-                                    onClick={() => {
-                                        setProfessor("");
-                                        setProfessorSuggestions(defaultTeacherSuggestions);
-                                    }}
-                                />
-                            )}
-                        </InputRightElement>
-                    </InputGroup>
-                </Tooltip>
+                    </Tooltip>
+                    <InputRightElement>
+                        {!professorLoading && professor && (
+                            <CloseButton
+                                size="sm"
+                                mb={2}
+                                onClick={() => {
+                                    setProfessor("");
+                                    setProfessorSuggestions(defaultTeacherSuggestions);
+                                }}
+                            />
+                        )}
+                    </InputRightElement>
+                </InputGroup>
                 {professorSuggestions.length > 0 && !professorLoading && (
                     <AutoCompleteList>
                         {professorSuggestions.map((professorOption, index) => (
@@ -111,7 +110,7 @@ function Inputs({ setProfessor, setCourse, professor, course }) {
                                 mb={2}
                                 onClick={() => {
                                     setCourse("");
-                                    setCourseSuggestions(defaultCourseSuggestions);
+                                    autocompleteValues(professor, "");
                                 }}
                             />
                         )}

@@ -7,7 +7,9 @@
     "scripts": {
         "install-go-packages": "cd api && go mod download",
         "install-packages": "npm install && npm run install-go-packages",
-        "create-db": "python db_setup/create_db.py && python db_setup/test_db.py",
+        "test-db": "python db_setup/test_db.py",
+        "create-db": "python db_setup/create_db.py && npm run test-db",
+        "test-api": "cd api && go test",
         "start-api": "npm run create-db && cd api && nodemon --exec go run main.go --signal SIGTERM",
         "start-vite": "vite",
         "dev": "concurrently \"vite\" \"npm run start-api\"",

@@ -19,7 +19,6 @@ func init() {
 	}
 
 	dbPath := filepath.Join(dir, "db/utdgrades.db")
-	fmt.Print(dbPath)
 
 	db, err = sql.Open("sqlite3", dbPath)
 	if err != nil {
