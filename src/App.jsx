@@ -61,7 +61,7 @@ function App() {
                 showErrorToast("No grade distribution from the specified query");
             }
         } catch (error) {
-            showErrorToast(error?.response?.data?.detail);
+            showErrorToast(error.response?.data.detail);
         } finally {
             setLoading(false);
         }

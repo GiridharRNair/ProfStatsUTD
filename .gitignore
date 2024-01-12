@@ -29,4 +29,6 @@ go.work
 
 */tmp
 
-utdgrades.db
+*/venv
+
+*/__pycache__

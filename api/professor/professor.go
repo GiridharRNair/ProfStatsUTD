@@ -28,6 +28,8 @@ type Professor struct {
 }
 
 const UTDSchoolID = "U2Nob29sLTEyNzM="
+const RateMyProfessorsGraphQLURL = "https://www.ratemyprofessors.com/graphql"
+const RateMyProfessorSearchURL = "https://www.ratemyprofessors.com/search/professors/%s?q=%s"
 
 func (p *Professor) setTags(tagsFrequency map[string]int) {
 	var sortedTags []string
@@ -55,7 +57,7 @@ func (p *Professor) getProfessorTags() {
 	headersQuery := getHeaderQuery(p.ID)
 	ratingsQuery := getRatingsQuery(p.ID, p.NumRatings)
 
-	data, err := postData("https://www.ratemyprofessors.com/graphql", ratingsQuery, headersQuery)
+	data, err := postData(RateMyProfessorsGraphQLURL, ratingsQuery, headersQuery)
 	if err != nil {
 		fmt.Printf("error fetching ratings data: %v", err)
 		return
@@ -93,7 +95,7 @@ func (p *Professor) getProfessorTags() {
 }
 
 func getProfessorID(professorName, schoolID string) (string, error) {
-	url := fmt.Sprintf("https://www.ratemyprofessors.com/search/professors/%s?q=%s", schoolID, url.QueryEscape(professorName))
+	url := fmt.Sprintf(RateMyProfessorSearchURL, schoolID, url.QueryEscape(professorName))
 
 	resp, err := http.Get(url)
 	if err != nil {
@@ -124,7 +126,7 @@ func GetRMPInfo(professorName string) (*Professor, error) {
 	headersQuery := getHeaderQuery(professorID)
 	professorQuery := getProfessorQuery(professorID)
 
-	data, err := postData("https://www.ratemyprofessors.com/graphql", professorQuery, headersQuery)
+	data, err := postData(RateMyProfessorsGraphQLURL, professorQuery, headersQuery)
 	if err != nil {
 		return nil, fmt.Errorf("error fetching professor data: %v", err)
 	}

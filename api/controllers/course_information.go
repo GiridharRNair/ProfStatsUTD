@@ -32,7 +32,7 @@ func GetCourseInformation(c *gin.Context) {
 		"subject":       subject,
 		"course_number": courseNumber,
 		"course_name":   courseName,
-		"grades":        db.GetAggregatedGrades("", "", subject, courseNumber),
+		"grades":        db.GetAggregatedGrades("", subject, courseNumber),
 	}
 
 	c.JSON(http.StatusOK, resultData)

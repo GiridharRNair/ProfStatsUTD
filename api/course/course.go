@@ -10,25 +10,22 @@ import (
 	"unicode"
 )
 
-func isGraduateCourse(courseNumber string) bool {
+const GetTitleRegex = `<title>(.*?)\s*-\s*UT Dallas %d (Undergraduate|Graduate) Catalog - The University of Texas at Dallas</title>`
+const CourseCatalogURL = "https://catalog.utdallas.edu/%d/%s/courses/%s"
+
+func getCourseCatalogURL(subject, courseNumber string) string {
+	courseLevel := "undergraduate"
 	if len(courseNumber) > 0 && unicode.IsDigit(rune(courseNumber[0])) {
-		return int(courseNumber[0]-'0') > 4
+		courseLevel = "graduate"
 	}
-	return false
+
+	return fmt.Sprintf(CourseCatalogURL, time.Now().Year()-1, courseLevel, strings.ToLower(subject)+strings.ToLower(courseNumber))
 }
 
 func GetCourseName(subject, courseNumber string) (string, error) {
-	isGrad := isGraduateCourse(courseNumber)
+	catalogURL := getCourseCatalogURL(subject, courseNumber)
 
-	urlFormat := "https://catalog.utdallas.edu/%d/%s/courses/%s"
-	urlType := "undergraduate"
-	if isGrad {
-		urlType = "graduate"
-	}
-
-	url := fmt.Sprintf(urlFormat, time.Now().Year()-1, urlType, strings.ToLower(subject)+strings.ToLower(courseNumber))
-
-	resp, err := http.Get(url)
+	resp, err := http.Get(catalogURL)
 	if err != nil {
 		return "", err
 	}
@@ -39,7 +36,7 @@ func GetCourseName(subject, courseNumber string) (string, error) {
 		return "", err
 	}
 
-	regexString := fmt.Sprintf(`<title>(.*?)\s*-\s*UT Dallas %d (Undergraduate|Graduate) Catalog - The University of Texas at Dallas</title>`, time.Now().Year()-1)
+	regexString := fmt.Sprintf(GetTitleRegex, time.Now().Year()-1)
 	match := regexp.MustCompile(regexString).FindStringSubmatch(string(bodyBytes))
 
 	if len(match) > 1 {
