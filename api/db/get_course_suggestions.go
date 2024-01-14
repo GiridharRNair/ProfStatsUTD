@@ -7,7 +7,6 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-// Set of diverse courses to suggest if inputs are empty
 var defaultCourseSuggestions = []string{"CS 2305", "MATH 2418", "CHEM 2401", "ACCT 6305", "SPAN 2311"}
 
 func GetCourseSuggestions(professorParam, subjectParam, courseNumberParam string) ([]string, error) {
@@ -16,8 +15,8 @@ func GetCourseSuggestions(professorParam, subjectParam, courseNumberParam string
 	}
 
 	professor := "%" + strings.ReplaceAll(professorParam, " ", "%") + "%"
-	subject := "%" + subjectParam + "%"
-	courseNumber := "%" + courseNumberParam + "%"
+	subject := subjectParam + "%"
+	courseNumber := courseNumberParam + "%"
 
 	courseQuery := `
 		SELECT DISTINCT subject, catalogNumber

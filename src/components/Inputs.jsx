@@ -66,6 +66,7 @@ function Inputs({ setProfessor, setCourse, professor, course }) {
                                 onClick={() => {
                                     setProfessor("");
                                     setProfessorSuggestions(defaultTeacherSuggestions);
+                                    setCourseSuggestions(defaultCourseSuggestions);
                                 }}
                             />
                         )}
