@@ -39,6 +39,7 @@ function Inputs({ setProfessor, setCourse, professor, course }) {
                 suggestWhenEmpty={true}
                 freeSolo={true}
                 isLoading={professorLoading}
+                emptyState="Professor not found"
                 onSelectOption={(value) => {
                     setProfessor(value.item.label);
                     autocompleteValues(value.item.label, course);
@@ -72,7 +73,7 @@ function Inputs({ setProfessor, setCourse, professor, course }) {
                         )}
                     </InputRightElement>
                 </InputGroup>
-                {professorSuggestions.length > 0 && !professorLoading && (
+                {!professorLoading && (
                     <AutoCompleteList>
                         {professorSuggestions.map((professorOption, index) => (
                             <AutoCompleteItem value={professorOption} key={index}>
@@ -90,6 +91,7 @@ function Inputs({ setProfessor, setCourse, professor, course }) {
                 suggestWhenEmpty={true}
                 freeSolo={true}
                 isLoading={courseLoading}
+                emptyState={`Course(s) not found ${professor ? `for ${professor}` : ""}`}
                 onSelectOption={(value) => setCourse(value.item.label)}
             >
                 <InputGroup>
@@ -117,7 +119,7 @@ function Inputs({ setProfessor, setCourse, professor, course }) {
                         )}
                     </InputRightElement>
                 </InputGroup>
-                {courseSuggestions.length > 0 && !courseLoading && (
+                {!courseLoading && (
                     <AutoCompleteList>
                         {courseSuggestions.map((courseOption, index) => (
                             <AutoCompleteItem value={courseOption} key={index}>

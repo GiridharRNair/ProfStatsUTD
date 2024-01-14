@@ -83,9 +83,9 @@ Dockerized and deployed on the Azure Web App Service after running the Python sc
 
 ### Testing
 
-The Python script responsible for generating the SQLite database is tested using Python's built-in unit test module. To run the tests, run `python db_setup/test_db.py` or `npm run test_db`.
+The Python script responsible for generating the SQLite database is tested using Python's built-in unit test module. To run the tests, run `python db_setup/test_db.py` or `npm run test-db`.
 
-The Gin API is tested using Go tests. To run the tests, run `cd api && go test` or `npm run test_api`.
+The Gin API is tested using Go tests. To run the tests, run `cd api && go test` or `npm run test-api`.
 
 ## Local Development
 
