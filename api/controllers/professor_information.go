@@ -7,10 +7,11 @@ import (
 
 	"github.com/GiridharRNair/ProfStats-GinAPI/db"
 	"github.com/GiridharRNair/ProfStats-GinAPI/professor"
+	"github.com/GiridharRNair/ProfStats-GinAPI/utils"
 	"github.com/gin-gonic/gin"
 )
 
-const validateTeacherNameRegex = `[^a-zA-Z\s.\-]|.*\-.*\-`
+const ValidateTeacherNameRegex = `[^a-zA-Z\s.\-]|.*\-.*\-`
 
 func GetProfessorInformation(c *gin.Context) {
 	teacher := c.Query("teacher")
@@ -21,7 +22,7 @@ func GetProfessorInformation(c *gin.Context) {
 		return
 	}
 
-	if regexp.MustCompile(validateTeacherNameRegex).MatchString(teacher) {
+	if regexp.MustCompile(ValidateTeacherNameRegex).MatchString(teacher) {
 		c.JSON(http.StatusBadRequest, gin.H{"detail": "Invalid teacher name"})
 		return
 	}
@@ -38,9 +39,14 @@ func GetProfessorInformation(c *gin.Context) {
 		return
 	}
 
+	professorName := utils.ProfessorNameCorrections[professor.Name]
+	if professorName == "" {
+		professorName = professor.Name
+	}
+
 	resultData := gin.H{
 		"id":               professor.ID,
-		"name":             professor.Name,
+		"name":             professorName,
 		"department":       professor.Department,
 		"grades":           db.GetAggregatedGrades(professor.Name, subject, courseNumber),
 		"subject":          subject,

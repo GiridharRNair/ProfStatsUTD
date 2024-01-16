@@ -8,13 +8,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-var defaultProfessorSuggestions = []string{"Joycelyn Bell", "James Willson", "Stephanie Taylor", "Bentley Garrett", "Karl Sengupta"}
-
 func GetProfessorSuggestions(professorParam string) ([]string, error) {
-	if professorParam == "" {
-		return defaultProfessorSuggestions, nil
-	}
-
 	professor := "%" + strings.ReplaceAll(professorParam, " ", "%") + "%"
 
 	professorQuery := `

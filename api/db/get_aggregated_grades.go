@@ -1,9 +1,9 @@
 package db
 
 import (
-	"fmt"
 	"strings"
 
+	"github.com/GiridharRNair/ProfStats-GinAPI/utils"
 	_ "github.com/mattn/go-sqlite3"
 )
 
@@ -29,13 +29,15 @@ type GradeStruct struct {
 	NF     int `json:"nf,omitempty"`
 }
 
-func appendProfessorToSQLQuery(sqlQueryBase string, sqlParams []interface{}, rateMyProfessorName string) (string, []interface{}) {
-	if rateMyProfessorName != "" {
-		sqlQueryBase += " AND (TRIM(instructor1) LIKE ? OR TRIM(instructor1) LIKE ?)"
+func appendProfessorToSQLQuery(sqlQueryBase string, sqlParams []interface{}, professorName string) (string, []interface{}) {
+	modifiedName := utils.ProfessorNameCorrections[professorName]
+	if modifiedName != "" {
+		professorName = modifiedName
+	}
 
-		// Sometimes professor names vary between "First Last" and "Last, First" formats.
-		sqlParams = append(sqlParams, fmt.Sprintf("%%%s%%%s%%", strings.Fields(rateMyProfessorName)[0], strings.Fields(rateMyProfessorName)[1]))
-		sqlParams = append(sqlParams, fmt.Sprintf("%%%s%%%s%%", strings.Fields(rateMyProfessorName)[1], strings.Fields(rateMyProfessorName)[0]))
+	if professorName != "" {
+		sqlQueryBase += " AND TRIM(instructor1) LIKE ?"
+		sqlParams = append(sqlParams, "%"+strings.ReplaceAll(professorName, " ", "%")+"%")
 	}
 	return sqlQueryBase, sqlParams
 }
@@ -48,7 +50,7 @@ func appendCourseToSQLQuery(sqlQueryBase string, sqlParams []interface{}, subjec
 	return sqlQueryBase, sqlParams
 }
 
-func GetAggregatedGrades(rateMyProfessorName, subject, courseNumber string) GradeStruct {
+func GetAggregatedGrades(professorName, subject, courseNumber string) GradeStruct {
 	sqlQueryBase := `
         SELECT 
             SUM(aPlus) as APlus, 
@@ -75,7 +77,7 @@ func GetAggregatedGrades(rateMyProfessorName, subject, courseNumber string) Grad
 
 	sqlParams := []interface{}{}
 
-	sqlQueryBase, sqlParams = appendProfessorToSQLQuery(sqlQueryBase, sqlParams, rateMyProfessorName)
+	sqlQueryBase, sqlParams = appendProfessorToSQLQuery(sqlQueryBase, sqlParams, professorName)
 	sqlQueryBase, sqlParams = appendCourseToSQLQuery(sqlQueryBase, sqlParams, subject, courseNumber)
 
 	var aggregatedData GradeStruct

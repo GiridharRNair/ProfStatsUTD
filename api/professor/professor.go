@@ -95,6 +95,11 @@ func (p *Professor) getProfessorTags() {
 }
 
 func getProfessorID(professorName, schoolID string) (string, error) {
+	// Temporary fix for Scott Dollinger
+	if professorName == "Scott Dollinger" {
+		return "2523207", nil
+	}
+
 	url := fmt.Sprintf(RateMyProfessorSearchURL, schoolID, url.QueryEscape(professorName))
 
 	resp, err := http.Get(url)

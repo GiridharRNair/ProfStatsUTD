@@ -4,12 +4,18 @@ import (
 	"net/http"
 
 	"github.com/GiridharRNair/ProfStats-GinAPI/db"
+	"github.com/GiridharRNair/ProfStats-GinAPI/utils"
 	"github.com/gin-gonic/gin"
 )
 
 func SuggestionsSearchQuery(c *gin.Context) {
 	teacher := c.Query("teacher")
 	course := c.Query("course")
+
+	if teacher == "" && course == "" {
+		c.JSON(http.StatusOK, gin.H{"professors": utils.DefaultProfessorSuggestions, "courses": utils.DefaultCourseSuggestions})
+		return
+	}
 
 	defaultSuggestions := make(map[string][]string)
 

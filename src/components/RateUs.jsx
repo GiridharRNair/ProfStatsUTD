@@ -46,7 +46,7 @@ function RateUs({ rateUsModalOpen, setRateUsModalOpen }) {
 }
 
 RateUs.propTypes = {
-    rateUsModalOpen: PropTypes.bool.isRequired,
+    rateUsModalOpen: PropTypes.bool,
     setRateUsModalOpen: PropTypes.func.isRequired,
 };
 

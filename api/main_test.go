@@ -1,15 +1,99 @@
 package main
 
 import (
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"testing"
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 )
 
-const professorInfoExpectedJSON = `{
+const timothyFarageExpectedJSON = `{
+	"course_number": "",
+	"department": "Computer Science",
+	"difficulty": 2.1,
+	"grades": {
+		"aPlus": 921,
+		"a": 1075,
+		"aMinus": 264,
+		"bPlus": 226,
+		"b": 292,
+		"bMinus": 77,
+		"cPlus": 60,
+		"c": 129,
+		"cMinus": 44,
+		"dPlus": 26,
+		"d": 34,
+		"dMinus": 25,
+		"f": 46,
+		"cr": 29,
+		"nc": 5,
+		"w": 40
+	},
+	"id": "138341",
+	"name": "Timothy Farage",
+	"rating": 4.2,
+	"subject": "",
+	"tags": [
+		"Hilarious",
+		"Respected",
+		"Graded By Few Things",
+		"Amazing Lectures",
+		"Test Heavy"
+	],
+	"would_take_again": 81
+}`
+
+// This professor testcase may need to be updated when there are new data
+const scottDollingerExpectedJSON = `{
+	"course_number": "",
+	"department": "Computer Science",
+	"difficulty": 2.3,
+	"grades": {
+		"aPlus": 469,
+		"a": 601,
+		"aMinus": 331,
+		"bPlus": 173,
+		"b": 166,
+		"bMinus": 86,
+		"cPlus": 64,
+		"c": 49,
+		"cMinus": 21,
+		"dPlus": 1,
+		"d": 27,
+		"f": 108,
+		"cr": 16,
+		"nc": 15,
+		"w": 49
+	},
+	"id": "2523207",
+	"name": "Scott Dollinger",
+	"rating": 3.8,
+	"subject": "",
+	"would_take_again": 86
+}`
+
+const sueBrookshireExpectedJSON = `{
+	"course_number": "",
+	"department": "Education",
+	"difficulty": 2,
+	"grades": {
+		"f": 10,
+		"p": 357,
+		"w": 3
+	},
+	"id": "1588418",
+	"name": "Susan Brookshire",
+	"rating": 4.5,
+	"subject": "",
+	"tags": null,
+	"would_take_again": -1
+}`
+
+const johnDoeProfessorInfoExpectedJSON = `{
 	"course_number": "6399",
 	"department": "Accounting",
 	"difficulty": 0,
@@ -55,11 +139,34 @@ func TestGetProfessorInformation(t *testing.T) {
 	assert.Equal(t, http.StatusBadRequest, w.Code)
 	assert.JSONEq(t, `{"detail": "Invalid course name"}`, w.Body.String())
 
+	req = httptest.NewRequest("GET", "/professor_info?teacher="+url.QueryEscape("Timothy Farage"), nil)
+	w = httptest.NewRecorder()
+	router.ServeHTTP(w, req)
+	assert.Equal(t, http.StatusOK, w.Code)
+	assert.JSONEq(t, timothyFarageExpectedJSON, w.Body.String())
+
+	req = httptest.NewRequest("GET", "/professor_info?teacher=Scott%20Dollinger", nil)
+	w = httptest.NewRecorder()
+	router.ServeHTTP(w, req)
+	assert.Equal(t, http.StatusOK, w.Code)
+	var expected, actual map[string]interface{}
+	json.Unmarshal([]byte(scottDollingerExpectedJSON), &expected)
+	json.Unmarshal([]byte(w.Body.Bytes()), &actual)
+	for key := range expected {
+		assert.Equal(t, expected[key], actual[key])
+	}
+
+	req = httptest.NewRequest("GET", "/professor_info?teacher=Sue%20Brookshire", nil)
+	w = httptest.NewRecorder()
+	router.ServeHTTP(w, req)
+	assert.Equal(t, http.StatusOK, w.Code)
+	assert.JSONEq(t, sueBrookshireExpectedJSON, w.Body.String())
+
 	req = httptest.NewRequest("GET", "/professor_info?teacher=John%20Doe&course=LATS6399", nil)
 	w = httptest.NewRecorder()
 	router.ServeHTTP(w, req)
 	assert.Equal(t, http.StatusOK, w.Code)
-	assert.JSONEq(t, professorInfoExpectedJSON, w.Body.String())
+	assert.JSONEq(t, johnDoeProfessorInfoExpectedJSON, w.Body.String())
 }
 
 const courseInfoExpectedJSON = `{

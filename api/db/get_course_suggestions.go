@@ -7,13 +7,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-var defaultCourseSuggestions = []string{"CS 2305", "MATH 2418", "CHEM 2401", "ACCT 6305", "SPAN 2311"}
-
 func GetCourseSuggestions(professorParam, subjectParam, courseNumberParam string) ([]string, error) {
-	if subjectParam == "" && courseNumberParam == "" && professorParam == "" {
-		return defaultCourseSuggestions, nil
-	}
-
 	professor := "%" + strings.ReplaceAll(professorParam, " ", "%") + "%"
 	subject := subjectParam + "%"
 	courseNumber := courseNumberParam + "%"

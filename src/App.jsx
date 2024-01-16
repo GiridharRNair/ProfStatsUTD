@@ -89,12 +89,10 @@ function App() {
             return;
         }
 
-        if (formattedCourseName && professorName.trim()) {
+        if (professorName.trim()) {
             await getProfessorData(professorName.trim(), formattedCourseName);
         } else if (formattedCourseName) {
             await getCourseData(formattedCourseName);
-        } else if (professorName.trim()) {
-            await getProfessorData(professorName.trim(), "");
         } else {
             showErrorToast("Please enter either a course or a professor");
         }
