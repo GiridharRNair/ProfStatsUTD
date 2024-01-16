@@ -1,8 +1,3 @@
-# This GitHub Actions workflow automates the process of building, pushing, and deploying a containerized web application to an 
-# Azure Web App. It starts by checking out the repository code and setting up Docker Buildx. Then, it logs in to the Azure 
-# Container Registry, builds and pushes the container image to the registry, and deploys the container image to the Azure Web App's 
-# production slot.
-
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
@@ -24,40 +19,19 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
 
-    - name: Run create_db.py
-      run: python db_setup/create_db.py
-    
-    - name: Run test_db.py
-      run: python db_setup/test_db.py  
-      continue-on-error: false
-
-    - name: Set up Go
-      uses: actions/setup-go@v4
-      with:
-        go-version: '1.21.x'
-    - name: Install dependencies
-      working-directory: api
-      run: go get .
-    - name: Test with Go
-      working-directory: api
-      run: go test -v ./...
-      continue-on-error: false
-
-
     - name: Log in to registry
       uses: docker/login-action@v2
       with:
         registry: https://profstatsutd.azurecr.io/
-        username: ${{ secrets.AzureAppService_ContainerUsername_dad78c03511a49a890d56e29b1d04379 }}
-        password: ${{ secrets.AzureAppService_ContainerPassword_8ef8365db6a94ff0bbdca4fb5bff7308 }}
+        username: ${{ secrets.AzureAppService_ContainerUsername_2fb3c42f9bb3480fb330b720e0712f47 }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_19fcb5b141e34c0c8519b1ed64186dc3 }}
 
     - name: Build and push container image to registry
       uses: docker/build-push-action@v3
       with:
-        context: api
         push: true
-        tags: profstatsutd.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_dad78c03511a49a890d56e29b1d04379 }}/profstatsutd:${{ github.sha }}
-        file: api/Dockerfile
+        tags: profstatsutd.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_2fb3c42f9bb3480fb330b720e0712f47 }}/profstatsutd/profstatsutd:${{ github.sha }}
+        file: ./Dockerfile
 
   deploy:
     runs-on: ubuntu-latest
@@ -73,5 +47,5 @@ jobs:
       with:
         app-name: 'profstatsutd'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_37720a23126a43768dde343a28641880 }}
-        images: 'profstatsutd.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_dad78c03511a49a890d56e29b1d04379 }}/profstatsutd:${{ github.sha }}'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_f299f533dbac46e79203811d099b1c21 }}
+        images: 'profstatsutd.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_2fb3c42f9bb3480fb330b720e0712f47 }}/profstatsutd/profstatsutd:${{ github.sha }}'
