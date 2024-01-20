@@ -31,7 +31,7 @@ function ProfResults({ professorInfo }) {
     const UTDProfileUrl = `https://profiles.utdallas.edu/browse?search=${name.replace(" ", "+")}`;
 
     return (
-        <VStack width={300}>
+        <VStack width={315}>
             <ChakraTooltip label="Click for more information" placement="bottom">
                 <Button
                     fontSize="lg"
@@ -41,6 +41,7 @@ function ProfResults({ professorInfo }) {
                     onClick={onOpen}
                     onFocus={(e) => e.preventDefault()}
                     _hover={{ color: "#3182CE" }}
+                    pt={1}
                 >
                     {name}
                 </Button>

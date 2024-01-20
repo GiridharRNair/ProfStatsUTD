@@ -50,7 +50,7 @@ function LookupForm({ isCompareForm }) {
             localStorage.setItem(`LastInputData${isCompareForm ? "Compare" : ""}`, JSON.stringify(ratingsResponse.data));
 
             if (Object.keys(ratingsResponse.data.grades).length === 0) {
-                showErrorToast("No grade distribution from the specified query");
+                showErrorToast("No grade distribution from specified query");
             }
         } catch (error) {
             showErrorToast(error.response?.data.detail);
@@ -81,7 +81,7 @@ function LookupForm({ isCompareForm }) {
     };
 
     return (
-        <VStack pt={3} width={300} align={"center"}>
+        <VStack pt={3} width={290} align={"center"}>
             <Inputs setProfessor={setProfessorName} setCourse={setCourse} professor={professorName} course={course} />
 
             <Button onClick={handleSubmit} isLoading={loading} height={8} fontSize={"sm"}>

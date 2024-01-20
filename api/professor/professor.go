@@ -42,6 +42,8 @@ func (p *Professor) setTags(tagsFrequency map[string]int) {
 		return tagsFrequency[sortedTags[i]] > tagsFrequency[sortedTags[j]]
 	})
 
+	sort.Strings(sortedTags)
+
 	if len(sortedTags) < 5 {
 		p.Tags = sortedTags
 	} else {

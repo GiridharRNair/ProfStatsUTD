@@ -28,7 +28,7 @@ function Inputs({ setProfessor, setCourse, professor, course }) {
         }
     };
 
-    const debouncedAutocompleteValues = useMemo(() => _debounce((professor, course) => autocompleteValues(professor, course), 250), []);
+    const debouncedAutocompleteValues = useMemo(() => _debounce((professor, course) => autocompleteValues(professor, course), 200), []);
 
     return (
         <VStack width={325}>

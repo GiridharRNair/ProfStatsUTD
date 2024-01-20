@@ -26,20 +26,24 @@ function GradesGraph({ grades }) {
                 mode: "nearest",
                 intersect: true,
                 backgroundColor: useColorModeValue("rgba(240, 240, 240, 0.8)", "rgba(0, 0, 0, 0.8)"),
+                titleColor: useColorModeValue("black", "white"),
+                bodyColor: useColorModeValue("black", "white"),
                 callbacks: {
                     label: (context) => [
                         `Students: ${context.parsed.y}`,
                         `Percentage: ${((context.parsed.y / Object.values(grades).reduce((acc, count) => acc + count, 0)) * 100).toFixed(2)}%`,
                     ],
                 },
-                titleColor: useColorModeValue("black", "white"),
-                bodyColor: useColorModeValue("black", "white"),
             },
         },
         scales: {
             x: {
                 grid: { color: useColorModeValue("rgb(245, 245, 245)", "#2D3748") },
-                ticks: { color: useColorModeValue("#2D3748", "white") },
+                ticks: {
+                    color: useColorModeValue("#2D3748", "white"),
+                    maxRotation: 0,
+                    maxTicksLimit: 12,
+                },
             },
             y: {
                 grid: { color: useColorModeValue("rgb(245, 245, 245)", "#2D3748") },

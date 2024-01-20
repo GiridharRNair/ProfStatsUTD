@@ -7,9 +7,15 @@ import (
 
 	"github.com/GiridharRNair/ProfStats-GinAPI/db"
 	"github.com/GiridharRNair/ProfStats-GinAPI/professor"
-	"github.com/GiridharRNair/ProfStats-GinAPI/utils"
 	"github.com/gin-gonic/gin"
 )
+
+// Edge case professors with different names in the database than on RateMyProfessor
+var professorNameCorrections = map[string]string{
+	"Ding-Zhu Du":           "Ding Du",
+	"Sue Brookshire":        "Susan Brookshire",
+	"Chitturi Bhadrachalam": "Bhadrachalam Chitturi",
+}
 
 const ValidateTeacherNameRegex = `[^a-zA-Z\s.\-]|.*\-.*\-`
 
@@ -39,7 +45,7 @@ func GetProfessorInformation(c *gin.Context) {
 		return
 	}
 
-	professorName := utils.ProfessorNameCorrections[professor.Name]
+	professorName := professorNameCorrections[professor.Name]
 	if professorName == "" {
 		professorName = professor.Name
 	}
@@ -48,7 +54,7 @@ func GetProfessorInformation(c *gin.Context) {
 		"id":               professor.ID,
 		"name":             professorName,
 		"department":       professor.Department,
-		"grades":           db.GetAggregatedGrades(professor.Name, subject, courseNumber),
+		"grades":           db.GetAggregatedGrades(professorName, subject, courseNumber),
 		"subject":          subject,
 		"course_number":    courseNumber,
 		"rating":           professor.Rating,

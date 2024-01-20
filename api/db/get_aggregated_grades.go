@@ -3,7 +3,6 @@ package db
 import (
 	"strings"
 
-	"github.com/GiridharRNair/ProfStats-GinAPI/utils"
 	_ "github.com/mattn/go-sqlite3"
 )
 
@@ -30,11 +29,6 @@ type GradeStruct struct {
 }
 
 func appendProfessorToSQLQuery(sqlQueryBase string, sqlParams []interface{}, professorName string) (string, []interface{}) {
-	modifiedName := utils.ProfessorNameCorrections[professorName]
-	if modifiedName != "" {
-		professorName = modifiedName
-	}
-
 	if professorName != "" {
 		sqlQueryBase += " AND TRIM(instructor1) LIKE ?"
 		sqlParams = append(sqlParams, "%"+strings.ReplaceAll(professorName, " ", "%")+"%")

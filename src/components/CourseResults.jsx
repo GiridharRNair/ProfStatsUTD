@@ -27,25 +27,29 @@ function CourseResults({ courseInfo }) {
     };
 
     return (
-        <VStack width={325}>
-            <ChakraTooltip label="Click for more information" placement="bottom">
-                <Button
-                    fontSize="lg"
-                    _hover={{ color: "#3182CE" }}
-                    onClick={onOpen}
-                    variant="link"
-                    height={course_name.length < 38 ? 6 : 10}
-                    onFocus={(e) => e.preventDefault()}
-                    fontWeight="normal"
-                    textColor={useColorModeValue("black", "white")}
-                    style={{
-                        whiteSpace: "normal",
-                        wordWrap: "break-word",
-                    }}
-                >
-                    {course_name}
-                </Button>
-            </ChakraTooltip>
+        <VStack width={315}>
+            <VStack py={course_name.length < 38 ? 3 : 1}>
+                <ChakraTooltip label="Click for more information" placement="bottom">
+                    <Button
+                        fontSize="lg"
+                        _hover={{ color: "#3182CE" }}
+                        onClick={onOpen}
+                        variant="link"
+                        height={course_name.length < 38 ? 6 : 10}
+                        onFocus={(e) => e.preventDefault()}
+                        fontWeight="normal"
+                        textColor={useColorModeValue("black", "white")}
+                        style={{
+                            whiteSpace: "normal",
+                            wordWrap: "break-word",
+                        }}
+                    >
+                        {course_name}
+                    </Button>
+                </ChakraTooltip>
+            </VStack>
+
+            <GradesGraph grades={grades} />
 
             <Drawer isOpen={isOpen} onClose={onClose} placement="bottom" size="md">
                 <DrawerOverlay />
@@ -82,8 +86,6 @@ function CourseResults({ courseInfo }) {
                     </DrawerBody>
                 </DrawerContent>
             </Drawer>
-
-            <GradesGraph grades={grades} />
         </VStack>
     );
 }

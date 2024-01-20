@@ -11,6 +11,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+// This professor is retired, so the data may not be updated as often
 const timothyFarageExpectedJSON = `{
 	"course_number": "",
 	"department": "Computer Science",
@@ -38,11 +39,11 @@ const timothyFarageExpectedJSON = `{
 	"rating": 4.2,
 	"subject": "",
 	"tags": [
-		"Hilarious",
-		"Respected",
-		"Graded By Few Things",
+		"Accessible Outside Class",
 		"Amazing Lectures",
-		"Test Heavy"
+		"Amazing Lectures ",
+		"Caring",
+		"Clear Grading Criteria"
 	],
 	"would_take_again": 81
 }`
@@ -69,6 +70,13 @@ const scottDollingerExpectedJSON = `{
 		"nc": 15,
 		"w": 49
 	},
+	"tags": [
+		"Accessible Outside Class",
+		"Amazing Lectures",
+		"Amazing Lectures ",
+		"Beware Of Pop Quizzes",
+		"Caring"
+	],
 	"id": "2523207",
 	"name": "Scott Dollinger",
 	"rating": 3.9,

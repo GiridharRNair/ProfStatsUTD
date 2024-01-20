@@ -2,7 +2,6 @@ package main
 
 import (
 	"net/http"
-	"strings"
 
 	"github.com/GiridharRNair/ProfStats-GinAPI/controllers"
 	"github.com/gin-gonic/gin"
@@ -18,7 +17,7 @@ func allowedOrigins() gin.HandlerFunc {
 		}
 
 		origin := c.GetHeader("Origin")
-		if !strings.HasPrefix(origin, "http://localhost") && !strings.HasPrefix(origin, "chrome-extension://") {
+		if origin != "chrome-extension://doilmgfedjlpepeaolcfpdmkehecdaff" {
 			c.JSON(http.StatusForbidden, gin.H{"detail": "Not allowed"})
 			c.Abort()
 		}
