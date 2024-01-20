@@ -31,7 +31,7 @@ function Inputs({ setProfessor, setCourse, professor, course }) {
     const debouncedAutocompleteValues = useMemo(() => _debounce((professor, course) => autocompleteValues(professor, course), 250), []);
 
     return (
-        <VStack pt={1} width={325}>
+        <VStack width={325}>
             <AutoComplete
                 openOnFocus
                 closeOnSelect={true}
@@ -46,7 +46,7 @@ function Inputs({ setProfessor, setCourse, professor, course }) {
                 }}
             >
                 <InputGroup>
-                    <Tooltip placement="top" label="Ignore middle names">
+                    <Tooltip placement="top" label="Ignore prefixes, suffixes, and middle names" fontSize={"xs"}>
                         <AutoCompleteInput
                             height={8}
                             placeholder="Enter Teacher Name ex. Jason Smith"
@@ -113,7 +113,7 @@ function Inputs({ setProfessor, setCourse, professor, course }) {
                                 mb={2}
                                 onClick={() => {
                                     setCourse("");
-                                    autocompleteValues(professor, "");
+                                    professor ? autocompleteValues(professor, "") : setCourseSuggestions(defaultCourseSuggestions);
                                 }}
                             />
                         )}

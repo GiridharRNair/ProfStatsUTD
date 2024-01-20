@@ -43,7 +43,8 @@ function GradesGraph({ grades }) {
             },
             y: {
                 grid: { color: useColorModeValue("rgb(245, 245, 245)", "#2D3748") },
-                ticks: { color: useColorModeValue("#2D3748", "white") },
+                ticks: { display: false },
+                border: { display: false },
             },
         },
     };

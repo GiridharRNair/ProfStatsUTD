@@ -1,0 +1,101 @@
+import { useState, useEffect } from "react";
+import { Button, useToast, VStack } from "@chakra-ui/react";
+import axios from "axios";
+import PropTypes from "prop-types";
+import Inputs from "./Inputs.jsx";
+import ProfResults from "./ProfessorResults.jsx";
+import CourseResults from "./CourseResults.jsx";
+import { timothyFarage, scottDollinger } from "../../utils/defaults.js";
+
+const API_URL = import.meta.env.DEV ? "http://localhost:80" : import.meta.env.VITE_API_URL;
+
+function LookupForm({ isCompareForm }) {
+    const toast = useToast();
+    const [course, setCourse] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [professorName, setProfessorName] = useState("");
+    const [lastInputType, setLastInputType] = useState(null);
+    const [lastInputData, setLastInputData] = useState(null);
+
+    useEffect(() => {
+        const storedLastInputType = localStorage.getItem(`LastInputType${isCompareForm ? "Compare" : ""}`);
+        const storedLastInputData = localStorage.getItem(`LastInputData${isCompareForm ? "Compare" : ""}`);
+
+        if (storedLastInputType && storedLastInputData) {
+            setLastInputType(storedLastInputType);
+            setLastInputData(JSON.parse(storedLastInputData));
+        } else {
+            setLastInputType("professor");
+            setLastInputData(isCompareForm ? scottDollinger : timothyFarage);
+        }
+    }, [isCompareForm]);
+
+    const showErrorToast = (description) => {
+        toast({
+            description: description,
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+        });
+    };
+
+    const getData = async (url, type) => {
+        setLoading(true);
+
+        try {
+            const ratingsResponse = await axios.get(url);
+            setLastInputType(type);
+            setLastInputData(ratingsResponse.data);
+            localStorage.setItem(`LastInputType${isCompareForm ? "Compare" : ""}`, type);
+            localStorage.setItem(`LastInputData${isCompareForm ? "Compare" : ""}`, JSON.stringify(ratingsResponse.data));
+
+            if (Object.keys(ratingsResponse.data.grades).length === 0) {
+                showErrorToast("No grade distribution from the specified query");
+            }
+        } catch (error) {
+            showErrorToast(error.response?.data.detail);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleSubmit = async () => {
+        if (professorName.match(/[^a-zA-Z\s.-]|.*-.*-/)) {
+            showErrorToast("Invalid teacher name");
+            return;
+        }
+
+        const formattedCourseName = course.replace(/\s/g, "").toUpperCase().trim();
+        if (formattedCourseName && !(formattedCourseName.match("([a-zA-Z]+)([0-9Vv]+)")?.[2]?.length === 4)) {
+            showErrorToast("Invalid course name");
+            return;
+        }
+
+        if (professorName.trim()) {
+            await getData(`${API_URL}/professor_info?teacher=${professorName.trim()}&course=${formattedCourseName}`, "professor");
+        } else if (formattedCourseName) {
+            await getData(`${API_URL}/course_info?course=${formattedCourseName}`, "course");
+        } else {
+            showErrorToast("Please enter either a course or a professor");
+        }
+    };
+
+    return (
+        <VStack pt={3} width={300} align={"center"}>
+            <Inputs setProfessor={setProfessorName} setCourse={setCourse} professor={professorName} course={course} />
+
+            <Button onClick={handleSubmit} isLoading={loading} height={8} fontSize={"sm"}>
+                Submit
+            </Button>
+
+            {lastInputType === "professor" && lastInputData && <ProfResults professorInfo={lastInputData} />}
+            {lastInputType === "course" && lastInputData && <CourseResults courseInfo={lastInputData} />}
+        </VStack>
+    );
+}
+
+LookupForm.propTypes = {
+    isCompareForm: PropTypes.bool,
+};
+
+export default LookupForm;

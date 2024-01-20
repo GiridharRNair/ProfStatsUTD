@@ -2,7 +2,7 @@
     "name": "profstatsutd",
     "description": "This extension offers a user-friendly interface for accessing aggregated grades and professor ratings effortlessly.",
     "private": true,
-    "version": "1.0.9",
+    "version": "1.1.0",
     "type": "module",
     "scripts": {
         "install-go-packages": "cd api && go mod download",
@@ -12,10 +12,10 @@
         "test-api": "npm run create-db && cd api && go test",
         "api": "npm run create-db && cd api && nodemon --exec go run main.go --signal SIGTERM",
         "start-vite": "vite",
-        "dev": "concurrently \"vite\" \"npm run api\"",
+        "dev": "concurrently \"npm run start-vite\" \"npm run api\"",
         "build": "vite build",
         "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-        "format": "prettier --write 'src/**/*.{js,jsx}'",
+        "format": "prettier --write 'src/**/*.{js,jsx}' 'utils/**/*.{js,jsx}'",
         "preview": "vite preview"
     },
     "dependencies": {

@@ -51,7 +51,7 @@ const timothyFarageExpectedJSON = `{
 const scottDollingerExpectedJSON = `{
 	"course_number": "",
 	"department": "Computer Science",
-	"difficulty": 2.3,
+	"difficulty": 2.4,
 	"grades": {
 		"aPlus": 469,
 		"a": 601,
@@ -71,7 +71,7 @@ const scottDollingerExpectedJSON = `{
 	},
 	"id": "2523207",
 	"name": "Scott Dollinger",
-	"rating": 3.8,
+	"rating": 3.9,
 	"subject": "",
 	"would_take_again": 86
 }`
@@ -219,7 +219,7 @@ const defaultSuggestionsExpectedInfo = `{
 		"SPAN 2311"
 	],
 	"professors": [
-		"Joycelyn Bell",
+		"Regina Ybarra",
 		"James Willson",
 		"Stephanie Taylor",
 		"Bentley Garrett",

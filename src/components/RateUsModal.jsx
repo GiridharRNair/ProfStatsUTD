@@ -1,8 +1,11 @@
+import { useState } from "react";
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, Button, Image, VStack, Icon, Heading, Center } from "@chakra-ui/react";
 import { FcFeedback } from "react-icons/fc";
 import PropTypes from "prop-types";
 
-function RateUs({ rateUsModalOpen, setRateUsModalOpen }) {
+function RateUsModal() {
+    const [rateUsModalOpen, setRateUsModalOpen] = useState(localStorage.getItem("LastInputData") && !localStorage.getItem("hasRated") && Math.random() < 0.1);
+
     return (
         <Modal isOpen={rateUsModalOpen} onClose={() => setRateUsModalOpen(false)} size="md">
             <ModalOverlay />
@@ -15,7 +18,7 @@ function RateUs({ rateUsModalOpen, setRateUsModalOpen }) {
                             Share your thoughts! Help us improve by leaving a review or filling out the feedback form. Your input matters!
                         </Heading>
                     </Center>
-                    <VStack>
+                    <VStack pb={3}>
                         <Button
                             leftIcon={<Icon as={FcFeedback} boxSize={6} />}
                             onClick={() => {
@@ -45,9 +48,9 @@ function RateUs({ rateUsModalOpen, setRateUsModalOpen }) {
     );
 }
 
-RateUs.propTypes = {
+RateUsModal.propTypes = {
     rateUsModalOpen: PropTypes.bool,
     setRateUsModalOpen: PropTypes.func.isRequired,
 };
 
-export default RateUs;
+export default RateUsModal;

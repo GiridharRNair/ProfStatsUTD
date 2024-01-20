@@ -31,12 +31,11 @@ function ProfResults({ professorInfo }) {
     const UTDProfileUrl = `https://profiles.utdallas.edu/browse?search=${name.replace(" ", "+")}`;
 
     return (
-        <VStack width={325}>
+        <VStack width={300}>
             <ChakraTooltip label="Click for more information" placement="bottom">
                 <Button
                     fontSize="lg"
                     variant={"link"}
-                    height={6}
                     fontWeight={"normal"}
                     textColor={useColorModeValue("black", "white")}
                     onClick={onOpen}
@@ -48,6 +47,61 @@ function ProfResults({ professorInfo }) {
             </ChakraTooltip>
 
             <Text fontSize="md">{department}</Text>
+
+            {tags && (
+                <Wrap justify="center" spacing={"5px"}>
+                    {tags.map((tag, index) => (
+                        <WrapItem key={index}>
+                            <Tag variant="outline" fontSize="9px" size="sm">
+                                {tag}
+                            </Tag>
+                        </WrapItem>
+                    ))}
+                </Wrap>
+            )}
+
+            <HStack w={250} pb={2}>
+                <VStack w={15}>
+                    <Text>Quality</Text>
+                    <CircularProgress
+                        max={5}
+                        size="55px"
+                        thickness="10px"
+                        value={rating === 0 ? -1 : Math.max(0, rating)}
+                        color={`hsl(${(Math.max(0, rating) / 5) * 100}, 90%, 50%)`}
+                    >
+                        <CircularProgressLabel>{rating < 0 ? "N/A" : rating}</CircularProgressLabel>
+                    </CircularProgress>
+                </VStack>
+                <Spacer />
+                <VStack w={15}>
+                    <Text>Difficulty</Text>
+                    <CircularProgress
+                        max={5}
+                        size="55px"
+                        thickness="10px"
+                        value={difficulty === 0 ? -1 : Math.max(0, difficulty)}
+                        color={`hsl(${((5 - Math.max(0, difficulty)) / 5) * 100}, 90%, 50%)`}
+                    >
+                        <CircularProgressLabel>{difficulty < 0 ? "N/A" : difficulty}</CircularProgressLabel>
+                    </CircularProgress>
+                </VStack>
+                <Spacer />
+                <VStack w={15}>
+                    <Text>Enjoyment</Text>
+                    <CircularProgress
+                        max={100}
+                        size="55px"
+                        thickness="10px"
+                        value={would_take_again === 0 ? -1 : Math.max(0, would_take_again)}
+                        color={`hsl(${would_take_again}, 90%, 50%)`}
+                    >
+                        <CircularProgressLabel>{would_take_again < 0 ? "N/A" : would_take_again}</CircularProgressLabel>
+                    </CircularProgress>
+                </VStack>
+            </HStack>
+
+            <GradesGraph grades={grades} />
 
             <Drawer isOpen={isOpen} onClose={onClose} placement="bottom" size="md">
                 <DrawerOverlay />
@@ -92,61 +146,6 @@ function ProfResults({ professorInfo }) {
                     </DrawerBody>
                 </DrawerContent>
             </Drawer>
-
-            {tags && (
-                <Wrap justify={"center"}>
-                    {tags.map((tag, index) => (
-                        <WrapItem key={index}>
-                            <Tag size="sm" variant="outline">
-                                {tag}
-                            </Tag>
-                        </WrapItem>
-                    ))}
-                </Wrap>
-            )}
-
-            <HStack w={250}>
-                <VStack w={15}>
-                    <Text>Quality</Text>
-                    <CircularProgress
-                        max={5}
-                        size="55px"
-                        thickness="10px"
-                        value={rating === 0 ? -1 : Math.max(0, rating)}
-                        color={`hsl(${(Math.max(0, rating) / 5) * 100}, 90%, 50%)`}
-                    >
-                        <CircularProgressLabel>{rating < 0 ? "N/A" : rating}</CircularProgressLabel>
-                    </CircularProgress>
-                </VStack>
-                <Spacer />
-                <VStack w={15}>
-                    <Text>Difficulty</Text>
-                    <CircularProgress
-                        max={5}
-                        size="55px"
-                        thickness="10px"
-                        value={difficulty === 0 ? -1 : Math.max(0, difficulty)}
-                        color={`hsl(${((5 - Math.max(0, difficulty)) / 5) * 100}, 90%, 50%)`}
-                    >
-                        <CircularProgressLabel>{difficulty < 0 ? "N/A" : difficulty}</CircularProgressLabel>
-                    </CircularProgress>
-                </VStack>
-                <Spacer />
-                <VStack w={15}>
-                    <Text>Enjoyment</Text>
-                    <CircularProgress
-                        max={100}
-                        size="55px"
-                        thickness="10px"
-                        value={would_take_again === 0 ? -1 : Math.max(0, would_take_again)}
-                        color={`hsl(${would_take_again}, 90%, 50%)`}
-                    >
-                        <CircularProgressLabel>{would_take_again < 0 ? "N/A" : would_take_again}</CircularProgressLabel>
-                    </CircularProgress>
-                </VStack>
-            </HStack>
-
-            <GradesGraph grades={grades} />
         </VStack>
     );
 }

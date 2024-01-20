@@ -42,7 +42,7 @@ export const colorMap = {
     NF: "rgb(102, 102, 102)",
 };
 
-export const defaultTeacher = {
+export const timothyFarage = {
     course_number: "",
     department: "Computer Science",
     difficulty: 2.1,
@@ -72,6 +72,35 @@ export const defaultTeacher = {
     would_take_again: 81,
 };
 
-export const defaultTeacherSuggestions = ["Joycelyn Bell", "James Willson", "Stephanie Taylor", "Bentley Garrett", "Karl Sengupta"];
+export const scottDollinger = {
+    course_number: "",
+    department: "Computer Science",
+    difficulty: 2.4,
+    grades: {
+        aPlus: 469,
+        a: 601,
+        aMinus: 331,
+        bPlus: 173,
+        b: 166,
+        bMinus: 86,
+        cPlus: 64,
+        c: 49,
+        cMinus: 21,
+        dPlus: 1,
+        d: 27,
+        f: 108,
+        cr: 16,
+        nc: 15,
+        w: 49,
+    },
+    id: "2523207",
+    name: "Scott Dollinger",
+    rating: 3.9,
+    subject: "",
+    tags: ["Clear Grading Criteria", "Caring", "Respected", "Extra Credit", "Accessible Outside Class"],
+    would_take_again: 86,
+};
+
+export const defaultTeacherSuggestions = ["Regina Ybarra", "James Willson", "Stephanie Taylor", "Bentley Garrett", "Karl Sengupta"];
 
 export const defaultCourseSuggestions = ["CS 2305", "MATH 2418", "CHEM 2401", "ACCT 6305", "SPAN 2311"];

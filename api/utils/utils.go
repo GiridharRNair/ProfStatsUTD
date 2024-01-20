@@ -7,6 +7,6 @@ var ProfessorNameCorrections = map[string]string{
 	"Chitturi Bhadrachalam": "Bhadrachalam Chitturi",
 }
 
-var DefaultProfessorSuggestions = []string{"Joycelyn Bell", "James Willson", "Stephanie Taylor", "Bentley Garrett", "Karl Sengupta"}
+var DefaultProfessorSuggestions = []string{"Regina Ybarra", "James Willson", "Stephanie Taylor", "Bentley Garrett", "Karl Sengupta"}
 
 var DefaultCourseSuggestions = []string{"CS 2305", "MATH 2418", "CHEM 2401", "ACCT 6305", "SPAN 2311"}
