@@ -32,3 +32,5 @@ go.work
 */venv
 
 */__pycache__
+
+utdgrades.db
