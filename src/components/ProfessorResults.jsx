@@ -32,7 +32,7 @@ function ProfResults({ professorInfo }) {
 
     return (
         <VStack width={315}>
-            <ChakraTooltip label="Click for more information" placement="bottom">
+            <ChakraTooltip label="Click for more information" placement="bottom" hasArrow mt={2}>
                 <Button
                     fontSize="lg"
                     variant={"link"}
@@ -41,7 +41,9 @@ function ProfResults({ professorInfo }) {
                     onClick={onOpen}
                     onFocus={(e) => e.preventDefault()}
                     _hover={{ color: "#3182CE" }}
-                    pt={1}
+                    height={5}
+                    pt={3}
+                    pb={2}
                 >
                     {name}
                 </Button>
@@ -53,7 +55,7 @@ function ProfResults({ professorInfo }) {
                 <Wrap justify="center" spacing={"5px"}>
                     {tags.map((tag, index) => (
                         <WrapItem key={index}>
-                            <Tag variant="outline" fontSize="9px" size="sm">
+                            <Tag variant="outline" fontSize={"10px"} size="sm">
                                 {tag}
                             </Tag>
                         </WrapItem>
@@ -61,7 +63,7 @@ function ProfResults({ professorInfo }) {
                 </Wrap>
             )}
 
-            <HStack w={250} pb={2}>
+            <HStack w={250} pb={1}>
                 <VStack w={15}>
                     <Text>Quality</Text>
                     <CircularProgress

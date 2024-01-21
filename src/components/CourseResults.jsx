@@ -28,26 +28,24 @@ function CourseResults({ courseInfo }) {
 
     return (
         <VStack width={315}>
-            <VStack py={course_name.length < 38 ? 3 : 1}>
-                <ChakraTooltip label="Click for more information" placement="bottom">
-                    <Button
-                        fontSize="lg"
-                        _hover={{ color: "#3182CE" }}
-                        onClick={onOpen}
-                        variant="link"
-                        height={course_name.length < 38 ? 6 : 10}
-                        onFocus={(e) => e.preventDefault()}
-                        fontWeight="normal"
-                        textColor={useColorModeValue("black", "white")}
-                        style={{
-                            whiteSpace: "normal",
-                            wordWrap: "break-word",
-                        }}
-                    >
-                        {course_name}
-                    </Button>
-                </ChakraTooltip>
-            </VStack>
+            <ChakraTooltip label="Click for more information" placement="bottom" hasArrow>
+                <Button
+                    fontSize="lg"
+                    variant="link"
+                    fontWeight="normal"
+                    textColor={useColorModeValue("black", "white")}
+                    onClick={onOpen}
+                    onFocus={(e) => e.preventDefault()}
+                    _hover={{ color: "#3182CE" }}
+                    style={{
+                        whiteSpace: "normal",
+                        wordWrap: "break-word",
+                    }}
+                    pb={1}
+                >
+                    {course_name}
+                </Button>
+            </ChakraTooltip>
 
             <GradesGraph grades={grades} />
 

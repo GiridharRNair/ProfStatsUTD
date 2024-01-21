@@ -19,7 +19,7 @@ function InfoIcon() {
                     <ModalHeader>Options</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                        <VStack pb={3}>
+                        <VStack pb={1}>
                             <Button
                                 leftIcon={!feedbackButtonIsHovered && <Icon as={FcFeedback} boxSize={6} />}
                                 onClick={() => window.open("https://forms.gle/gc2G34o2BiiXs4bz7", "_blank")}

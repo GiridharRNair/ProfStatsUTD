@@ -25,7 +25,7 @@ function App() {
                 left="50%"
                 transform="translateX(-50%)"
                 height={8}
-                fontSize={"xm"}
+                fontSize={"sm"}
             >
                 {compareFormOpen ? "Revert" : "Compare"}
             </Button>

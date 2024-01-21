@@ -3,13 +3,13 @@ import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseBu
 import { FcFeedback } from "react-icons/fc";
 
 function RateUsModal() {
-    const [rateUsModalOpen, setRateUsModalOpen] = useState(localStorage.getItem("LastInputData") && !localStorage.getItem("hasRated") && Math.random() < 0.25);
+    const [rateUsModalOpen, setRateUsModalOpen] = useState(localStorage.getItem("LastInputData") && !localStorage.getItem("hasRated") && Math.random() < 1.25);
 
     return (
         <Modal isOpen={rateUsModalOpen} onClose={() => setRateUsModalOpen(false)} size="md">
             <ModalOverlay />
             <ModalContent width={300}>
-                <ModalHeader>How can we improve?</ModalHeader>
+                <ModalHeader>How are we doing?</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
                     <Center>
@@ -17,7 +17,7 @@ function RateUsModal() {
                             Share your thoughts! Help us improve by leaving a review or filling out the feedback form. Your input matters!
                         </Heading>
                     </Center>
-                    <VStack pb={3}>
+                    <VStack pb={1}>
                         <Button
                             leftIcon={<Icon as={FcFeedback} boxSize={6} />}
                             onClick={() => {
