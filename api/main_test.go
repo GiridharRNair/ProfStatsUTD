@@ -15,7 +15,7 @@ import (
 const timothyFarageExpectedJSON = `{
 	"course_number": "",
 	"department": "Computer Science",
-	"difficulty": 2.1,
+	"difficulty": 2.3,
 	"grades": {
 		"aPlus": 921,
 		"a": 1075,
@@ -36,19 +36,19 @@ const timothyFarageExpectedJSON = `{
 	},
 	"id": "138341",
 	"name": "Timothy Farage",
-	"rating": 4.2,
+	"rating": 4.3,
 	"subject": "",
 	"tags": [
-		"Accessible Outside Class",
+		"Hilarious",
+		"Respected",
+		"Graded By Few Things",
 		"Amazing Lectures",
-		"Amazing Lectures ",
-		"Caring",
-		"Clear Grading Criteria"
+		"Test Heavy"
 	],
 	"would_take_again": 81
 }`
 
-// This professor testcase may need to be updated when there are new data
+// This professor testcase may need to be updated often
 const scottDollingerExpectedJSON = `{
 	"course_number": "",
 	"department": "Computer Science",
@@ -71,11 +71,11 @@ const scottDollingerExpectedJSON = `{
 		"w": 49
 	},
 	"tags": [
-		"Accessible Outside Class",
-		"Amazing Lectures",
-		"Amazing Lectures ",
-		"Beware Of Pop Quizzes",
-		"Caring"
+		"Clear Grading Criteria",
+		"Caring",
+		"Extra Credit",
+		"Respected",
+		"Accessible Outside Class"
 	],
 	"id": "2523207",
 	"name": "Scott Dollinger",
