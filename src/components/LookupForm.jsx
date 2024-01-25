@@ -53,7 +53,7 @@ function LookupForm({ isCompareForm }) {
                 showErrorToast("No grade distribution from specified query");
             }
         } catch (error) {
-            showErrorToast(error.response?.data.detail);
+            showErrorToast(error.response?.data.detail || "An error occurred");
         } finally {
             setLoading(false);
         }

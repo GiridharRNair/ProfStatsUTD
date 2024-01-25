@@ -16,8 +16,7 @@ func allowedOrigins() gin.HandlerFunc {
 			return
 		}
 
-		origin := c.GetHeader("Origin")
-		if origin != "chrome-extension://doilmgfedjlpepeaolcfpdmkehecdaff" {
+		if c.GetHeader("Origin") != "chrome-extension://doilmgfedjlpepeaolcfpdmkehecdaff" {
 			c.JSON(http.StatusForbidden, gin.H{"detail": "Not allowed"})
 			c.Abort()
 		}

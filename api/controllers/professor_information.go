@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"regexp"
 	"strings"
@@ -50,11 +51,15 @@ func GetProfessorInformation(c *gin.Context) {
 		professorName = professor.Name
 	}
 
+	// possible chance RMP name has middle name
+	profNameArray := strings.Fields(professorName)
+	profNameWithoutMiddle := fmt.Sprintf("%s %s", profNameArray[0], profNameArray[len(profNameArray)-1])
+
 	resultData := gin.H{
 		"id":               professor.ID,
-		"name":             professorName,
+		"name":             profNameWithoutMiddle,
 		"department":       professor.Department,
-		"grades":           db.GetAggregatedGrades(professorName, subject, courseNumber),
+		"grades":           db.GetAggregatedGrades(profNameWithoutMiddle, subject, courseNumber),
 		"subject":          subject,
 		"course_number":    courseNumber,
 		"rating":           professor.Rating,
