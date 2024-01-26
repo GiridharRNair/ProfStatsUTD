@@ -57,7 +57,8 @@ function CourseResults({ courseInfo }) {
                             <Button
                                 leftIcon={<Image src="extension-images/UTDGradesIcon.png" boxSize={22} />}
                                 onClick={openUTDGrades}
-                                variant="outline"
+                                variant={"outline"}
+                                fontWeight={"medium"}
                                 width={240}
                             >
                                 UTD Grades
@@ -67,7 +68,8 @@ function CourseResults({ courseInfo }) {
                                     <Image src={useColorModeValue("extension-images/UTDTrendsDark.svg", "extension-images/UTDTrendsLight.svg")} boxSize={5} />
                                 }
                                 onClick={openUTDTrends}
-                                variant="outline"
+                                variant={"outline"}
+                                fontWeight={"medium"}
                                 width={240}
                             >
                                 UTD Trends
@@ -75,7 +77,8 @@ function CourseResults({ courseInfo }) {
                             <Button
                                 leftIcon={<Image src="extension-images/UTDIcon.png" boxSize={23} />}
                                 onClick={openCourseCatalog}
-                                variant="outline"
+                                variant={"outline"}
+                                fontWeight={"medium"}
                                 width={240}
                             >
                                 Course Catalog

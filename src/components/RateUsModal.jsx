@@ -4,7 +4,7 @@ import { FcFeedback } from "react-icons/fc";
 
 function RateUsModal() {
     const [rateUsModalOpen, setRateUsModalOpen] = useState(localStorage.getItem("LastInputData") && !localStorage.getItem("hasRated") && Math.random() < 0.25);
-    const [buttonTextColor, setButtonTextColor] = useState("#333"); 
+    const [buttonTextColor, setButtonTextColor] = useState("#333");
 
     const generateGradientColor = () => {
         const time = new Date().getTime();
@@ -42,6 +42,7 @@ function RateUsModal() {
                                 localStorage.setItem("hasRated", true);
                             }}
                             variant="outline"
+                            fontWeight={"medium"}
                             width={250}
                         >
                             Feedback Form
@@ -53,9 +54,10 @@ function RateUsModal() {
                                 localStorage.setItem("hasRated", true);
                             }}
                             variant="outline"
+                            fontWeight={"medium"}
                             width={250}
                             borderColor={buttonTextColor}
-                            textColor={buttonTextColor} 
+                            textColor={buttonTextColor}
                         >
                             Leave a Review
                         </Button>

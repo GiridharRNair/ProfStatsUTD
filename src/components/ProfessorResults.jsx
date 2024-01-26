@@ -115,6 +115,7 @@ function ProfResults({ professorInfo }) {
                                 leftIcon={<Image src="extension-images/RMPIcon.png" boxSize={42} />}
                                 onClick={() => window.open(RateMyProfessorUrl, "_blank")}
                                 variant={"outline"}
+                                fontWeight={"medium"}
                                 width={240}
                             >
                                 Rate My Professor
@@ -123,6 +124,7 @@ function ProfResults({ professorInfo }) {
                                 leftIcon={<Image src="extension-images/UTDGradesIcon.png" boxSize={22} />}
                                 onClick={() => window.open(UTDGradesUrl, "_blank")}
                                 variant={"outline"}
+                                fontWeight={"medium"}
                                 width={240}
                             >
                                 UTD Grades
@@ -133,6 +135,7 @@ function ProfResults({ professorInfo }) {
                                 }
                                 onClick={() => window.open(UTDTrendsUrl, "_blank")}
                                 variant={"outline"}
+                                fontWeight={"medium"}
                                 width={240}
                             >
                                 UTD Trends
@@ -141,6 +144,7 @@ function ProfResults({ professorInfo }) {
                                 leftIcon={<Image src="extension-images/UTDIcon.png" boxSize={23} />}
                                 onClick={() => window.open(UTDProfileUrl, "_blank")}
                                 variant={"outline"}
+                                fontWeight={"medium"}
                                 width={240}
                             >
                                 Professor Profile

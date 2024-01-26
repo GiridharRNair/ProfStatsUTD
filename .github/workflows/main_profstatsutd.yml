@@ -10,6 +10,7 @@ on:
     paths:
       - 'api/**'
       - '.github/workflows/**'
+      - 'db_setup/**'
   workflow_dispatch:
 
 jobs:

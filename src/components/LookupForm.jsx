@@ -84,7 +84,7 @@ function LookupForm({ isCompareForm }) {
         <VStack pt={3} width={290} align={"center"}>
             <Inputs setProfessor={setProfessorName} setCourse={setCourse} professor={professorName} course={course} />
 
-            <Button onClick={handleSubmit} isLoading={loading} height={8} fontSize={"sm"}>
+            <Button onClick={handleSubmit} isLoading={loading} height={8} fontSize={"sm"} fontWeight={"medium"}>
                 Submit
             </Button>
 

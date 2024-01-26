@@ -26,6 +26,7 @@ function InfoIcon() {
                                 onMouseEnter={() => setFeedbackButtonIsHovered(true)}
                                 onMouseLeave={() => setFeedbackButtonIsHovered(false)}
                                 variant="outline"
+                                fontWeight={"medium"}
                                 width={250}
                             >
                                 {feedbackButtonIsHovered ? "Any issues? Suggestions?" : "Feedback Form"}
@@ -36,6 +37,7 @@ function InfoIcon() {
                                 onMouseEnter={() => setGithubButtonIsHovered(true)}
                                 onMouseLeave={() => setGithubButtonIsHovered(false)}
                                 variant="outline"
+                                fontWeight={"medium"}
                                 width={250}
                             >
                                 {githubButtonIsHovered ? "Check out the source code!" : "GitHub"}
