@@ -32,7 +32,7 @@ function ProfResults({ professorInfo }) {
 
     return (
         <VStack width={315}>
-            <ChakraTooltip label="Click for more information" placement="bottom" hasArrow mt={2}>
+            <ChakraTooltip label="Click for more information" placement="bottom">
                 <Button
                     fontSize="lg"
                     variant={"link"}
@@ -52,10 +52,10 @@ function ProfResults({ professorInfo }) {
             <Text fontSize="md">{department}</Text>
 
             {tags && (
-                <Wrap justify="center" spacing={"5px"}>
+                <Wrap justify="center" spacing={"4px"}>
                     {tags.map((tag, index) => (
                         <WrapItem key={index}>
-                            <Tag variant="outline" fontSize={"10px"} size="sm">
+                            <Tag variant="outline" fontSize={"9px"} size="sm">
                                 {tag}
                             </Tag>
                         </WrapItem>

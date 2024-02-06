@@ -49,7 +49,7 @@ function Inputs({ setProfessor, setCourse, professor, course }) {
                     <Tooltip placement="top" label="Ignore prefixes, suffixes, and middle names" fontSize={"xs"}>
                         <AutoCompleteInput
                             height={8}
-                            placeholder="Enter Teacher Name ex. Jason Smith"
+                            placeholder="Enter Teacher Name (ex. Jason Smith)"
                             value={professor}
                             loadingIcon={<Spinner size={"xs"} mb={2} />}
                             onChange={(value) => {
@@ -97,7 +97,7 @@ function Inputs({ setProfessor, setCourse, professor, course }) {
                 <InputGroup>
                     <AutoCompleteInput
                         height={8}
-                        placeholder="Specify a Course? ex. CS 1337"
+                        placeholder="Enter Course Name (ex. CS 1337)"
                         value={course}
                         loadingIcon={<Spinner size={"xs"} mb={2} />}
                         onChange={(value) => {
@@ -120,7 +120,7 @@ function Inputs({ setProfessor, setCourse, professor, course }) {
                     </InputRightElement>
                 </InputGroup>
                 {!courseLoading && (
-                    <AutoCompleteList>
+                    <AutoCompleteList style={{ maxHeight: "250px", overflowY: "auto" }}>
                         {courseSuggestions.map((courseOption, index) => (
                             <AutoCompleteItem value={courseOption} key={index}>
                                 {courseOption}

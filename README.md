@@ -24,11 +24,15 @@ Built with Vite, React, Chakra UI, and Chart.js the front end ensures a streamli
 
 ### Updating Version
 
-Simply update the version in `package.json`. Starting the server in development or production will automatically reflect the updated version in the manifest file. Might need to reload or remove and re-add the extension to see the changes.
+Simply update the version in `package.json`. Starting the server in development or production will automatically reflect the updated version in the manifest file. Might need to reload or re-add the extension to see the changes.
 
 ### Deployment
 
 GitHub Actions automate staging on the Chrome Web Store using [Chrome-Webstore-Upload-Action](https://github.com/fregante/chrome-webstore-upload). While manual submission for review is required, the tedious uploading process is fully automated.
+
+### Env Variables
+
+- **VITE_API_URL:** URL of the backend production API.
 
 ## Backend Overview
 
@@ -120,7 +124,7 @@ Make sure you have the following software installed on your machine:
 4. **Start the server and extension concurrently:**
 
     ```bash
-    npm run dev
+    npm run start
     ```
 
 5. **Enable Developer Mode in Chrome:**

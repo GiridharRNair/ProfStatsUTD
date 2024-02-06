@@ -14,21 +14,16 @@ import PropTypes from "prop-types";
 import GradesGraph from "./GradesGraph.jsx";
 
 function CourseResults({ courseInfo }) {
-    const { subject, course_number, course_name, grades } = courseInfo;
+    const { subject, course_number, course_name, catalog_url, grades } = courseInfo;
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const openUTDGrades = () => window.open(`https://utdgrades.com/results?search=${subject + course_number}`, "_blank");
     const openUTDTrends = () => window.open(`https://trends.utdnebula.com/dashboard?searchTerms=${subject + "+" + course_number}`, "_blank");
-    const openCourseCatalog = () => {
-        const catalogType = course_number >= 5000 ? "graduate" : "undergraduate";
-        const catalogYear = new Date().getFullYear() - 1;
-        const url = `https://catalog.utdallas.edu/${catalogYear}/${catalogType}/courses/${subject.toLowerCase()}${course_number.toLowerCase()}`;
-        window.open(url, "_blank");
-    };
+    const openCourseCatalog = () => window.open(catalog_url, "_blank");
 
     return (
         <VStack width={315}>
-            <ChakraTooltip label="Click for more information" placement="bottom" hasArrow>
+            <ChakraTooltip label="Click for more information" placement="bottom" mt={-2}>
                 <Button
                     fontSize="lg"
                     variant="link"
