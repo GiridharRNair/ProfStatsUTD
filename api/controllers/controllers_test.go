@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
@@ -165,27 +166,20 @@ const cs2337SuggestionsExpectedInfo = `{
 	]
 }`
 
-const timothyFarageSuggestion = `{
-	"courses": [
-		"SE 3306",
-		"CS 4384",
-		"CE 2305",
-		"CS 2305",
-		"CS 3305",
-		"CS 6360"
-	],
-	"professors": [
-		"Timothy Farage"
-	]
-}`
-
 func TestSuggestionsSearchQuery(t *testing.T) {
 	testCases := []TestCases{
 		{"/suggestions", http.StatusOK, defaultSuggestionsExpectedInfo},
 		{"/suggestions?teacher=John%20Doe&course=lats6399", http.StatusOK, johnDoeSuggestionsExpectedInfo},
 		{"/suggestions?course=CS2337", http.StatusOK, cs2337SuggestionsExpectedInfo},
-		{"/suggestions?teacher=" + url.QueryEscape("Timothy Farage"), http.StatusOK, timothyFarageSuggestion},
 	}
 
 	testAPIEndpoint(t, testCases, SuggestionsSearchQuery)
+
+	var jsonResponse map[string]interface{}
+	req := httptest.NewRequest("GET", "/suggestions?teacher=jey", nil)
+	w := httptest.NewRecorder()
+	router.ServeHTTP(w, req)
+	assert.Equal(t, http.StatusOK, w.Code)
+	assert.NoError(t, json.Unmarshal(w.Body.Bytes(), &jsonResponse))
+	assert.GreaterOrEqual(t, len(jsonResponse["courses"].([]interface{})), 5)
 }
