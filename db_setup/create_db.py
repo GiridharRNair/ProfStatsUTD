@@ -51,6 +51,12 @@ SQL_INSERT_ROW = '''
     (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
 '''
 
+# Some professors have their names in different formats in RMP and the UTD data
+edge_case_professors = {
+    "Nishi, Hirofumi": "Hiro Nishi",
+    "Macalevey, Paul J": "Paul MacAlevey",
+    "Mac Alevey, Paul J": "Paul MacAlevey",
+}
 
 class GradesRow:
     def __init__(self, subject, course_num, section, grades, instructor):
@@ -71,6 +77,8 @@ def index_row(row, *columns):
 
 
 def reorder_name(name):
+    if name in edge_case_professors:
+        return edge_case_professors[name]
     name_parts = name.split(", ")
     return name_parts[0].strip() if len(name_parts) == 1 else f"{name_parts[1].strip()} {name_parts[0].strip()}"
 

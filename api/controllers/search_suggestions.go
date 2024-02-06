@@ -22,13 +22,17 @@ func SuggestionsSearchQuery(c *gin.Context) {
 
 	defaultSuggestions := make(map[string][]string)
 
-	professorSuggestions, err := db.GetProfessorSuggestions(teacher)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"detail": err.Error()})
-		return
-	}
+	if teacher != "" {
+		professorSuggestions, err := db.GetProfessorSuggestions(teacher)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"detail": err.Error()})
+			return
+		}
 
-	defaultSuggestions["professors"] = professorSuggestions
+		defaultSuggestions["professors"] = professorSuggestions
+	} else {
+		defaultSuggestions["professors"] = defaultProfessorSuggestions
+	}
 
 	subject, courseNumber, _ := isValidCourseName(course)
 

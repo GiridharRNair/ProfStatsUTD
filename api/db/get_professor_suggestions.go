@@ -30,10 +30,12 @@ func GetProfessorSuggestions(professorParam string) ([]string, error) {
 			return nil, err
 		}
 
-		nameArray := strings.Fields(fullName)
-		nameWithoutMiddle := fmt.Sprintf("%s %s", nameArray[0], nameArray[len(nameArray)-1])
-		if !slices.Contains(professorSuggestions, nameWithoutMiddle) {
-			professorSuggestions = append(professorSuggestions, nameWithoutMiddle)
+		if fullName != "" {
+			nameArray := strings.Fields(fullName)
+			nameWithoutMiddle := fmt.Sprintf("%s %s", nameArray[0], nameArray[len(nameArray)-1])
+			if !slices.Contains(professorSuggestions, nameWithoutMiddle) {
+				professorSuggestions = append(professorSuggestions, nameWithoutMiddle)
+			}
 		}
 	}
 

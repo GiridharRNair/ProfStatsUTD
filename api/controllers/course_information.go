@@ -22,7 +22,7 @@ func GetCourseInformation(c *gin.Context) {
 		return
 	}
 
-	courseName, err := course.GetCourseName(subject, courseNumber)
+	course, err := course.GetCourseInfo(subject, courseNumber)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"detail": err.Error()})
 		return
@@ -31,7 +31,8 @@ func GetCourseInformation(c *gin.Context) {
 	resultData := gin.H{
 		"subject":       subject,
 		"course_number": courseNumber,
-		"course_name":   courseName,
+		"course_name":   course.CourseName,
+		"catalog_url":   course.CatalogURL,
 		"grades":        db.GetAggregatedGrades("", subject, courseNumber),
 	}
 

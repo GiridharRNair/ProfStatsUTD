@@ -17,8 +17,11 @@ func GetCourseSuggestions(professorParam, subjectParam, courseNumberParam string
 		FROM grades_populated
 		WHERE subject LIKE ?
 		AND catalogNumber LIKE ?
-		AND instructor1 LIKE ?
-		LIMIT 5`
+		AND instructor1 LIKE ?`
+
+	if professorParam == "" {
+		courseQuery += " LIMIT 5"
+	}
 
 	courseRows, err := db.Query(courseQuery, subject, courseNumber, professor)
 	if err != nil {

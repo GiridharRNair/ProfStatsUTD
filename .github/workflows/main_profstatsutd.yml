@@ -8,9 +8,10 @@ on:
     branches:
       - main
     paths:
-      - 'api/**'
       - '.github/workflows/**'
+      - 'api/**'
       - 'db_setup/**'
+      - 'raw_data/**'
   workflow_dispatch:
 
 jobs:

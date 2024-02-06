@@ -3,25 +3,25 @@ package db
 import (
 	"database/sql"
 	"fmt"
-	"os"
 	"path/filepath"
-
-	_ "github.com/mattn/go-sqlite3"
+	"runtime"
 )
 
 var db *sql.DB
 
 func init() {
-	dir, err := os.Getwd()
-	if err != nil {
-		fmt.Println("Error getting current directory.")
+	_, filename, _, ok := runtime.Caller(0)
+	if !ok {
+		fmt.Println("Error getting the current file path.")
 		return
 	}
 
-	dbPath := filepath.Join(dir, "db/utdgrades.db")
+	dir := filepath.Dir(filename)
+	dbPath := filepath.Join(dir, "utdgrades.db")
 
+	var err error
 	db, err = sql.Open("sqlite3", dbPath)
 	if err != nil {
-		fmt.Print(err)
+		fmt.Println(err)
 	}
 }
