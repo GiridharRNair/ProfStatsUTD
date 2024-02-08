@@ -74,7 +74,7 @@ function Inputs({ setProfessor, setCourse, professor, course }) {
                     </InputRightElement>
                 </InputGroup>
                 {!professorLoading && (
-                    <AutoCompleteList>
+                    <AutoCompleteList fontSize={"sm"}>
                         {professorSuggestions.map((professorOption, index) => (
                             <AutoCompleteItem value={professorOption} key={index}>
                                 {professorOption}
@@ -97,7 +97,7 @@ function Inputs({ setProfessor, setCourse, professor, course }) {
                 <InputGroup>
                     <AutoCompleteInput
                         height={8}
-                        placeholder="Enter Course Name (ex. CS 1337)"
+                        placeholder="Enter Course (ex. CS 1337)"
                         value={course}
                         loadingIcon={<Spinner size={"xs"} mb={2} />}
                         onChange={(value) => {
@@ -120,7 +120,7 @@ function Inputs({ setProfessor, setCourse, professor, course }) {
                     </InputRightElement>
                 </InputGroup>
                 {!courseLoading && (
-                    <AutoCompleteList style={{ maxHeight: "250px", overflowY: "auto" }}>
+                    <AutoCompleteList style={{ maxHeight: "230px", overflowY: "auto" }} fontSize={"sm"}>
                         {courseSuggestions.map((courseOption, index) => (
                             <AutoCompleteItem value={courseOption} key={index}>
                                 {courseOption}

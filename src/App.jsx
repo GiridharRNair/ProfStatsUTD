@@ -5,10 +5,9 @@ import { SunIcon } from "@chakra-ui/icons";
 import LookupForm from "./components/LookupForm";
 import InfoIcon from "./components/InfoIcon";
 import RateUsModal from "./components/RateUsModal.jsx";
-import "./styles/App.css";
 
 function App() {
-    const [compareFormOpen, setCompareFormOpen] = useState(localStorage.getItem("compareFormOpen") === "true");
+    const [compareFormOpen, setCompareFormOpen] = useState(JSON.parse(localStorage.getItem("compareFormOpen")));
     const { colorMode, toggleColorMode } = useColorMode();
 
     return (

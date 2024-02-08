@@ -175,6 +175,7 @@ func TestSuggestionsSearchQuery(t *testing.T) {
 
 	testAPIEndpoint(t, testCases, SuggestionsSearchQuery)
 
+	// Seperate test to check the length of the courses array
 	var jsonResponse map[string]interface{}
 	req := httptest.NewRequest("GET", "/suggestions?teacher=jey", nil)
 	w := httptest.NewRecorder()

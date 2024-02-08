@@ -3,7 +3,7 @@ import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseBu
 import { FcFeedback } from "react-icons/fc";
 
 function RateUsModal() {
-    const [rateUsModalOpen, setRateUsModalOpen] = useState(localStorage.getItem("LastInputData") && !localStorage.getItem("hasRated") && Math.random() < 0.25);
+    const [rateUsModalOpen, setRateUsModalOpen] = useState(localStorage.getItem("LastInputData") && !localStorage.getItem("hasRated") && Math.random() < 0.1);
     const [buttonTextColor, setButtonTextColor] = useState("#333");
 
     const generateGradientColor = () => {
@@ -26,12 +26,12 @@ function RateUsModal() {
         <Modal isOpen={rateUsModalOpen} onClose={() => setRateUsModalOpen(false)} size="md">
             <ModalOverlay />
             <ModalContent width={300}>
-                <ModalHeader>How are we doing?</ModalHeader>
+                <ModalHeader mb={-2}>Your input matters!</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
                     <Center>
                         <Heading size="xs" mb={6} fontWeight={"normal"}>
-                            Share your thoughts! Help us improve by leaving a review or filling out the feedback form. Your input matters!
+                            Share your thoughts! Help us improve by leaving a review or filling out the feedback form.
                         </Heading>
                     </Center>
                     <VStack pb={1}>

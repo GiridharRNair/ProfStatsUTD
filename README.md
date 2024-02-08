@@ -6,7 +6,7 @@
 
 [![Chrome Web Store](https://img.shields.io/badge/Featured_on-Chrome_Web_Store-cce7e8?style=for-the-badge)](https://chromewebstore.google.com/detail/profstats-ut-dallas/doilmgfedjlpepeaolcfpdmkehecdaff)
 
-ProfStats is a handy Chrome extension that puts professor ratings and grade distributions together in one place, making it easy for students to get important info during course registration.
+ProfStats is a handy Chrome extension with 100+ users, merging professor ratings and grade distributions at the University of Texas at Dallas for simplified access to course information for students.
 
 ## Built With
 
@@ -24,15 +24,17 @@ Built with Vite, React, Chakra UI, and Chart.js the front end ensures a streamli
 
 ### Updating Version
 
-Simply update the version in `package.json`. Starting the server in development or production will automatically reflect the updated version in the manifest file. Might need to reload or re-add the extension to see the changes.
+Simply update the version in `package.json`. Starting the server in development or production will automatically reflect the updated version in the manifest file. Might need to reload or re-add the extension to see the updated version.
 
 ### Deployment
 
-GitHub Actions automate staging on the Chrome Web Store using [Chrome-Webstore-Upload-Action](https://github.com/fregante/chrome-webstore-upload). While manual submission for review is required, the tedious uploading process is fully automated.
+GitHub Actions automates staging on the Chrome Web Store upon the release of a new version using [Chrome-Webstore-Upload-Action](https://github.com/fregante/chrome-webstore-upload). Although manual submission for review is necessary, the tedious uploading process is entirely automated.
 
 ### Env Variables
 
-- **VITE_API_URL:** URL of the backend production API.
+```
+VITE_API_URL: URL of the production backend API
+```
 
 ## Backend Overview
 
@@ -86,14 +88,16 @@ Dockerized and deployed on the Azure Web App Service after running the Python sc
 
 ### Testing
 
-The Python script responsible for generating the SQLite database is tested using Python's built-in unit test module. To run the tests, run `python db_setup/test_db.py` or `npm run test-db`.
+The Python scripts responsible for generating the SQLite database are tested using Python's unit test module, and the Go server is tested using Go's testing package. To run both tests, execute the following command:
 
-The Gin API is tested using Go tests. To run the tests, run `cd api && go test` or `npm run test-api`.
+```bash
+npm run test-api
+```
 
 ## Local Development
 
 > [!NOTE]  
-> This project uses concurrently to run the server and extension concurrently. Check out the `package.json` file for more details.
+> This project uses the `concurrently` package to run the server and extension concurrently. Check out the `package.json` file for more details.
 
 Make sure you have the following software installed on your machine:
 

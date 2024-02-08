@@ -91,7 +91,8 @@ CourseResults.propTypes = {
         subject: PropTypes.string,
         course_number: PropTypes.string,
         course_name: PropTypes.string,
-        grades: PropTypes.object.isRequired,
+        grades: PropTypes.object,
+        catalog_url: PropTypes.string,
     }).isRequired,
 };
 

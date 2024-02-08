@@ -159,16 +159,16 @@ function ProfResults({ professorInfo }) {
 
 ProfResults.propTypes = {
     professorInfo: PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        department: PropTypes.string.isRequired,
-        id: PropTypes.string.isRequired,
+        name: PropTypes.string,
+        department: PropTypes.string,
+        id: PropTypes.string,
         subject: PropTypes.string,
         course_number: PropTypes.string,
         tags: PropTypes.arrayOf(PropTypes.string),
-        rating: PropTypes.number.isRequired,
-        difficulty: PropTypes.number.isRequired,
-        would_take_again: PropTypes.number.isRequired,
-        grades: PropTypes.object.isRequired,
+        rating: PropTypes.number,
+        difficulty: PropTypes.number,
+        would_take_again: PropTypes.number,
+        grades: PropTypes.object,
     }).isRequired,
 };
 

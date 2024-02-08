@@ -1,7 +1,35 @@
+#root {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem 2rem 1rem;
+    text-align: center;
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
     display: flex;
     place-items: center;
     min-width: 300px;
     min-height: 100vh;
+}
+
+::-webkit-scrollbar {
+    width: 7px;
+    background-color: rgba(0,0,0,0);
+    -webkit-border-radius: 100px;
+}
+
+::-webkit-scrollbar:hover {
+    background-color: rgba(0, 0, 0, 0.09);
+}
+
+::-webkit-scrollbar-thumb:vertical {
+    background: rgba(0,0,0,0.4);
+    -webkit-border-radius: 100px;
+}
+
+::-webkit-scrollbar-thumb:vertical:active {
+    background: rgba(0,0,0,0.5); 
+    -webkit-border-radius: 100px;
 }
