@@ -19,7 +19,11 @@ var accountingForManagers = Course{
 }
 
 func TestGetCourseName(t *testing.T) {
-	courseInfo, err := GetCourseInfo("CS", "1337")
+	courseInfo, err := GetCourseInfo("CS", "2")
+	assert.Error(t, err, "Expected error for an invalid course")
+	assert.Empty(t, courseInfo, "Expected empty course name for an invalid course")
+
+	courseInfo, err = GetCourseInfo("CS", "1337")
 	assert.NoError(t, err, "Unexpected error for a valid course")
 	assert.Equal(t, computerScienceI, courseInfo)
 

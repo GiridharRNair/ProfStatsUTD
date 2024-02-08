@@ -31,7 +31,6 @@ Simply update the version in `package.json`. Starting the server in development 
 GitHub Actions automates staging on the Chrome Web Store upon the release of a new version using [Chrome-Webstore-Upload-Action](https://github.com/fregante/chrome-webstore-upload). Although manual submission for review is necessary, the tedious uploading process is entirely automated.
 
 ### Env Variables
-
 ```
 VITE_API_URL: URL of the production backend API
 ```
