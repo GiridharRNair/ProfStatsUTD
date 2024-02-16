@@ -56,6 +56,7 @@ edge_case_professors = {
     "Nishi, Hirofumi": "Hiro Nishi",
     "Macalevey, Paul J": "Paul MacAlevey",
     "Mac Alevey, Paul J": "Paul MacAlevey",
+    "Razo-Razo, Miguel Angel": "Miguel Razo",
 }
 
 class GradesRow:

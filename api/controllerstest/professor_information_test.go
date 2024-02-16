@@ -35,10 +35,10 @@ const timothyFarageExpectedJSON = `{
 	"rating": 4.3,
 	"subject": "",
 	"tags": [
+		"Amazing Lectures",
+		"Graded By Few Things",
 		"Hilarious",
 		"Respected",
-		"Graded By Few Things",
-		"Amazing Lectures",
 		"Test Heavy"
 	],
 	"would_take_again": 81

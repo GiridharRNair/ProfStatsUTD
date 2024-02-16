@@ -17,7 +17,8 @@ func GetCourseSuggestions(professorParam, subjectParam, courseNumberParam string
 		FROM grades_populated
 		WHERE subject LIKE ?
 		AND catalogNumber LIKE ?
-		AND instructor1 LIKE ?`
+		AND instructor1 LIKE ?
+		ORDER BY subject, catalogNumber`
 
 	if professorParam == "" {
 		courseQuery += " LIMIT 5"

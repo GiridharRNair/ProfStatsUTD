@@ -28,7 +28,7 @@ const defaultSuggestionsExpectedInfo = `{
 }`
 
 const johnDoeSuggestionsExpectedInfo = `{
-	"courses": ["LATS 6399"],
+	"courses": ["ACCT 6399", "LATS 6399"],
 	"professors": ["John Doe"]
 }`
 
@@ -46,7 +46,7 @@ const cs2337SuggestionsExpectedInfo = `{
 func TestSuggestionsSearchQuery(t *testing.T) {
 	testCases := []TestCases{
 		{"/suggestions", http.StatusOK, defaultSuggestionsExpectedInfo},
-		{"/suggestions?teacher=John%20Doe&course=lats6399", http.StatusOK, johnDoeSuggestionsExpectedInfo},
+		{"/suggestions?teacher=John%20Doe&course=", http.StatusOK, johnDoeSuggestionsExpectedInfo},
 		{"/suggestions?course=CS2337", http.StatusOK, cs2337SuggestionsExpectedInfo},
 	}
 

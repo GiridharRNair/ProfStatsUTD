@@ -38,6 +38,7 @@ func (p *Professor) setTags(tagsFrequency map[string]int) {
 		sortedTags = append(sortedTags, tag)
 	}
 
+	// Sort tags by frequency
 	sort.Slice(sortedTags, func(i, j int) bool {
 		return tagsFrequency[sortedTags[i]] > tagsFrequency[sortedTags[j]]
 	})
@@ -45,6 +46,9 @@ func (p *Professor) setTags(tagsFrequency map[string]int) {
 	if len(sortedTags) > 5 {
 		sortedTags = sortedTags[:5]
 	}
+
+	// Sort tags alphabetically
+	sort.Strings(sortedTags)
 
 	p.Tags = sortedTags
 }
