@@ -6,7 +6,7 @@ import _debounce from "lodash/debounce";
 import axios from "axios";
 import { defaultTeacherSuggestions, defaultCourseSuggestions } from "../../utils/defaults";
 
-const API_URL = import.meta.env.DEV ? "http://localhost:80" : import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.DEV ? "http://localhost:80" : import.meta.env.VITE_API_URL || "http://localhost:80";
 
 function Inputs({ setProfessor, setCourse, professor, course }) {
     const [professorLoading, setProfessorLoading] = useState(false);
@@ -49,7 +49,7 @@ function Inputs({ setProfessor, setCourse, professor, course }) {
                     <Tooltip placement="top" label="Ignore prefixes, suffixes, and middle names" fontSize={"xs"}>
                         <AutoCompleteInput
                             height={8}
-                            placeholder="Enter Teacher Name (ex. Jason Smith)"
+                            placeholder="Enter Teacher Name (ex. John Cole)"
                             value={professor}
                             loadingIcon={<Spinner size={"xs"} mb={2} />}
                             onChange={(value) => {
@@ -97,7 +97,7 @@ function Inputs({ setProfessor, setCourse, professor, course }) {
                 <InputGroup>
                     <AutoCompleteInput
                         height={8}
-                        placeholder="Enter Course (ex. CS 1337)"
+                        placeholder={courseSuggestions[0] ? `Enter Course (ex. ${courseSuggestions[0]})` : "No courses found for this professor"}
                         value={course}
                         loadingIcon={<Spinner size={"xs"} mb={2} />}
                         onChange={(value) => {

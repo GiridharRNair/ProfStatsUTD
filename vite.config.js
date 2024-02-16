@@ -8,7 +8,7 @@ const manifestPath = path.resolve(__dirname, "./public/manifest.json");
 const packageJsonPath = path.resolve(__dirname, "package.json");
 
 const existingManifest = JSON.parse(fs.readFileSync(manifestPath), "utf-8");
-const packageJson = JSON.parse(fs.readFileSync(packageJsonPath),  "utf-8");
+const packageJson = JSON.parse(fs.readFileSync(packageJsonPath), "utf-8");
 
 const dynamicManifest = {
     ...existingManifest,

@@ -41,19 +41,19 @@ function ProfResults({ professorInfo }) {
                     onClick={onOpen}
                     onFocus={(e) => e.preventDefault()}
                     _hover={{ color: "#3182CE" }}
-                    height={5}
-                    pt={3}
-                    pb={2}
+                    height={4}
+                    pt={2}
+                    pb={1}
                 >
                     {name}
                 </Button>
             </ChakraTooltip>
 
-            <Text fontSize="md">{department}</Text>
+            <Text fontSize="sm">{department}</Text>
 
             {tags && (
                 <Wrap justify="center" spacing={"4px"}>
-                    {tags.map((tag, index) => (
+                    {tags.sort().map((tag, index) => (
                         <WrapItem key={index}>
                             <Tag variant="outline" fontSize={"9px"} size="sm">
                                 {tag}
@@ -65,7 +65,7 @@ function ProfResults({ professorInfo }) {
 
             <HStack w={250} pb={1}>
                 <VStack w={15}>
-                    <Text>Quality</Text>
+                    <Text height={4}>Quality</Text>
                     <CircularProgress
                         max={5}
                         size="55px"
@@ -78,7 +78,7 @@ function ProfResults({ professorInfo }) {
                 </VStack>
                 <Spacer />
                 <VStack w={15}>
-                    <Text>Difficulty</Text>
+                    <Text height={4}>Difficulty</Text>
                     <CircularProgress
                         max={5}
                         size="55px"
@@ -91,7 +91,7 @@ function ProfResults({ professorInfo }) {
                 </VStack>
                 <Spacer />
                 <VStack w={15}>
-                    <Text>Enjoyment</Text>
+                    <Text height={4}>Enjoyment</Text>
                     <CircularProgress
                         max={100}
                         size="55px"

@@ -101,6 +101,6 @@ export const scottDollinger = {
     would_take_again: 86,
 };
 
-export const defaultTeacherSuggestions = ["Regina Ybarra", "James Willson", "Stephanie Taylor", "Bentley Garrett", "Karl Sengupta"];
+export const defaultTeacherSuggestions = ["John Cole", "Regina Ybarra", "Stephanie Taylor", "Bentley Garrett", "Karl Sengupta"];
 
-export const defaultCourseSuggestions = ["CS 2305", "MATH 2418", "CHEM 2401", "ACCT 6305", "SPAN 2311"];
+export const defaultCourseSuggestions = ["CE 2336", "MATH 2418", "CHEM 2401", "ACCT 6305", "SPAN 2311"];

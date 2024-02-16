@@ -7,7 +7,7 @@ import ProfResults from "./ProfessorResults.jsx";
 import CourseResults from "./CourseResults.jsx";
 import { timothyFarage, scottDollinger } from "../../utils/defaults.js";
 
-const API_URL = import.meta.env.DEV ? "http://localhost:80" : import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.DEV ? "http://localhost:80" : import.meta.env.VITE_API_URL || "http://localhost:80";
 
 function LookupForm({ isCompareForm }) {
     const toast = useToast();

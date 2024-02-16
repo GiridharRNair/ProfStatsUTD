@@ -3,7 +3,7 @@ import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseBu
 import { FcFeedback } from "react-icons/fc";
 
 function RateUsModal() {
-    const [rateUsModalOpen, setRateUsModalOpen] = useState(localStorage.getItem("LastInputData") && !localStorage.getItem("hasRated") && Math.random() < 0.1);
+    const [rateUsModalOpen, setRateUsModalOpen] = useState(localStorage.getItem("LastInputData") && !localStorage.getItem("hasRated") && Math.random() < 0.4);
     const [buttonTextColor, setButtonTextColor] = useState("#333");
 
     const generateGradientColor = () => {
@@ -15,51 +15,60 @@ function RateUsModal() {
     };
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            setButtonTextColor(generateGradientColor());
-        }, 100);
-
+        const interval = setInterval(() => setButtonTextColor(generateGradientColor()), 100);
         return () => clearInterval(interval);
     }, []);
+
+    const openFeedbackForm = (url) => () => {
+        window.open(url, "_blank");
+        localStorage.setItem("hasRated", true);
+    };
 
     return (
         <Modal isOpen={rateUsModalOpen} onClose={() => setRateUsModalOpen(false)} size="md">
             <ModalOverlay />
             <ModalContent width={300}>
-                <ModalHeader mb={-2}>Your input matters!</ModalHeader>
+                <ModalHeader mb={-4}>Your input matters!</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
                     <Center>
-                        <Heading size="xs" mb={6} fontWeight={"normal"}>
-                            Share your thoughts! Help us improve by leaving a review or filling out the feedback form.
+                        <Heading size="xs" mb={4} fontWeight="normal">
+                            Help us improve by leaving a review or filling out the feedback form.
                         </Heading>
                     </Center>
                     <VStack pb={1}>
                         <Button
                             leftIcon={<Icon as={FcFeedback} boxSize={6} />}
-                            onClick={() => {
-                                window.open("https://forms.gle/gc2G34o2BiiXs4bz7", "_blank");
-                                localStorage.setItem("hasRated", true);
-                            }}
+                            onClick={openFeedbackForm("https://forms.gle/gc2G34o2BiiXs4bz7")}
                             variant="outline"
-                            fontWeight={"medium"}
+                            fontWeight="medium"
                             width={250}
                         >
                             Feedback Form
                         </Button>
                         <Button
                             leftIcon={<Image src="extension-images/ChromeWebStore.png" boxSize={23} />}
-                            onClick={() => {
-                                window.open("https://chromewebstore.google.com/detail/doilmgfedjlpepeaolcfpdmkehecdaff/reviews", "_blank");
-                                localStorage.setItem("hasRated", true);
-                            }}
+                            onClick={openFeedbackForm("https://chromewebstore.google.com/detail/doilmgfedjlpepeaolcfpdmkehecdaff/reviews")}
                             variant="outline"
-                            fontWeight={"medium"}
+                            fontWeight="medium"
                             width={250}
                             borderColor={buttonTextColor}
                             textColor={buttonTextColor}
                         >
                             Leave a Review
+                        </Button>
+                        <Button
+                            pt={1}
+                            onClick={() => {
+                                localStorage.setItem("hasRated", true);
+                                setRateUsModalOpen(false);
+                            }}
+                            variant="link"
+                            fontWeight="medium"
+                            size="xs"
+                            _hover={{ color: "#3182CE" }}
+                        >
+                            Don&apos;t show again
                         </Button>
                     </VStack>
                 </ModalBody>
