@@ -22,7 +22,7 @@ ProfStats is a handy Chrome extension with 100+ users, merging professor ratings
 
 The front end, built with Vite, React, Chakra UI, and Chart.js, ensures a streamlined interface with features like backend performance optimization, client-side validation for data accuracy, and [CRXJS](https://crxjs.dev/vite-plugin/) for Chrome extension hot module reloading during development.
 
-### Automated Deployment
+### Deployment
 
 GitHub Actions automates staging on the Chrome Web Store upon new version releases, utilizing the [Chrome-Webstore-Upload-Action](https://github.com/fregante/chrome-webstore-upload). While manual review submission is required, the uploading process is fully automated.
 

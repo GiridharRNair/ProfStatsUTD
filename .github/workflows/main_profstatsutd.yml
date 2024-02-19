@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - '.github/workflows/**'
+      - '.github/workflows/main_profstatsutd.yml'
       - 'api/**'
       - 'db_setup/**'
       - 'raw_data/**'

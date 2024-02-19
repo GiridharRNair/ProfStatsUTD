@@ -16,7 +16,7 @@ function InfoIcon() {
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} size="sm">
                 <ModalOverlay />
                 <ModalContent width={300}>
-                    <ModalHeader>Options</ModalHeader>
+                    <ModalHeader mb={-2}>Options</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
                         <VStack pb={1}>

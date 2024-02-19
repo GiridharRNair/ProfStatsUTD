@@ -1,6 +1,14 @@
 name: Lint and Formatting Check
 
-on: push
+on:
+    push:
+      paths:
+        - 'src/**'
+        - '.eslintrc.js'
+        - '.prettierrc.js'
+        - 'utils/**'
+        - '.github/workflows/prettier-lint-check.yml'
+    workflow_dispatch:
 
 jobs:
   main:
