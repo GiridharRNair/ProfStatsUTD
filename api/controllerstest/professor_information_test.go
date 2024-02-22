@@ -8,27 +8,28 @@ import (
 	"github.com/GiridharRNair/ProfStats-GinAPI/controllers"
 )
 
+// Retired Professor
 const timothyFarageExpectedJSON = `{
 	"course_number": "",
 	"department": "Computer Science",
 	"difficulty": 2.3,
 	"grades": {
-		"aPlus": 921,
-		"a": 1075,
-		"aMinus": 264,
-		"bPlus": 226,
-		"b": 292,
-		"bMinus": 77,
-		"cPlus": 60,
-		"c": 129,
-		"cMinus": 44,
-		"dPlus": 26,
-		"d": 34,
-		"dMinus": 25,
-		"f": 46,
-		"cr": 29,
-		"nc": 5,
-		"w": 40
+		"a":1186, 
+		"aMinus":277, 
+		"aPlus":1026, 
+		"b":296, 
+		"bMinus":77, 
+		"bPlus":232, 
+		"c":129, 
+		"cMinus":44, 
+		"cPlus":60, 
+		"cr":29, 
+		"d":34, 
+		"dMinus":25, 
+		"dPlus":26, 
+		"f":47, 
+		"nc":5, 
+		"w":40
 	},
 	"id": "138341",
 	"name": "Timothy Farage",
