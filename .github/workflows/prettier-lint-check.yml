@@ -24,8 +24,8 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install Next for ESLint and Prettier
-        run: npm install next prettier
+      - name: Install ESLint and Prettier
+        run: npm install 
 
       - name: Run ESLint
         run: npm run lint:check
