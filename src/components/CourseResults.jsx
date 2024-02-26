@@ -7,19 +7,15 @@ import {
     DrawerBody,
     DrawerOverlay,
     DrawerContent,
-    Image,
     useColorModeValue,
 } from "@chakra-ui/react";
 import PropTypes from "prop-types";
+import DrawerButton from "./DrawerButton.jsx";
 import GradesGraph from "./GradesGraph.jsx";
 
 function CourseResults({ courseInfo }) {
     const { subject, course_number, course_name, catalog_url, grades } = courseInfo;
     const { isOpen, onOpen, onClose } = useDisclosure();
-
-    const openUTDGrades = () => window.open(`https://utdgrades.com/results?search=${subject + course_number}`, "_blank");
-    const openUTDTrends = () => window.open(`https://trends.utdnebula.com/dashboard?searchTerms=${subject + "+" + course_number}`, "_blank");
-    const openCourseCatalog = () => window.open(catalog_url, "_blank");
 
     return (
         <VStack width={315}>
@@ -49,35 +45,24 @@ function CourseResults({ courseInfo }) {
                 <DrawerContent>
                     <DrawerBody>
                         <VStack>
-                            <Button
-                                leftIcon={<Image src="extension-images/UTDGradesIcon.png" boxSize={22} />}
-                                onClick={openUTDGrades}
-                                variant={"outline"}
-                                fontWeight={"medium"}
-                                width={240}
-                            >
-                                UTD Grades
-                            </Button>
-                            <Button
-                                leftIcon={
-                                    <Image src={useColorModeValue("extension-images/UTDTrendsDark.svg", "extension-images/UTDTrendsLight.svg")} boxSize={5} />
-                                }
-                                onClick={openUTDTrends}
-                                variant={"outline"}
-                                fontWeight={"medium"}
-                                width={240}
-                            >
-                                UTD Trends
-                            </Button>
-                            <Button
-                                leftIcon={<Image src="extension-images/UTDIcon.png" boxSize={23} />}
-                                onClick={openCourseCatalog}
-                                variant={"outline"}
-                                fontWeight={"medium"}
-                                width={240}
-                            >
-                                Course Catalog
-                            </Button>
+                            <DrawerButton
+                                iconSrc="extension-images/UTDGradesIcon.png"
+                                buttonText="UTD Grades"
+                                url={`https://utdgrades.com/results?search=${subject + course_number}`}
+                                boxSize={22}
+                            />
+                            <DrawerButton
+                                iconSrc={useColorModeValue("extension-images/UTDTrendsDark.svg", "extension-images/UTDTrendsLight.svg")}
+                                buttonText="UTD Trends"
+                                url={`https://trends.utdnebula.com/dashboard?searchTerms=${subject + "+" + course_number}`}
+                                boxSize={5}
+                            />
+                            <DrawerButton
+                                iconSrc="extension-images/UTDIcon.png"
+                                buttonText="Course Catalog"
+                                url={catalog_url}
+                                boxSize={23}   
+                            />
                         </VStack>
                     </DrawerBody>
                 </DrawerContent>

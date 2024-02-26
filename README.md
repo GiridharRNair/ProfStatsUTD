@@ -8,10 +8,6 @@
 
 ProfStats is a handy Chrome extension with 100+ users, merging professor ratings and grade distributions at the University of Texas at Dallas for simplified access to course information for students.
 
-## Built With
-
-
-
 ## Frontend Overview
 
 [![Vite](https://img.shields.io/badge/Powered_by-Vite-646CFF?style=for-the-badge&logo=vite)](https://vitejs.dev/)

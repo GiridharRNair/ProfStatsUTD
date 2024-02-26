@@ -13,13 +13,32 @@ import {
     DrawerBody,
     DrawerOverlay,
     DrawerContent,
-    Image,
     useColorModeValue,
     CircularProgress,
     CircularProgressLabel,
 } from "@chakra-ui/react";
 import PropTypes from "prop-types";
+import DrawerButton from "./DrawerButton.jsx";
 import GradesGraph from "./GradesGraph.jsx";
+
+function CircularProgressBar({ title, value, max, color, label }) {
+    return (
+        <VStack w={15}>
+            <Text height={4}>{title}</Text>
+            <CircularProgress max={max} size={"55px"} thickness={"10px"} value={value} color={color}>
+                <CircularProgressLabel>{label}</CircularProgressLabel>
+            </CircularProgress>
+        </VStack>
+    );
+}
+
+CircularProgressBar.propTypes = {
+    title: PropTypes.string.isRequired,
+    value: PropTypes.number.isRequired,
+    max: PropTypes.number.isRequired,
+    color: PropTypes.string.isRequired,
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+};
 
 function ProfResults({ professorInfo }) {
     const { name, department, id, subject, course_number, tags, rating, difficulty, would_take_again, grades } = professorInfo;
@@ -66,44 +85,29 @@ function ProfResults({ professorInfo }) {
             )}
 
             <HStack w={250} pb={1}>
-                <VStack w={15}>
-                    <Text height={4}>Quality</Text>
-                    <CircularProgress
-                        max={5}
-                        size="55px"
-                        thickness="10px"
-                        value={rating === 0 ? -1 : Math.max(0, rating)}
-                        color={`hsl(${(Math.max(0, rating) / 5) * 100}, 90%, 50%)`}
-                    >
-                        <CircularProgressLabel>{rating < 0 ? "N/A" : rating}</CircularProgressLabel>
-                    </CircularProgress>
-                </VStack>
+                <CircularProgressBar
+                    title="Rating"
+                    value={rating === 0 ? -1 : Math.max(0, rating)}
+                    max={5}
+                    color={`hsl(${(Math.max(0, rating) / 5) * 100}, 90%, 50%)`}
+                    label={rating < 0 ? "N/A" : rating}
+                />
                 <Spacer />
-                <VStack w={15}>
-                    <Text height={4}>Difficulty</Text>
-                    <CircularProgress
-                        max={5}
-                        size="55px"
-                        thickness="10px"
-                        value={difficulty === 0 ? -1 : Math.max(0, difficulty)}
-                        color={`hsl(${((5 - Math.max(0, difficulty)) / 5) * 100}, 90%, 50%)`}
-                    >
-                        <CircularProgressLabel>{difficulty < 0 ? "N/A" : difficulty}</CircularProgressLabel>
-                    </CircularProgress>
-                </VStack>
+                <CircularProgressBar
+                    title="Difficulty"
+                    value={difficulty === 0 ? -1 : Math.max(0, difficulty)}
+                    max={5}
+                    color={`hsl(${((5 - Math.max(0, difficulty)) / 5) * 100}, 90%, 50%)`}
+                    label={difficulty < 0 ? "N/A" : difficulty}
+                />
                 <Spacer />
-                <VStack w={15}>
-                    <Text height={4}>Enjoyment</Text>
-                    <CircularProgress
-                        max={100}
-                        size="55px"
-                        thickness="10px"
-                        value={would_take_again === 0 ? -1 : Math.max(0, would_take_again)}
-                        color={`hsl(${would_take_again}, 90%, 50%)`}
-                    >
-                        <CircularProgressLabel>{would_take_again < 0 ? "N/A" : would_take_again}</CircularProgressLabel>
-                    </CircularProgress>
-                </VStack>
+                <CircularProgressBar
+                    title="Enjoyment"
+                    value={would_take_again === 0 ? -1 : Math.max(0, would_take_again)}
+                    max={100}
+                    color={`hsl(${would_take_again}, 90%, 50%)`}
+                    label={would_take_again < 0 ? "N/A" : would_take_again}
+                />
             </HStack>
 
             <GradesGraph grades={grades} />
@@ -113,44 +117,15 @@ function ProfResults({ professorInfo }) {
                 <DrawerContent>
                     <DrawerBody>
                         <VStack>
-                            <Button
-                                leftIcon={<Image src="extension-images/RMPIcon.png" boxSize={42} />}
-                                onClick={() => window.open(RateMyProfessorUrl, "_blank")}
-                                variant={"outline"}
-                                fontWeight={"medium"}
-                                width={240}
-                            >
-                                Rate My Professor
-                            </Button>
-                            <Button
-                                leftIcon={<Image src="extension-images/UTDGradesIcon.png" boxSize={22} />}
-                                onClick={() => window.open(UTDGradesUrl, "_blank")}
-                                variant={"outline"}
-                                fontWeight={"medium"}
-                                width={240}
-                            >
-                                UTD Grades
-                            </Button>
-                            <Button
-                                leftIcon={
-                                    <Image src={useColorModeValue("extension-images/UTDTrendsDark.svg", "extension-images/UTDTrendsLight.svg")} boxSize={5} />
-                                }
-                                onClick={() => window.open(UTDTrendsUrl, "_blank")}
-                                variant={"outline"}
-                                fontWeight={"medium"}
-                                width={240}
-                            >
-                                UTD Trends
-                            </Button>
-                            <Button
-                                leftIcon={<Image src="extension-images/UTDIcon.png" boxSize={23} />}
-                                onClick={() => window.open(UTDProfileUrl, "_blank")}
-                                variant={"outline"}
-                                fontWeight={"medium"}
-                                width={240}
-                            >
-                                Professor Profile
-                            </Button>
+                            <DrawerButton iconSrc="extension-images/RMPIcon.png" buttonText="Rate My Professor" url={RateMyProfessorUrl} boxSize={42} />
+                            <DrawerButton iconSrc="extension-images/UTDGradesIcon.png" buttonText="UTD Grades" url={UTDGradesUrl} boxSize={22} />
+                            <DrawerButton
+                                iconSrc={useColorModeValue("extension-images/UTDTrendsDark.svg", "extension-images/UTDTrendsLight.svg")}
+                                buttonText="UTD Trends"
+                                url={UTDTrendsUrl}
+                                boxSize={5}
+                            />
+                            <DrawerButton iconSrc="extension-images/UTDIcon.png" buttonText="Professor Profile" url={UTDProfileUrl} boxSize={23} />
                         </VStack>
                     </DrawerBody>
                 </DrawerContent>
