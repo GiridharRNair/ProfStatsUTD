@@ -1,14 +1,4 @@
-import {
-    VStack,
-    Tooltip as ChakraTooltip,
-    useDisclosure,
-    Button,
-    Drawer,
-    DrawerBody,
-    DrawerOverlay,
-    DrawerContent,
-    useColorModeValue,
-} from "@chakra-ui/react";
+import { VStack, Tooltip as ChakraTooltip, useDisclosure, Button, Drawer, DrawerBody, DrawerOverlay, DrawerContent, useColorModeValue } from "@chakra-ui/react";
 import PropTypes from "prop-types";
 import DrawerButton from "./DrawerButton.jsx";
 import GradesGraph from "./GradesGraph.jsx";
@@ -57,12 +47,7 @@ function CourseResults({ courseInfo }) {
                                 url={`https://trends.utdnebula.com/dashboard?searchTerms=${subject + "+" + course_number}`}
                                 boxSize={5}
                             />
-                            <DrawerButton
-                                iconSrc="extension-images/UTDIcon.png"
-                                buttonText="Course Catalog"
-                                url={catalog_url}
-                                boxSize={23}   
-                            />
+                            <DrawerButton iconSrc="extension-images/UTDIcon.png" buttonText="Course Catalog" url={catalog_url} boxSize={23} />
                         </VStack>
                     </DrawerBody>
                 </DrawerContent>
