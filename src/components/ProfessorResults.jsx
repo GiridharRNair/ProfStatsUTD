@@ -49,7 +49,9 @@ function ProfResults({ professorInfo }) {
                 </Button>
             </ChakraTooltip>
 
-            <Text fontSize="sm">{department}</Text>
+            <Text fontSize="sm" mb={!tags && -1}>
+                {department}
+            </Text>
 
             {tags && (
                 <Wrap justify="center" spacing={"4px"}>
