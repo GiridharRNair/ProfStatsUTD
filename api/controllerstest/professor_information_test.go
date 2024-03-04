@@ -8,7 +8,6 @@ import (
 	"github.com/GiridharRNair/ProfStats-GinAPI/controllers"
 )
 
-// Retired Professor
 const timothyFarageExpectedJSON = `{
 	"course_number": "",
 	"department": "Computer Science",

@@ -51,7 +51,7 @@ function ProfResults({ professorInfo }) {
 
     return (
         <VStack width={315}>
-            <ChakraTooltip label="Click for more information" placement="bottom">
+            <ChakraTooltip label="Click for more information" placement="bottom" fontSize={"xs"}>
                 <Button
                     fontSize="lg"
                     variant={"link"}

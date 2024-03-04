@@ -39,7 +39,7 @@ function LookupForm({ isCompareForm }) {
         });
     };
 
-    const getData = async (url, type) => {
+    const fetchData = async (url, type) => {
         setLoading(true);
 
         try {
@@ -48,6 +48,15 @@ function LookupForm({ isCompareForm }) {
             setLastInputData(ratingsResponse.data);
             localStorage.setItem(`LastInputType${isCompareForm ? "Compare" : ""}`, type);
             localStorage.setItem(`LastInputData${isCompareForm ? "Compare" : ""}`, JSON.stringify(ratingsResponse.data));
+
+            const lastQueriesKey = `LastQueries${isCompareForm ? "Compare" : ""}${type === "professor" ? "Professor" : "Course"}`;
+            const lastQueries = JSON.parse(localStorage.getItem(lastQueriesKey)) || [];
+            const lastQuery = type === "professor" ? ratingsResponse.data.name : `${ratingsResponse.data.subject} ${ratingsResponse.data.course_number}`;
+            if (lastQueries.includes(lastQuery)) {
+                lastQueries.splice(lastQueries.indexOf(lastQuery), 1);
+            }
+            lastQueries.unshift(lastQuery);
+            localStorage.setItem(lastQueriesKey, JSON.stringify(lastQueries.slice(0, 5)));
 
             if (Object.keys(ratingsResponse.data.grades).length === 0) {
                 showErrorToast("No grade distribution from specified query");
@@ -72,9 +81,9 @@ function LookupForm({ isCompareForm }) {
         }
 
         if (professorName.trim()) {
-            await getData(`${API_URL}/professor_info?teacher=${professorName.trim()}&course=${formattedCourseName}`, "professor");
+            await fetchData(`${API_URL}/professor_info?teacher=${professorName.trim()}&course=${formattedCourseName}`, "professor");
         } else if (formattedCourseName) {
-            await getData(`${API_URL}/course_info?course=${formattedCourseName}`, "course");
+            await fetchData(`${API_URL}/course_info?course=${formattedCourseName}`, "course");
         } else {
             showErrorToast("Please enter either a course or a professor");
         }
@@ -82,7 +91,7 @@ function LookupForm({ isCompareForm }) {
 
     return (
         <VStack pt={3} width={290} align={"center"}>
-            <Inputs setProfessor={setProfessorName} setCourse={setCourse} professor={professorName} course={course} />
+            <Inputs setProfessor={setProfessorName} setCourse={setCourse} professor={professorName} course={course} isCompareInputs={isCompareForm} />
 
             <Button onClick={handleSubmit} isLoading={loading} height={8} fontSize={"sm"} fontWeight={"medium"}>
                 Submit

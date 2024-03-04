@@ -1,6 +1,7 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { AutoComplete, AutoCompleteInput, AutoCompleteItem, AutoCompleteList } from "@choc-ui/chakra-autocomplete";
 import { VStack, Tooltip, Spinner, InputGroup, InputRightElement, CloseButton } from "@chakra-ui/react";
+import { RepeatClockIcon } from "@chakra-ui/icons";
 import PropTypes from "prop-types";
 import _debounce from "lodash/debounce";
 import axios from "axios";
@@ -8,11 +9,26 @@ import { defaultTeacherSuggestions, defaultCourseSuggestions } from "../../utils
 
 const API_URL = import.meta.env.DEV ? "http://localhost:80" : import.meta.env.VITE_API_URL || "http://localhost:80";
 
-function Inputs({ setProfessor, setCourse, professor, course }) {
+function Inputs({ setProfessor, setCourse, professor, course, isCompareInputs }) {
     const [professorLoading, setProfessorLoading] = useState(false);
     const [courseLoading, setCourseLoading] = useState(false);
-    const [professorSuggestions, setProfessorSuggestions] = useState(defaultTeacherSuggestions);
-    const [courseSuggestions, setCourseSuggestions] = useState(defaultCourseSuggestions);
+    const [professorSuggestions, setProfessorSuggestions] = useState([]);
+    const [courseSuggestions, setCourseSuggestions] = useState([]);
+
+    const getLastQueriedProfessors = useCallback(
+        () => JSON.parse(localStorage.getItem(`LastQueries${isCompareInputs ? "Compare" : ""}Professor`)) || defaultTeacherSuggestions,
+        [isCompareInputs],
+    );
+
+    const getLastQueriedCourses = useCallback(
+        () => JSON.parse(localStorage.getItem(`LastQueries${isCompareInputs ? "Compare" : ""}Course`)) || defaultCourseSuggestions,
+        [isCompareInputs],
+    );
+
+    useEffect(() => {
+        setProfessorSuggestions(getLastQueriedProfessors());
+        setCourseSuggestions(getLastQueriedCourses());
+    }, [getLastQueriedProfessors, getLastQueriedCourses]);
 
     const autocompleteValues = async (professorParam, courseParam) => {
         try {
@@ -28,7 +44,7 @@ function Inputs({ setProfessor, setCourse, professor, course }) {
         }
     };
 
-    const debouncedAutocompleteValues = useMemo(() => _debounce((professor, course) => autocompleteValues(professor, course), 200), []);
+    const debouncedAutocompleteValues = useMemo(() => _debounce((professor, course) => autocompleteValues(professor, course), 250), []);
 
     return (
         <VStack width={325}>
@@ -66,22 +82,32 @@ function Inputs({ setProfessor, setCourse, professor, course }) {
                                 mb={2}
                                 onClick={() => {
                                     setProfessor("");
-                                    setProfessorSuggestions(defaultTeacherSuggestions);
-                                    setCourseSuggestions(defaultCourseSuggestions);
+                                    setProfessorSuggestions(getLastQueriedProfessors());
+                                    setCourseSuggestions(getLastQueriedCourses());
                                 }}
                             />
                         )}
                     </InputRightElement>
                 </InputGroup>
-                {!professorLoading && (
-                    <AutoCompleteList fontSize={"sm"}>
-                        {professorSuggestions.map((professorOption, index) => (
-                            <AutoCompleteItem value={professorOption} key={index}>
-                                {professorOption}
-                            </AutoCompleteItem>
-                        ))}
-                    </AutoCompleteList>
-                )}
+                {!professorLoading &&
+                    (professor !== "" ? (
+                        <AutoCompleteList fontSize={"sm"}>
+                            {professorSuggestions.map((professorOption, index) => (
+                                <AutoCompleteItem value={professorOption} key={index}>
+                                    {professorOption}
+                                </AutoCompleteItem>
+                            ))}
+                        </AutoCompleteList>
+                    ) : (
+                        <AutoCompleteList fontSize={"sm"}>
+                            {getLastQueriedProfessors().map((professorOption, index) => (
+                                <AutoCompleteItem value={professorOption} key={index} justify="space-between" align="center">
+                                    {professorOption}
+                                    {JSON.stringify(getLastQueriedProfessors()) !== JSON.stringify(defaultTeacherSuggestions) && <RepeatClockIcon />}
+                                </AutoCompleteItem>
+                            ))}
+                        </AutoCompleteList>
+                    ))}
             </AutoComplete>
 
             <AutoComplete
@@ -113,21 +139,31 @@ function Inputs({ setProfessor, setCourse, professor, course }) {
                                 mb={2}
                                 onClick={() => {
                                     setCourse("");
-                                    professor ? autocompleteValues(professor, "") : setCourseSuggestions(defaultCourseSuggestions);
+                                    professor ? autocompleteValues(professor, "") : setCourseSuggestions(getLastQueriedCourses());
                                 }}
                             />
                         )}
                     </InputRightElement>
                 </InputGroup>
-                {!courseLoading && (
-                    <AutoCompleteList style={{ maxHeight: "230px", overflowY: "auto" }} fontSize={"sm"}>
-                        {courseSuggestions.map((courseOption, index) => (
-                            <AutoCompleteItem value={courseOption} key={index}>
-                                {courseOption}
-                            </AutoCompleteItem>
-                        ))}
-                    </AutoCompleteList>
-                )}
+                {!courseLoading &&
+                    (course !== "" || professor !== "" ? (
+                        <AutoCompleteList style={{ maxHeight: "230px", overflowY: "auto" }} fontSize={"sm"}>
+                            {courseSuggestions.map((courseOption, index) => (
+                                <AutoCompleteItem value={courseOption} key={index}>
+                                    {courseOption}
+                                </AutoCompleteItem>
+                            ))}
+                        </AutoCompleteList>
+                    ) : (
+                        <AutoCompleteList fontSize={"sm"}>
+                            {getLastQueriedCourses().map((courseOption, index) => (
+                                <AutoCompleteItem value={courseOption} key={index} justify="space-between" align="center">
+                                    {courseOption}
+                                    {JSON.stringify(getLastQueriedCourses()) !== JSON.stringify(defaultCourseSuggestions) && <RepeatClockIcon />}
+                                </AutoCompleteItem>
+                            ))}
+                        </AutoCompleteList>
+                    ))}
             </AutoComplete>
         </VStack>
     );
@@ -138,6 +174,7 @@ Inputs.propTypes = {
     setCourse: PropTypes.func.isRequired,
     professor: PropTypes.string.isRequired,
     course: PropTypes.string.isRequired,
+    isCompareInputs: PropTypes.bool,
 };
 
 export default Inputs;

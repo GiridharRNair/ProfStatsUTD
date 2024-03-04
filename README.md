@@ -13,6 +13,7 @@ ProfStats is a handy Chrome extension with 100+ users, merging professor ratings
 [![Vite](https://img.shields.io/badge/Powered_by-Vite-646CFF?style=for-the-badge&logo=vite)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/Powered_by-React-61DAFB?style=for-the-badge&logo=react)](https://reactjs.org/)
 [![Chakra UI](https://img.shields.io/badge/Styled_with-Chakra_UI-319795?style=for-the-badge&logo=chakra-ui)](https://chakra-ui.com/)
+[![Axios](https://img.shields.io/badge/HTTP_requests_with-Axios-009688?style=for-the-badge&logo=axios)](https://www.npmjs.com/package/axios/)
 
 The front end ensures a streamlined interface with features like backend performance optimization, client-side validation for data accuracy, and [CRXJS](https://crxjs.dev/vite-plugin/) for Chrome extension hot module reloading during development.
 
