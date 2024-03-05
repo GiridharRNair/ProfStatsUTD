@@ -9,7 +9,7 @@ function CourseResults({ courseInfo }) {
 
     return (
         <VStack width={315}>
-            <ChakraTooltip label="Click for more information" placement="bottom" mt={-2}>
+            <ChakraTooltip label="Click for more information" placement="bottom" mt={-2} fontSize={"xs"}>
                 <Button
                     fontSize="lg"
                     variant="link"
