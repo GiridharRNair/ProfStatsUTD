@@ -6,7 +6,6 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/GiridharRNair/ProfStats-GinAPI/controllers"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -50,7 +49,7 @@ func TestSuggestionsSearchQuery(t *testing.T) {
 		{"/suggestions?course=CS2337", http.StatusOK, cs2337SuggestionsExpectedInfo},
 	}
 
-	testAPIEndpoint(t, testCases, controllers.SuggestionsSearchQuery)
+	testAPIEndpoint(t, testCases)
 
 	// Seperate test to check the length of the courses array
 	var jsonResponse map[string]interface{}

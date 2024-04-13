@@ -24,7 +24,7 @@ func init() {
 	router.GET("/suggestions", controllers.SuggestionsSearchQuery)
 }
 
-func testAPIEndpoint(t *testing.T, testCases []TestCases, handlerFunc func(*gin.Context)) {
+func testAPIEndpoint(t *testing.T, testCases []TestCases) {
 	for _, tc := range testCases {
 		req := httptest.NewRequest("GET", tc.path, nil)
 		w := httptest.NewRecorder()

@@ -65,7 +65,7 @@ function Inputs({ setProfessor, setCourse, professor, course, isCompareInputs })
                     <Tooltip placement="top" label="Ignore prefixes, suffixes, and middle names" fontSize={"xs"}>
                         <AutoCompleteInput
                             height={8}
-                            placeholder="Enter Teacher Name (ex. John Cole)"
+                            placeholder="Enter Teacher Name"
                             value={professor}
                             loadingIcon={<Spinner size={"xs"} mb={2} />}
                             onChange={(value) => {
@@ -123,7 +123,7 @@ function Inputs({ setProfessor, setCourse, professor, course, isCompareInputs })
                 <InputGroup>
                     <AutoCompleteInput
                         height={8}
-                        placeholder={courseSuggestions[0] ? `Enter Course (ex. ${courseSuggestions[0]})` : "No courses found for this professor"}
+                        placeholder={"Enter Course"}
                         value={course}
                         loadingIcon={<Spinner size={"xs"} mb={2} />}
                         onChange={(value) => {

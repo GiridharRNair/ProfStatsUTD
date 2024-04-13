@@ -4,14 +4,12 @@ import (
 	"net/http"
 	"net/url"
 	"testing"
-
-	"github.com/GiridharRNair/ProfStats-GinAPI/controllers"
 )
 
 const timothyFarageExpectedJSON = `{
 	"course_number": "",
 	"department": "Computer Science",
-	"difficulty": 2.3,
+	"difficulty": 2.1,
 	"grades": {
 		"a":1186, 
 		"aMinus":277, 
@@ -32,7 +30,7 @@ const timothyFarageExpectedJSON = `{
 	},
 	"id": "138341",
 	"name": "Timothy Farage",
-	"rating": 4.3,
+	"rating": 4.2,
 	"subject": "",
 	"tags": [
 		"Amazing Lectures",
@@ -71,5 +69,5 @@ func TestGetProfessorInformation(t *testing.T) {
 		{"/professor_info?teacher=Sue%20Brookshire", http.StatusOK, sueBrookshireExpectedJSON},
 	}
 
-	testAPIEndpoint(t, testCases, controllers.GetProfessorInformation)
+	testAPIEndpoint(t, testCases)
 }

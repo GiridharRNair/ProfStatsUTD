@@ -6,8 +6,6 @@ import { InfoOutlineIcon } from "@chakra-ui/icons";
 
 function InfoIcon() {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [feedbackButtonIsHovered, setFeedbackButtonIsHovered] = useState(false);
-    const [githubButtonIsHovered, setGithubButtonIsHovered] = useState(false);
 
     return (
         <>
@@ -21,26 +19,22 @@ function InfoIcon() {
                     <ModalBody>
                         <VStack pb={1}>
                             <Button
-                                leftIcon={!feedbackButtonIsHovered && <Icon as={FcFeedback} boxSize={6} />}
+                                leftIcon={<Icon as={FcFeedback} boxSize={6} />}
                                 onClick={() => window.open("https://forms.gle/gc2G34o2BiiXs4bz7", "_blank")}
-                                onMouseEnter={() => setFeedbackButtonIsHovered(true)}
-                                onMouseLeave={() => setFeedbackButtonIsHovered(false)}
                                 variant="outline"
                                 fontWeight={"medium"}
                                 width={250}
                             >
-                                {feedbackButtonIsHovered ? "Any issues? Suggestions?" : "Feedback Form"}
+                                Feedback Form
                             </Button>
                             <Button
-                                leftIcon={!githubButtonIsHovered && <Icon as={FaGithub} boxSize={6} />}
+                                leftIcon={<Icon as={FaGithub} boxSize={6} />}
                                 onClick={() => window.open("https://github.com/GiridharRNair/ProfStatsUTD", "_blank")}
-                                onMouseEnter={() => setGithubButtonIsHovered(true)}
-                                onMouseLeave={() => setGithubButtonIsHovered(false)}
                                 variant="outline"
                                 fontWeight={"medium"}
                                 width={250}
                             >
-                                {githubButtonIsHovered ? "Check out the source code!" : "GitHub"}
+                                Github
                             </Button>
                         </VStack>
                     </ModalBody>

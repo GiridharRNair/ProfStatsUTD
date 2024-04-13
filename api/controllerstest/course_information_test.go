@@ -4,8 +4,6 @@ import (
 	"net/http"
 	"net/url"
 	"testing"
-
-	"github.com/GiridharRNair/ProfStats-GinAPI/controllers"
 )
 
 const courseInfoExpectedJSON = `{
@@ -35,5 +33,5 @@ func TestGetCourseInformation(t *testing.T) {
 		{"/course_info?course=lats%206399", http.StatusOK, courseInfoExpectedJSON},
 	}
 
-	testAPIEndpoint(t, testCases, controllers.GetCourseInformation)
+	testAPIEndpoint(t, testCases)
 }
