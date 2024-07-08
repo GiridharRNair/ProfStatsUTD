@@ -3,19 +3,18 @@ package course
 import (
 	"fmt"
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/assert"
 )
 
 var computerScienceI = Course{
 	CourseName: "Computer Science I",
-	CatalogURL: fmt.Sprintf("https://catalog.utdallas.edu/%d/undergraduate/courses/cs1337", time.Now().Year()-1),
+	CatalogURL: fmt.Sprintf("https://catalog.utdallas.edu/%d/undergraduate/courses/cs1337", catalogYear),
 }
 
 var accountingForManagers = Course{
 	CourseName: "Accounting for Managers",
-	CatalogURL: fmt.Sprintf("https://catalog.utdallas.edu/%d/graduate/courses/acct6305", time.Now().Year()-1),
+	CatalogURL: fmt.Sprintf("https://catalog.utdallas.edu/%d/graduate/courses/acct6305", catalogYear),
 }
 
 func TestGetCourseName(t *testing.T) {

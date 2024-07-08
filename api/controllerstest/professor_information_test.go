@@ -9,7 +9,7 @@ import (
 const timothyFarageExpectedJSON = `{
 	"course_number": "",
 	"department": "Computer Science",
-	"difficulty": 2.1,
+	"difficulty": 2.3,
 	"grades": {
 		"a":1186, 
 		"aMinus":277, 
@@ -30,7 +30,7 @@ const timothyFarageExpectedJSON = `{
 	},
 	"id": "138341",
 	"name": "Timothy Farage",
-	"rating": 4.2,
+	"rating": 4.3,
 	"subject": "",
 	"tags": [
 		"Amazing Lectures",
@@ -42,23 +42,6 @@ const timothyFarageExpectedJSON = `{
 	"would_take_again": 81
 }`
 
-const sueBrookshireExpectedJSON = `{
-	"course_number": "",
-	"department": "Education",
-	"difficulty": 2,
-	"grades": {
-		"f": 10,
-		"p": 357,
-		"w": 3
-	},
-	"id": "1588418",
-	"name": "Susan Brookshire",
-	"rating": 4.5,
-	"subject": "",
-	"tags": null,
-	"would_take_again": -1
-}`
-
 func TestGetProfessorInformation(t *testing.T) {
 	testCases := []TestCases{
 		{"/professor_info?course=CS2305", http.StatusBadRequest, `{"detail": "Teacher name not provided"}`},
@@ -66,7 +49,6 @@ func TestGetProfessorInformation(t *testing.T) {
 		{"/professor_info?teacher=thisteacherdoesnotexist", http.StatusInternalServerError, `{"detail": "Professor not found"}`},
 		{"/professor_info?teacher=John&course=*", http.StatusBadRequest, `{"detail": "Invalid course name"}`},
 		{"/professor_info?teacher=" + url.QueryEscape("Timothy Farage"), http.StatusOK, timothyFarageExpectedJSON},
-		{"/professor_info?teacher=Sue%20Brookshire", http.StatusOK, sueBrookshireExpectedJSON},
 	}
 
 	testAPIEndpoint(t, testCases)

@@ -7,7 +7,7 @@ import (
 )
 
 const courseInfoExpectedJSON = `{
-	"catalog_url": "https://catalog.utdallas.edu/2023/graduate/courses/lats6399",
+	"catalog_url": "https://catalog.utdallas.edu/2024/graduate/courses/lats6399",
 	"course_name": "Capstone Project in Latin American Studies",
 	"course_number": "6399",
 	"grades": {
@@ -29,7 +29,7 @@ func TestGetCourseInformation(t *testing.T) {
 	testCases := []TestCases{
 		{"/course_info", http.StatusBadRequest, `{"detail": "Course name not provided"}`},
 		{"/course_info?course=*", http.StatusBadRequest, `{"detail": "Invalid course name"}`},
-		{"/course_info?course=" + url.QueryEscape("cs 2222"), http.StatusInternalServerError, `{"detail": "course not found in the 2023 catalog"}`},
+		{"/course_info?course=" + url.QueryEscape("cs 2222"), http.StatusInternalServerError, `{"detail": "course not found in the 2024 catalog"}`},
 		{"/course_info?course=lats%206399", http.StatusOK, courseInfoExpectedJSON},
 	}
 
