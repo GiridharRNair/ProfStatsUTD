@@ -104,6 +104,11 @@ func getProfessorID(professorName, schoolID string) (string, error) {
 		return "2523207", nil
 	}
 
+	// Temporary fix for Wei-Pang Chin
+	if professorName == "Wei-Pang Chin" {
+		return "2420900", nil
+	}
+
 	url := fmt.Sprintf(RateMyProfessorSearchURL, schoolID, url.QueryEscape(professorName))
 
 	resp, err := http.Get(url)
