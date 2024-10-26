@@ -9,7 +9,7 @@ import (
 const timothyFarageExpectedJSON = `{
 	"course_number": "",
 	"department": "Computer Science",
-	"difficulty": 2.3,
+	"difficulty": 2.1,
 	"grades": {
 		"a":1186, 
 		"aMinus":277, 
@@ -30,7 +30,7 @@ const timothyFarageExpectedJSON = `{
 	},
 	"id": "138341",
 	"name": "Timothy Farage",
-	"rating": 4.3,
+	"rating": 4.2,
 	"subject": "",
 	"tags": [
 		"Amazing Lectures",
@@ -39,7 +39,7 @@ const timothyFarageExpectedJSON = `{
 		"Respected",
 		"Test Heavy"
 	],
-	"would_take_again": 81
+	"would_take_again": 77
 }`
 
 func TestGetProfessorInformation(t *testing.T) {
