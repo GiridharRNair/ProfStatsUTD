@@ -28,7 +28,7 @@ jobs:
                   VITE_API_URL: ${{ secrets.VITE_API_URL }}
 
             - name: Archive chrome-extension artifact
-              uses: actions/upload-artifact@v2
+              uses: actions/upload-artifact@v4
               with:
                   name: chrome-extension-${{ github.sha }}
                   path: chrome-extension-${{ github.sha }}.zip
