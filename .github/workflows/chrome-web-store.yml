@@ -1,63 +1,62 @@
 name: Deploy to Chrome Web Store
 
 on:
-  push:
-    tags:        
-      - '*'  
+    push:
+        tags:
+            - "*"
 
 jobs:
-  build-chrome-extension:
-    name: Build Chrome extension artifact
-    runs-on: ubuntu-latest
+    build-chrome-extension:
+        name: Build Chrome extension artifact
+        runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
+            - name: Set up Node.js
+              uses: actions/setup-node@v3
 
-    - name: Install dependencies
-      run: npm install
+            - name: Install dependencies
+              run: npm install
 
-    - name: Build extension
-      run: |
-        npm run build
-        zip -r chrome-extension-${{ github.sha }}.zip dist
-      env:
-        VITE_API_URL: ${{ secrets.VITE_API_URL }}
+            - name: Build extension
+              run: |
+                  npm run build
+                  zip -r chrome-extension-${{ github.sha }}.zip dist
+              env:
+                  VITE_API_URL: ${{ secrets.VITE_API_URL }}
 
-    - name: Archive chrome-extension artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: chrome-extension-${{ github.sha }}
-        path: chrome-extension-${{ github.sha }}.zip
+            - name: Archive chrome-extension artifact
+              uses: actions/upload-artifact@v2
+              with:
+                  name: chrome-extension-${{ github.sha }}
+                  path: chrome-extension-${{ github.sha }}.zip
 
-  upload-extension:
-    name: Upload Chrome extension artifact to Chrome Web Store
-    needs: build-chrome-extension
-    runs-on: ubuntu-latest
-    env:
-      EXTENSION_ID: doilmgfedjlpepeaolcfpdmkehecdaff
+    upload-extension:
+        name: Upload Chrome extension artifact to Chrome Web Store
+        needs: build-chrome-extension
+        runs-on: ubuntu-latest
+        env:
+            EXTENSION_ID: doilmgfedjlpepeaolcfpdmkehecdaff
 
-    steps:
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+        steps:
+            - name: Set up Node.js
+              uses: actions/setup-node@v3
 
-      - name: Download chrome-extension artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: chrome-extension-${{ github.sha }}
+            - name: Download chrome-extension artifact
+              uses: actions/download-artifact@v2
+              with:
+                  name: chrome-extension-${{ github.sha }}
 
-      - name: Install Web Store CLI
-        run: npm install -g chrome-webstore-upload-cli
+            - name: Install Web Store CLI
+              run: npm install -g chrome-webstore-upload-cli
 
-      - name: Upload extension
-        run: |
-          chrome-webstore-upload upload \
-            --source chrome-extension-${{ github.sha }}.zip \
-            --extension-id ${{ env.EXTENSION_ID }} \
-            --client-id ${{ secrets.CI_GOOGLE_CLIENT_ID }} \
-            --client-secret ${{ secrets.CI_GOOGLE_CLIENT_SECRET }} \
-            --refresh-token ${{ secrets.CI_GOOGLE_REFRESH_TOKEN }}
-
+            - name: Upload extension
+              run: |
+                  chrome-webstore-upload upload \
+                    --source chrome-extension-${{ github.sha }}.zip \
+                    --extension-id ${{ env.EXTENSION_ID }} \
+                    --client-id ${{ secrets.CI_GOOGLE_CLIENT_ID }} \
+                    --client-secret ${{ secrets.CI_GOOGLE_CLIENT_SECRET }} \
+                    --refresh-token ${{ secrets.CI_GOOGLE_REFRESH_TOKEN }}

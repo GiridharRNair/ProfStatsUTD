@@ -2,33 +2,33 @@ name: Lint and Formatting Check
 
 on:
     push:
-      paths:
-        - 'src/**'
-        - '.eslintrc.js'
-        - '.prettierrc.js'
-        - 'utils/**'
-        - '.github/workflows/prettier-lint-check.yml'
+        paths:
+            - "src/**"
+            - ".eslintrc.js"
+            - ".prettierrc.js"
+            - "utils/**"
+            - ".github/workflows/prettier-lint-check.yml"
     workflow_dispatch:
 
 jobs:
-  main:
-    name: Run ESLint + Prettier
-    runs-on: ubuntu-latest
+    main:
+        name: Run ESLint + Prettier
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Check out Git repository
-        uses: actions/checkout@v3
+        steps:
+            - name: Check out Git repository
+              uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
+            - name: Set up Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: "18"
 
-      - name: Install ESLint and Prettier
-        run: npm install 
+            - name: Install ESLint and Prettier
+              run: npm install
 
-      - name: Run ESLint
-        run: npm run lint:check
+            - name: Run ESLint
+              run: npm run lint:check
 
-      - name: Run Prettier
-        run: npm run format:check
+            - name: Run Prettier
+              run: npm run format:check

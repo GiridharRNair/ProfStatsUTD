@@ -69,6 +69,7 @@ Make sure you have the following software installed on your machine:
     ```bash
     npm run install-packages
     ```
+
     > This command installs the dependencies for the go backend and the react frontend
 
 4. **Start the server and extension concurrently:**
@@ -76,6 +77,7 @@ Make sure you have the following software installed on your machine:
     ```bash
     npm run dev
     ```
+
     > This project uses the `concurrently` npm package to run the server and extension concurrently
 
 5. **Enable Developer Mode in Chrome:**
