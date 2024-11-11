@@ -8,7 +8,7 @@
         "install-packages": "npm install && cd api && go mod download",
         "create-db": "python db_setup/create_db.py && python db_setup/test_db.py",
         "test-api": "npm run create-db && cd api && go test -v ./...",
-        "api": "npm run create-db && cd api && nodemon --exec go run main.go --signal SIGTERM",
+        "api": "source ~/.bashrc && npm run create-db && cd api && air",
         "vite": "vite",
         "dev": "concurrently \"npm run vite\" \"npm run api\"",
         "build:dev": "vite build --mode development",
@@ -43,7 +43,6 @@
         "eslint-plugin-react": "^7.33.2",
         "eslint-plugin-react-hooks": "^4.6.0",
         "eslint-plugin-react-refresh": "^0.4.4",
-        "nodemon": "^3.1.7",
         "prettier": "^3.3.3",
         "vite": "^5.4.10"
     }
