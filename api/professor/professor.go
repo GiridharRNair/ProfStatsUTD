@@ -99,13 +99,14 @@ func (p *Professor) getProfessorTags() {
 }
 
 func getProfessorID(professorName, schoolID string) (string, error) {
+	cleanedName := strings.ToLower(regexp.MustCompile(`[^a-zA-Z0-9]+`).ReplaceAllString(professorName, ""))
 	// Temporary fix for Wei-Pang Chin
-	if regexp.MustCompile(`[^a-zA-Z0-9]+`).ReplaceAllString(professorName, "") == "weipangchin" {
+	if cleanedName == "weipangchin" {
 		return "2420900", nil
 	}
 
 	// Temporary fix for Bo Park
-	if regexp.MustCompile(`[^a-zA-Z0-9]+`).ReplaceAllString(professorName, "") == "bopark" {
+	if cleanedName == "bopark" {
 		return "2680140", nil
 	}
 
