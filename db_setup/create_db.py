@@ -53,6 +53,7 @@ SQL_INSERT_ROW = '''
 
 # Some professors have their names in different formats in RMP and the UTD data
 edge_case_professors = {
+    "Du, Ding Z": "Ding-Zhu Du",
     "Nishi, Hirofumi": "Hiro Nishi",
     "Macalevey, Paul J": "Paul MacAlevey",
     "Mac Alevey, Paul J": "Paul MacAlevey",

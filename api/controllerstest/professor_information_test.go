@@ -39,7 +39,7 @@ const timothyFarageExpectedJSON = `{
 		"Respected",
 		"Test Heavy"
 	],
-	"would_take_again": 77
+	"would_take_again": 78
 }`
 
 func TestGetProfessorInformation(t *testing.T) {

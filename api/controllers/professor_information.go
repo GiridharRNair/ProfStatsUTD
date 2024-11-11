@@ -11,13 +11,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Edge case professors with different names in the database than on RateMyProfessor
-var professorNameCorrections = map[string]string{
-	"Ding-Zhu Du":           "Ding Du",
-	"Sue Brookshire":        "Susan Brookshire",
-	"Chitturi Bhadrachalam": "Bhadrachalam Chitturi",
-}
-
 const ValidateTeacherNameRegex = `[^a-zA-Z\s.\-]|.*\-.*\-`
 
 func GetProfessorInformation(c *gin.Context) {
@@ -46,13 +39,12 @@ func GetProfessorInformation(c *gin.Context) {
 		return
 	}
 
-	professorName := professorNameCorrections[professor.Name]
-	if professorName == "" {
-		professorName = professor.Name
+	if professor.Name == "Chitturi Bhadrachalam" {
+		professor.Name = "Bhadrachalam Chitturi"
 	}
 
 	// possible chance RMP name has middle name
-	profNameArray := strings.Fields(professorName)
+	profNameArray := strings.Fields(professor.Name)
 	profNameWithoutMiddle := fmt.Sprintf("%s %s", profNameArray[0], profNameArray[len(profNameArray)-1])
 
 	resultData := gin.H{

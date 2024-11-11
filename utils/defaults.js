@@ -45,31 +45,31 @@ export const colorMap = {
 export const timothyFarage = {
     course_number: "",
     department: "Computer Science",
-    difficulty: 2.3,
+    difficulty: 2.1,
     grades: {
-        aPlus: 1026,
         a: 1186,
         aMinus: 277,
-        bPlus: 232,
+        aPlus: 1026,
         b: 296,
         bMinus: 77,
-        cPlus: 60,
+        bPlus: 232,
         c: 129,
         cMinus: 44,
-        dPlus: 26,
+        cPlus: 60,
+        cr: 29,
         d: 34,
         dMinus: 25,
+        dPlus: 26,
         f: 47,
-        cr: 29,
         nc: 5,
         w: 40,
     },
     id: "138341",
     name: "Timothy Farage",
-    rating: 4.3,
+    rating: 4.2,
     subject: "",
     tags: ["Amazing Lectures", "Graded By Few Things", "Hilarious", "Respected", "Test Heavy"],
-    would_take_again: 81,
+    would_take_again: 78,
 };
 
 export const scottDollinger = {
@@ -103,4 +103,4 @@ export const scottDollinger = {
 
 export const defaultTeacherSuggestions = ["John Cole", "Regina Ybarra", "Stephanie Taylor", "Bentley Garrett", "Karl Sengupta"];
 
-export const defaultCourseSuggestions = ["CE 2336", "MATH 2418", "CHEM 2401", "ACCT 6305", "SPAN 2311"];
+export const defaultCourseSuggestions = ["CS 2305", "MATH 2418", "CHEM 2401", "ACCT 6305", "SPAN 2311"];

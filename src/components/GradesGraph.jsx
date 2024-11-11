@@ -6,7 +6,7 @@ import { gradeMappings, colorMap } from "../../utils/defaults.js";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip);
 
-function GradesGraph({ grades }) {
+function GradesGraph({ grades, subject, course_number }) {
     const gradeLabels = Object.keys(grades).map((grade) => gradeMappings[grade] || grade);
 
     const chartData = {
@@ -29,10 +29,17 @@ function GradesGraph({ grades }) {
                 titleColor: useColorModeValue("black", "white"),
                 bodyColor: useColorModeValue("black", "white"),
                 callbacks: {
-                    label: (context) => [
-                        `Students: ${context.parsed.y}`,
-                        `Percentage: ${((context.parsed.y / Object.values(grades).reduce((acc, count) => acc + count, 0)) * 100).toFixed(2)}%`,
-                    ],
+                    label: (context) => {
+                        const tooltipLines = [];
+                        if (subject && course_number) {
+                            tooltipLines.push(`${subject} ${course_number}`);
+                        }
+                        tooltipLines.push(`Students: ${context.parsed.y}`);
+                        tooltipLines.push(
+                            `Percentage: ${((context.parsed.y / Object.values(grades).reduce((acc, count) => acc + count, 0)) * 100).toFixed(2)}%`,
+                        );
+                        return tooltipLines;
+                    },
                 },
             },
         },

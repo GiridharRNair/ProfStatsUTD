@@ -99,14 +99,14 @@ func (p *Professor) getProfessorTags() {
 }
 
 func getProfessorID(professorName, schoolID string) (string, error) {
-	// Temporary fix for Scott Dollinger
-	if professorName == "Scott Dollinger" {
-		return "2523207", nil
+	// Temporary fix for Wei-Pang Chin
+	if regexp.MustCompile(`[^a-zA-Z0-9]+`).ReplaceAllString(professorName, "") == "weipangchin" {
+		return "2420900", nil
 	}
 
-	// Temporary fix for Wei-Pang Chin
-	if professorName == "Wei-Pang Chin" {
-		return "2420900", nil
+	// Temporary fix for Bo Park
+	if regexp.MustCompile(`[^a-zA-Z0-9]+`).ReplaceAllString(professorName, "") == "bopark" {
+		return "2680140", nil
 	}
 
 	url := fmt.Sprintf(RateMyProfessorSearchURL, schoolID, url.QueryEscape(professorName))

@@ -110,7 +110,7 @@ function ProfResults({ professorInfo }) {
                 />
             </HStack>
 
-            <GradesGraph grades={grades} />
+            <GradesGraph grades={grades} subject={subject} course_number={course_number} />
 
             <Drawer isOpen={isOpen} onClose={onClose} placement="bottom" size="md">
                 <DrawerOverlay />
