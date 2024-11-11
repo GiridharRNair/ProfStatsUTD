@@ -1,5 +1,3 @@
-<h1 align="center">ProfStatsUTD</h1>
-
 <p align="center">
   <img src="assets/marquee-promo-tile.jpg" alt="Screenshot" width="400">
 </p>
@@ -49,6 +47,7 @@ Make sure you have the following software installed on your machine:
 -   Node.js
 -   Golang
 -   Python
+-   [Air](https://github.com/air-verse/air?tab=readme-ov-file#installation) (for Go hot reloading)
 
 ### Steps:
 
@@ -67,7 +66,7 @@ Make sure you have the following software installed on your machine:
 3. **Install dependencies:**
 
     ```bash
-    npm run install-packages
+    npm run install
     ```
 
     > This command installs the dependencies for the go backend and the react frontend
