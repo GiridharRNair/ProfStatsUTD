@@ -45,8 +45,8 @@ function ProfResults({ professorInfo }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const RateMyProfessorUrl = `https://www.ratemyprofessors.com/professor/${id}`;
-    const UTDGradesUrl = `https://utdgrades.com/results?search=${subject ? subject + course_number + "+" : ""}${name.replace(" ", "+")}`;
-    const UTDTrendsUrl = `https://trends.utdnebula.com/dashboard?searchTerms=${subject ? subject + "+" + course_number : ""}%2C${name.replace(" ", "+")}`;
+    const UTDGradesUrl = `https://utdgrades.com/results?search=${subject && subject + course_number + "+"}${name.replace(" ", "+")}`;
+    const UTDTrendsUrl = `https://trends.utdnebula.com/dashboard?searchTerms=${subject && subject + "+" + course_number + "%2C"}${name.replace(" ", "+")}`;
     const UTDProfileUrl = `https://profiles.utdallas.edu/browse?search=${name.replace(" ", "+")}`;
 
     return (
