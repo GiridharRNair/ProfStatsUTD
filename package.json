@@ -11,12 +11,9 @@
         "api": "source ~/.bashrc && npm run create-db && cd api && air",
         "vite": "vite",
         "dev": "concurrently \"npm run vite\" \"npm run api\"",
-        "build:dev": "vite build --mode development",
         "build": "vite build",
         "lint": "eslint . --fix --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-        "lint:check": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
         "format": "prettier --write . --tab-width 4 --print-width 160",
-        "format:check": "prettier --check . --tab-width 4 --print-width 160",
         "preview": "vite preview"
     },
     "dependencies": {

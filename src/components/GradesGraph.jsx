@@ -65,6 +65,8 @@ function GradesGraph({ grades, subject, course_number }) {
 
 GradesGraph.propTypes = {
     grades: PropTypes.object.isRequired,
+    subject: PropTypes.string,
+    course_number: PropTypes.string,
 };
 
 export default GradesGraph;
