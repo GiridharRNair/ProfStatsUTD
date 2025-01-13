@@ -8,7 +8,7 @@
         "postinstall": "cd api && go mod download",
         "create-db": "python3 db_setup/create_db.py && python3 db_setup/test_db.py",
         "test-api": "npm run create-db && cd api && go test -v ./...",
-        "api": "cd api && nodemon --exec go run main.go --signal SIGTERM",
+        "api": "npm run create-db && cd api && nodemon --exec go run main.go --signal SIGTERM",
         "vite": "vite",
         "dev": "npm run create-db && concurrently \"npm run vite\" \"npm run api\"",
         "build": "vite build",
