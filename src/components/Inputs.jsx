@@ -1,64 +1,58 @@
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useMemo } from "react";
 import { AutoComplete, AutoCompleteInput, AutoCompleteItem, AutoCompleteList } from "@choc-ui/chakra-autocomplete";
 import { VStack, Tooltip, Spinner, InputGroup, InputRightElement, CloseButton } from "@chakra-ui/react";
 import { RepeatClockIcon } from "@chakra-ui/icons";
 import PropTypes from "prop-types";
 import _debounce from "lodash/debounce";
 import axios from "axios";
-import { defaultTeacherSuggestions, defaultCourseSuggestions } from "../../utils/defaults";
 
-const API_URL = import.meta.env.DEV ? "http://localhost:80" : import.meta.env.VITE_API_URL || "http://localhost:80";
+const DEFAULT_TEACHER_SUGGESTIONS = ["John Cole", "Regina Ybarra", "Stephanie Taylor", "Bentley Garrett", "Karl Sengupta"];
+const DEFAULT_COURSE_SUGGESTIONS = ["CS 2305", "MATH 2418", "CHEM 2401", "ACCT 6305", "SPAN 2311"];
 
-function Inputs({ setProfessor, setCourse, professor, course, isCompareInputs }) {
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:80";
+
+function Inputs({ setProfessor, setCourse, professor, course, isCompareInputs = false }) {
+    const PROFESSOR_STORAGE_KEY = `LastQueries${isCompareInputs ? "Compare" : ""}Professor`;
+    const COURSE_STORAGE_KEY = `LastQueries${isCompareInputs ? "Compare" : ""}Course`;
+
     const [professorLoading, setProfessorLoading] = useState(false);
     const [courseLoading, setCourseLoading] = useState(false);
-    const [professorSuggestions, setProfessorSuggestions] = useState([]);
-    const [courseSuggestions, setCourseSuggestions] = useState([]);
+    const [professorSuggestions, setProfessorSuggestions] = useState(JSON.parse(localStorage.getItem(PROFESSOR_STORAGE_KEY)) || DEFAULT_TEACHER_SUGGESTIONS);
+    const [courseSuggestions, setCourseSuggestions] = useState(JSON.parse(localStorage.getItem(COURSE_STORAGE_KEY)) || DEFAULT_COURSE_SUGGESTIONS);
 
-    const getLastQueriedProfessors = useCallback(
-        () => JSON.parse(localStorage.getItem(`LastQueries${isCompareInputs ? "Compare" : ""}Professor`)) || defaultTeacherSuggestions,
-        [isCompareInputs],
+    const getLastQueriedProfessors = () => JSON.parse(localStorage.getItem(PROFESSOR_STORAGE_KEY)) || DEFAULT_TEACHER_SUGGESTIONS;
+    const getLastQueriedCourses = () => JSON.parse(localStorage.getItem(COURSE_STORAGE_KEY)) || DEFAULT_COURSE_SUGGESTIONS;
+
+    const fetchSuggestions = useMemo(
+        () =>
+            _debounce(async (professorParam, courseParam) => {
+                try {
+                    const { data } = await axios.get(`${API_URL}/suggestions?teacher=${professorParam}&course=${courseParam}`);
+
+                    setProfessorSuggestions(data.professors);
+                    setCourseSuggestions(data.courses);
+                } catch (error) {
+                    console.error(error.response?.data.detail);
+                } finally {
+                    setProfessorLoading(false);
+                    setCourseLoading(false);
+                }
+            }, 250),
+        [],
     );
-
-    const getLastQueriedCourses = useCallback(
-        () => JSON.parse(localStorage.getItem(`LastQueries${isCompareInputs ? "Compare" : ""}Course`)) || defaultCourseSuggestions,
-        [isCompareInputs],
-    );
-
-    useEffect(() => {
-        setProfessorSuggestions(getLastQueriedProfessors());
-        setCourseSuggestions(getLastQueriedCourses());
-    }, [getLastQueriedProfessors, getLastQueriedCourses]);
-
-    const autocompleteValues = async (professorParam, courseParam) => {
-        try {
-            const autocomplete = await axios.get(`${API_URL}/suggestions?teacher=${professorParam}&course=${courseParam}`);
-
-            setProfessorSuggestions(autocomplete.data.professors);
-            setCourseSuggestions(autocomplete.data.courses);
-        } catch (error) {
-            console.error(error.response?.data.detail);
-        } finally {
-            setProfessorLoading(false);
-            setCourseLoading(false);
-        }
-    };
-
-    const debouncedAutocompleteValues = useMemo(() => _debounce((professor, course) => autocompleteValues(professor, course), 250), []);
 
     return (
         <VStack width={325}>
             <AutoComplete
                 openOnFocus
-                closeOnSelect={true}
                 disableFilter={true}
                 suggestWhenEmpty={true}
                 freeSolo={true}
                 isLoading={professorLoading}
                 emptyState="Professor not found"
-                onSelectOption={(value) => {
-                    setProfessor(value.item.label);
-                    autocompleteValues(value.item.label, course);
+                onSelectOption={({ item }) => {
+                    setProfessor(item.label);
+                    fetchSuggestions(item.label, course);
                 }}
             >
                 <InputGroup>
@@ -68,10 +62,10 @@ function Inputs({ setProfessor, setCourse, professor, course, isCompareInputs })
                             placeholder="Enter Teacher Name"
                             value={professor}
                             loadingIcon={<Spinner size={"xs"} mb={2} />}
-                            onChange={(value) => {
+                            onChange={(e) => {
                                 setProfessorLoading(true);
-                                setProfessor(value.target.value);
-                                debouncedAutocompleteValues(value.target.value, course);
+                                setProfessor(e.target.value);
+                                fetchSuggestions(e.target.value, course);
                             }}
                         />
                     </Tooltip>
@@ -89,36 +83,28 @@ function Inputs({ setProfessor, setCourse, professor, course, isCompareInputs })
                         )}
                     </InputRightElement>
                 </InputGroup>
-                {!professorLoading &&
-                    (professor !== "" ? (
-                        <AutoCompleteList fontSize={"sm"}>
-                            {professorSuggestions.map((professorOption, index) => (
-                                <AutoCompleteItem value={professorOption} key={index}>
-                                    {professorOption}
-                                </AutoCompleteItem>
-                            ))}
-                        </AutoCompleteList>
-                    ) : (
-                        <AutoCompleteList fontSize={"sm"}>
-                            {getLastQueriedProfessors().map((professorOption, index) => (
-                                <AutoCompleteItem value={professorOption} key={index} justify="space-between" align="center">
-                                    {professorOption}
-                                    {JSON.stringify(getLastQueriedProfessors()) !== JSON.stringify(defaultTeacherSuggestions) && <RepeatClockIcon />}
-                                </AutoCompleteItem>
-                            ))}
-                        </AutoCompleteList>
-                    ))}
+                {!professorLoading && (
+                    <AutoCompleteList fontSize="sm">
+                        {(professor ? professorSuggestions : getLastQueriedProfessors()).map((professorOption, index) => (
+                            <AutoCompleteItem value={professorOption} key={index} justify="space-between" align="center">
+                                {professorOption}
+                                {!professor && JSON.stringify(getLastQueriedProfessors()) !== JSON.stringify(DEFAULT_TEACHER_SUGGESTIONS) && (
+                                    <RepeatClockIcon />
+                                )}
+                            </AutoCompleteItem>
+                        ))}
+                    </AutoCompleteList>
+                )}
             </AutoComplete>
 
             <AutoComplete
                 openOnFocus
-                closeOnSelect={true}
                 disableFilter={true}
                 suggestWhenEmpty={true}
                 freeSolo={true}
                 isLoading={courseLoading}
                 emptyState={`Course(s) not found ${professor ? `for ${professor}` : ""}`}
-                onSelectOption={(value) => setCourse(value.item.label)}
+                onSelectOption={({ item }) => setCourse(item.label)}
             >
                 <InputGroup>
                     <AutoCompleteInput
@@ -126,10 +112,10 @@ function Inputs({ setProfessor, setCourse, professor, course, isCompareInputs })
                         placeholder={"Enter Course"}
                         value={course}
                         loadingIcon={<Spinner size={"xs"} mb={2} />}
-                        onChange={(value) => {
+                        onChange={(e) => {
                             setCourseLoading(true);
-                            setCourse(value.target.value);
-                            debouncedAutocompleteValues(professor, value.target.value);
+                            setCourse(e.target.value);
+                            fetchSuggestions(professor, e.target.value);
                         }}
                     />
                     <InputRightElement>
@@ -139,31 +125,24 @@ function Inputs({ setProfessor, setCourse, professor, course, isCompareInputs })
                                 mb={2}
                                 onClick={() => {
                                     setCourse("");
-                                    professor ? autocompleteValues(professor, "") : setCourseSuggestions(getLastQueriedCourses());
+                                    professor ? fetchSuggestions(professor, "") : setCourseSuggestions(getLastQueriedCourses());
                                 }}
                             />
                         )}
                     </InputRightElement>
                 </InputGroup>
-                {!courseLoading &&
-                    (course !== "" || professor !== "" ? (
-                        <AutoCompleteList style={{ maxHeight: "230px", overflowY: "auto" }} fontSize={"sm"}>
-                            {courseSuggestions.map((courseOption, index) => (
-                                <AutoCompleteItem value={courseOption} key={index}>
-                                    {courseOption}
-                                </AutoCompleteItem>
-                            ))}
-                        </AutoCompleteList>
-                    ) : (
-                        <AutoCompleteList fontSize={"sm"}>
-                            {getLastQueriedCourses().map((courseOption, index) => (
-                                <AutoCompleteItem value={courseOption} key={index} justify="space-between" align="center">
-                                    {courseOption}
-                                    {JSON.stringify(getLastQueriedCourses()) !== JSON.stringify(defaultCourseSuggestions) && <RepeatClockIcon />}
-                                </AutoCompleteItem>
-                            ))}
-                        </AutoCompleteList>
-                    ))}
+                {!courseLoading && (
+                    <AutoCompleteList style={{ maxHeight: "230px", overflowY: "auto" }} fontSize="sm">
+                        {(course || professor ? courseSuggestions : getLastQueriedCourses()).map((courseOption, index) => (
+                            <AutoCompleteItem value={courseOption} key={index} justify="space-between" align="center">
+                                {courseOption}
+                                {!course && !professor && JSON.stringify(getLastQueriedCourses()) !== JSON.stringify(DEFAULT_COURSE_SUGGESTIONS) && (
+                                    <RepeatClockIcon />
+                                )}
+                            </AutoCompleteItem>
+                        ))}
+                    </AutoCompleteList>
+                )}
             </AutoComplete>
         </VStack>
     );

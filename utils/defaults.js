@@ -100,7 +100,3 @@ export const scottDollinger = {
     tags: ["Accessible Outside Class", "Caring", "Clear Grading Criteria", "Extra Credit", "Respected"],
     would_take_again: 86,
 };
-
-export const defaultTeacherSuggestions = ["John Cole", "Regina Ybarra", "Stephanie Taylor", "Bentley Garrett", "Karl Sengupta"];
-
-export const defaultCourseSuggestions = ["CS 2305", "MATH 2418", "CHEM 2401", "ACCT 6305", "SPAN 2311"];
