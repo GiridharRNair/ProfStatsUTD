@@ -11,11 +11,14 @@ import {
     useColorModeValue,
 } from "@chakra-ui/react";
 import PropTypes from "prop-types";
-import GradesGraph from "@/components/grades-graph";
+import GradesGraph from "@components/grades-graph";
 
 function CourseResults({ courseInfo }) {
     const { subject, course_number, course_name, catalog_url, grades } = courseInfo;
     const { isOpen, onOpen, onClose } = useDisclosure();
+
+    const UTD_GRADES_URL = `https://utdgrades.com/results?search=${subject + course_number}`;
+    const UTD_TRENDS_URL = `https://trends.utdnebula.com/dashboard?searchTerms=${subject + "+" + course_number}`;
 
     return (
         <VStack width={315}>
@@ -47,7 +50,7 @@ function CourseResults({ courseInfo }) {
                         <VStack>
                             <Button
                                 leftIcon={<Image src="UTDGradesIcon.png" boxSize={22} />}
-                                onClick={() => window.open(`https://utdgrades.com/results?search=${subject + course_number}`, "_blank")}
+                                onClick={() => window.open(UTD_GRADES_URL, "_blank")}
                                 variant={"outline"}
                                 fontWeight={"medium"}
                                 width={240}
@@ -56,7 +59,7 @@ function CourseResults({ courseInfo }) {
                             </Button>
                             <Button
                                 leftIcon={<Image src={useColorModeValue("UTDTrendsDark.svg", "UTDTrendsLight.svg")} boxSize={5} />}
-                                onClick={() => window.open(`https://trends.utdnebula.com/dashboard?searchTerms=${subject + "+" + course_number}`, "_blank")}
+                                onClick={() => window.open(UTD_TRENDS_URL, "_blank")}
                                 variant={"outline"}
                                 fontWeight={"medium"}
                                 width={240}

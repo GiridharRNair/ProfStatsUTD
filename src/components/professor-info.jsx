@@ -19,7 +19,7 @@ import {
     Image,
 } from "@chakra-ui/react";
 import PropTypes from "prop-types";
-import GradesGraph from "@/components/grades-graph";
+import GradesGraph from "@components/grades-graph";
 
 function ProfResults({ professorInfo }) {
     const { name, department, id, subject, course_number, tags, rating, difficulty, would_take_again, grades } = professorInfo;

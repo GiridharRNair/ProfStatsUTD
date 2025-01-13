@@ -21,7 +21,7 @@ import { SunIcon } from "@chakra-ui/icons";
 import { FcFeedback } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 import { InfoOutlineIcon } from "@chakra-ui/icons";
-import LookupForm from "@/components/lookup-form";
+import LookupForm from "@components/lookup-form";
 
 const FEEDBACK_FORM_URL = "https://forms.gle/gc2G34o2BiiXs4bz7";
 const REVIEW_URL = "https://chromewebstore.google.com/detail/doilmgfedjlpepeaolcfpdmkehecdaff/reviews";
