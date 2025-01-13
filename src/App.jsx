@@ -2,7 +2,7 @@ import { useState } from "react";
 import { HStack, IconButton, useColorMode, Button } from "@chakra-ui/react";
 import { FiMoon } from "react-icons/fi";
 import { SunIcon } from "@chakra-ui/icons";
-import LookupForm from "./components/LookupForm";
+import LookupForm from "@/components/lookup-form";
 import InfoIcon from "./components/InfoIcon";
 import RateUsModal from "./components/RateUsModal.jsx";
 
