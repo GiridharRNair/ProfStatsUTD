@@ -2,9 +2,9 @@ import { useState } from "react";
 import { Button, useToast, VStack } from "@chakra-ui/react";
 import axios from "axios";
 import PropTypes from "prop-types";
-import Inputs from "@/components/Inputs";
-import ProfResults from "@/components/ProfessorResults";
-import CourseResults from "@/components/CourseResults";
+import Inputs from "@/components/inputs";
+import ProfResults from "@/components/professor-info";
+import CourseResults from "@/components/course-info";
 
 const TIMOTHY_FARAGE = {
     course_number: "",
