@@ -2,19 +2,62 @@ import { useColorModeValue } from "@chakra-ui/react";
 import { Bar } from "react-chartjs-2";
 import { BarElement, CategoryScale, Chart as ChartJS, LinearScale, Tooltip } from "chart.js";
 import PropTypes from "prop-types";
-import { gradeMappings, colorMap } from "../../utils/defaults.js";
+
+const GRADE_MAPPINGS = {
+    aPlus: "A+",
+    a: "A",
+    aMinus: "A-",
+    bPlus: "B+",
+    b: "B",
+    bMinus: "B-",
+    cPlus: "C+",
+    c: "C",
+    cMinus: "C-",
+    dPlus: "D+",
+    d: "D",
+    dMinus: "D-",
+    f: "F",
+    cr: "CR",
+    nc: "NC",
+    p: "P",
+    w: "W",
+    i: "I",
+    nf: "NF",
+};
+
+const COLOR_MAP = {
+    "A+": "rgb(45, 179, 63)",
+    A: "rgb(48, 199, 55)",
+    "A-": "rgb(107, 212, 15)",
+    "B+": "rgb(147, 209, 13)",
+    B: "rgb(205, 255, 79)",
+    "B-": "rgb(255, 225, 77)",
+    "C+": "rgb(255, 208, 54)",
+    C: "rgb(255, 173, 51)",
+    "C-": "rgb(255, 112, 77)",
+    "D+": "rgb(245, 24, 169)",
+    D: "rgb(160, 30, 86)",
+    "D-": "rgb(117, 14, 58)",
+    F: "rgb(216, 10, 55)",
+    CR: "rgb(102, 102, 102)",
+    NC: "rgb(102, 102, 102)",
+    P: "rgb(102, 102, 102)",
+    W: "rgb(102, 102, 102)",
+    I: "rgb(102, 102, 102)",
+    NF: "rgb(102, 102, 102)",
+};
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip);
 
 function GradesGraph({ grades, subject, course_number }) {
-    const gradeLabels = Object.keys(grades).map((grade) => gradeMappings[grade] || grade);
+    const gradeLabels = Object.keys(grades).map((grade) => GRADE_MAPPINGS[grade] || grade);
 
     const chartData = {
         labels: gradeLabels,
         datasets: [
             {
                 data: Object.values(grades),
-                backgroundColor: gradeLabels.map((label) => colorMap[label]),
+                backgroundColor: gradeLabels.map((label) => COLOR_MAP[label]),
             },
         ],
     };

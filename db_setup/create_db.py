@@ -1,6 +1,3 @@
-# Usage: python db_setup/create_db.py
-
-
 import sqlite3
 import csv
 import os

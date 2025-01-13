@@ -6,11 +6,11 @@
     "type": "module",
     "scripts": {
         "postinstall": "cd api && go mod download",
-        "create-db": "python db_setup/create_db.py && python db_setup/test_db.py",
+        "create-db": "python3 db_setup/create_db.py && python3 db_setup/test_db.py",
         "test-api": "npm run create-db && cd api && go test -v ./...",
-        "api": "source ~/.bashrc && npm run create-db && cd api && air",
+        "api": "npm run create-db && cd api && nodemon --exec go run main.go --signal SIGTERM",
         "vite": "vite",
-        "dev": "concurrently \"npm run vite\" \"npm run api\"",
+        "dev": "npm run create-db && concurrently \"npm run vite\" \"npm run api\"",
         "build": "vite build",
         "lint": "eslint . --fix --ext js,jsx --report-unused-disable-directives --max-warnings 0",
         "format": "prettier --write . --tab-width 4 --print-width 160",
@@ -19,7 +19,7 @@
     "dependencies": {
         "@chakra-ui/icons": "^2.2.4",
         "@chakra-ui/react": "^2.5.5",
-        "@choc-ui/chakra-autocomplete": "^5.7.0",
+        "@choc-ui/chakra-autocomplete": "^5.8.0",
         "@emotion/react": "^11.13.3",
         "@emotion/styled": "^11.13.0",
         "axios": "^1.7.7",
@@ -31,7 +31,7 @@
         "react-icons": "^5.3.0"
     },
     "devDependencies": {
-        "@crxjs/vite-plugin": "^2.0.0-beta.21",
+        "@crxjs/vite-plugin": "^2.0.0-beta.30",
         "@types/react": "^18.3.12",
         "@types/react-dom": "^18.3.1",
         "@vitejs/plugin-react": "^4.3.3",
@@ -40,6 +40,7 @@
         "eslint-plugin-react": "^7.33.2",
         "eslint-plugin-react-hooks": "^4.6.0",
         "eslint-plugin-react-refresh": "^0.4.4",
+        "nodemon": "^3.1.9",
         "prettier": "^3.3.3",
         "vite": "^5.4.10"
     }

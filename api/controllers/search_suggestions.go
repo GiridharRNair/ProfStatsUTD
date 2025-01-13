@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/GiridharRNair/ProfStats-GinAPI/db"
 	"github.com/gin-gonic/gin"
@@ -14,6 +15,9 @@ var defaultCourseSuggestions = []string{"CS 2305", "MATH 2418", "CHEM 2401", "AC
 func SuggestionsSearchQuery(c *gin.Context) {
 	teacher := c.Query("teacher")
 	course := c.Query("course")
+
+	teacher = strings.TrimSpace(teacher)
+	course = strings.TrimSpace(course)
 
 	if teacher == "" && course == "" {
 		c.JSON(http.StatusOK, gin.H{"professors": defaultProfessorSuggestions, "courses": defaultCourseSuggestions})
