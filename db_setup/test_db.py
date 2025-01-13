@@ -1,6 +1,3 @@
-# Usage: python db_setup/test_db.py
-
-
 import unittest
 import sqlite3
 
