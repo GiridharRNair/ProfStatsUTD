@@ -1,1 +1,0 @@
-alias air='~/.air'
