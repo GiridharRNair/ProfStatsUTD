@@ -5,6 +5,8 @@ import (
 	"strings"
 
 	"github.com/GiridharRNair/ProfStats-GinAPI/db"
+
+	"github.com/GiridharRNair/ProfStats-GinAPI/course"
 	"github.com/gin-gonic/gin"
 )
 
@@ -13,21 +15,21 @@ var defaultProfessorSuggestions = []string{"Regina Ybarra", "James Willson", "St
 var defaultCourseSuggestions = []string{"CS 2305", "MATH 2418", "CHEM 2401", "ACCT 6305", "SPAN 2311"}
 
 func SuggestionsSearchQuery(c *gin.Context) {
-	teacher := c.Query("teacher")
-	course := c.Query("course")
+	teacherQuery := c.Query("teacher")
+	courseQuery := c.Query("course")
 
-	teacher = strings.TrimSpace(teacher)
-	course = strings.TrimSpace(course)
+	teacherQuery = strings.TrimSpace(teacherQuery)
+	courseQuery = strings.TrimSpace(courseQuery)
 
-	if teacher == "" && course == "" {
+	if teacherQuery == "" && courseQuery == "" {
 		c.JSON(http.StatusOK, gin.H{"professors": defaultProfessorSuggestions, "courses": defaultCourseSuggestions})
 		return
 	}
 
 	defaultSuggestions := make(map[string][]string)
 
-	if teacher != "" {
-		professorSuggestions, err := db.GetProfessorSuggestions(teacher)
+	if teacherQuery != "" {
+		professorSuggestions, err := db.GetProfessorSuggestions(teacherQuery)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"detail": err.Error()})
 			return
@@ -38,9 +40,9 @@ func SuggestionsSearchQuery(c *gin.Context) {
 		defaultSuggestions["professors"] = defaultProfessorSuggestions
 	}
 
-	subject, courseNumber, _ := isValidCourseName(course)
+	subject, courseNumber, _ := course.IsValidCourseName(courseQuery)
 
-	courseSuggestions, err := db.GetCourseSuggestions(teacher, subject, courseNumber)
+	courseSuggestions, err := db.GetCourseSuggestions(teacherQuery, subject, courseNumber)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"detail": err.Error()})
 		return

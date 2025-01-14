@@ -1,11 +1,11 @@
-package controllers
+package course
 
 import (
 	"regexp"
 	"strings"
 )
 
-func isValidCourseName(courseName string) (string, string, bool) {
+func IsValidCourseName(courseName string) (string, string, bool) {
 	if courseName == "" {
 		return "", "", true
 	}

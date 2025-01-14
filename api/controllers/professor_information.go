@@ -6,6 +6,7 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/GiridharRNair/ProfStats-GinAPI/course"
 	"github.com/GiridharRNair/ProfStats-GinAPI/db"
 	"github.com/GiridharRNair/ProfStats-GinAPI/professor"
 	"github.com/gin-gonic/gin"
@@ -14,26 +15,26 @@ import (
 const ValidateTeacherNameRegex = `[^a-zA-Z\s.\-]|.*\-.*\-`
 
 func GetProfessorInformation(c *gin.Context) {
-	teacher := c.Query("teacher")
-	course := c.Query("course")
+	teacherQuery := c.Query("teacher")
+	courseQuery := c.Query("course")
 
-	if teacher == "" {
+	if teacherQuery == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"detail": "Teacher name not provided"})
 		return
 	}
 
-	if regexp.MustCompile(ValidateTeacherNameRegex).MatchString(teacher) {
+	if regexp.MustCompile(ValidateTeacherNameRegex).MatchString(teacherQuery) {
 		c.JSON(http.StatusBadRequest, gin.H{"detail": "Invalid teacher name"})
 		return
 	}
 
-	subject, courseNumber, isValid := isValidCourseName(course)
+	subject, courseNumber, isValid := course.IsValidCourseName(courseQuery)
 	if !isValid {
 		c.JSON(http.StatusBadRequest, gin.H{"detail": "Invalid course name"})
 		return
 	}
 
-	professor, err := professor.GetRMPInfo(strings.TrimSpace(teacher))
+	professor, err := professor.GetRMPInfo(strings.TrimSpace(teacherQuery))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"detail": err.Error()})
 		return

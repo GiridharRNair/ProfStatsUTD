@@ -9,14 +9,14 @@ import (
 )
 
 func GetCourseInformation(c *gin.Context) {
-	courseParam := c.Query("course")
+	courseQuery := c.Query("course")
 
-	if courseParam == "" {
+	if courseQuery == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"detail": "Course name not provided"})
 		return
 	}
 
-	subject, courseNumber, isValid := isValidCourseName(courseParam)
+	subject, courseNumber, isValid := course.IsValidCourseName(courseQuery)
 	if !isValid {
 		c.JSON(http.StatusBadRequest, gin.H{"detail": "Invalid course name"})
 		return
