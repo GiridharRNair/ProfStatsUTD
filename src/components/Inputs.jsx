@@ -27,6 +27,12 @@ function Inputs({ setProfessor, setCourse, professor, course, isCompareInputs = 
         () =>
             _debounce(async (professorParam, courseParam) => {
                 try {
+                    professorParam = professorParam.trim();
+                    courseParam = courseParam.trim();
+                    if (!professorParam && !courseParam) {
+                        return;
+                    }
+
                     const { data } = await axios.get(`${API_URL}/suggestions?teacher=${professorParam}&course=${courseParam}`);
 
                     setProfessorSuggestions(data.professors);
@@ -85,10 +91,10 @@ function Inputs({ setProfessor, setCourse, professor, course, isCompareInputs = 
                 </InputGroup>
                 {!professorLoading && (
                     <AutoCompleteList fontSize="sm">
-                        {(professor ? professorSuggestions : getLastQueriedProfessors()).map((professorOption, index) => (
+                        {(professor.trim() ? professorSuggestions : getLastQueriedProfessors()).map((professorOption, index) => (
                             <AutoCompleteItem value={professorOption} key={index} justify="space-between" align="center">
                                 {professorOption}
-                                {!professor && JSON.stringify(getLastQueriedProfessors()) !== JSON.stringify(DEFAULT_TEACHER_SUGGESTIONS) && (
+                                {!professor.trim() && JSON.stringify(getLastQueriedProfessors()) !== JSON.stringify(DEFAULT_TEACHER_SUGGESTIONS) && (
                                     <RepeatClockIcon />
                                 )}
                             </AutoCompleteItem>
@@ -133,10 +139,10 @@ function Inputs({ setProfessor, setCourse, professor, course, isCompareInputs = 
                 </InputGroup>
                 {!courseLoading && (
                     <AutoCompleteList style={{ maxHeight: "230px", overflowY: "auto" }} fontSize="sm">
-                        {(course || professor ? courseSuggestions : getLastQueriedCourses()).map((courseOption, index) => (
+                        {(course.trim() || professor.trim() ? courseSuggestions : getLastQueriedCourses()).map((courseOption, index) => (
                             <AutoCompleteItem value={courseOption} key={index} justify="space-between" align="center">
                                 {courseOption}
-                                {!course && !professor && JSON.stringify(getLastQueriedCourses()) !== JSON.stringify(DEFAULT_COURSE_SUGGESTIONS) && (
+                                {!course.trim() && !professor.trim() && JSON.stringify(getLastQueriedCourses()) !== JSON.stringify(DEFAULT_COURSE_SUGGESTIONS) && (
                                     <RepeatClockIcon />
                                 )}
                             </AutoCompleteItem>
