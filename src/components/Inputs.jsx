@@ -142,9 +142,9 @@ function Inputs({ setProfessor, setCourse, professor, course, isCompareInputs = 
                         {(course.trim() || professor.trim() ? courseSuggestions : getLastQueriedCourses()).map((courseOption, index) => (
                             <AutoCompleteItem value={courseOption} key={index} justify="space-between" align="center">
                                 {courseOption}
-                                {!course.trim() && !professor.trim() && JSON.stringify(getLastQueriedCourses()) !== JSON.stringify(DEFAULT_COURSE_SUGGESTIONS) && (
-                                    <RepeatClockIcon />
-                                )}
+                                {!course.trim() &&
+                                    !professor.trim() &&
+                                    JSON.stringify(getLastQueriedCourses()) !== JSON.stringify(DEFAULT_COURSE_SUGGESTIONS) && <RepeatClockIcon />}
                             </AutoCompleteItem>
                         ))}
                     </AutoCompleteList>
