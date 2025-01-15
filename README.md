@@ -6,6 +6,8 @@
 
 ProfStats is a handy Chrome extension with 150+ users, merging professor ratings and grade distributions at the University of Texas at Dallas for simplified access to course information for students.
 
+The frontend is built with React using Vite, while the backend is built with Golang and deployed on Azure Web App via Docker. The SQLite database is created and populated using a Python script, utilizing CSV files from the `raw_data` directory sourced from [UTD Grades](https://github.com/acmutd/utd-grades).
+
 ## Local Development
 
 Make sure you have the following software installed on your machine:
