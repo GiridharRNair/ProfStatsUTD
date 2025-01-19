@@ -2,7 +2,7 @@
     "name": "profstatsutd",
     "description": "This extension offers a user-friendly interface for accessing aggregated grades and professor ratings effortlessly.",
     "private": true,
-    "version": "1.1.8",
+    "version": "1.1.9",
     "type": "module",
     "scripts": {
         "postinstall": "cd api && go mod download",
@@ -19,7 +19,7 @@
     "dependencies": {
         "@chakra-ui/icons": "^2.2.4",
         "@chakra-ui/react": "^2.5.5",
-        "@choc-ui/chakra-autocomplete": "^5.8.0",
+        "@choc-ui/chakra-autocomplete": "^5.8.1",
         "@emotion/react": "^11.13.3",
         "@emotion/styled": "^11.13.0",
         "axios": "^1.7.7",
