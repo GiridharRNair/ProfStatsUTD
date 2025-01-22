@@ -27,7 +27,7 @@ type Professor struct {
 	NumRatings     int
 }
 
-const UTDSchoolID = "U2Nob29sLTEyNzM="
+const UTDSchoolID = "1273"
 const RateMyProfessorsGraphQLURL = "https://www.ratemyprofessors.com/graphql"
 const RateMyProfessorSearchURL = "https://www.ratemyprofessors.com/search/professors/%s?q=%s"
 
@@ -100,10 +100,6 @@ func (p *Professor) getProfessorTags() {
 
 func getProfessorID(professorName, schoolID string) (string, error) {
 	cleanedName := strings.ToLower(regexp.MustCompile(`[^a-zA-Z0-9]+`).ReplaceAllString(professorName, ""))
-	// Temporary fix for Wei-Pang Chin
-	if cleanedName == "weipangchin" {
-		return "2420900", nil
-	}
 
 	// Temporary fix for Bo Park
 	if cleanedName == "bopark" {
@@ -126,9 +122,14 @@ func getProfessorID(professorName, schoolID string) (string, error) {
 	re := regexp.MustCompile(`"legacyId":(\d+)`)
 	match := re.FindStringSubmatch(string(bodyBytes))
 
+	if len(match) > 1 && match[1] == schoolID {
+		return "", fmt.Errorf("Professor not found")
+	}
+
 	if len(match) > 1 {
 		return match[1], nil
 	}
+
 	return "", fmt.Errorf("Professor not found")
 }
 
