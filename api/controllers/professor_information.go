@@ -40,19 +40,20 @@ func GetProfessorInformation(c *gin.Context) {
 		return
 	}
 
+	// Name is reversed in RMP
 	if professor.Name == "Chitturi Bhadrachalam" {
 		professor.Name = "Bhadrachalam Chitturi"
 	}
 
 	// possible chance RMP name has middle name
 	profNameArray := strings.Fields(professor.Name)
-	profNameWithoutMiddle := fmt.Sprintf("%s %s", profNameArray[0], profNameArray[len(profNameArray)-1])
+	professor.Name = fmt.Sprintf("%s %s", profNameArray[0], profNameArray[len(profNameArray)-1])
 
 	resultData := gin.H{
 		"id":               professor.ID,
-		"name":             profNameWithoutMiddle,
+		"name":             professor.Name,
 		"department":       professor.Department,
-		"grades":           db.GetAggregatedGrades(profNameWithoutMiddle, subject, courseNumber),
+		"grades":           db.GetAggregatedGrades(professor.Name, subject, courseNumber),
 		"subject":          subject,
 		"course_number":    courseNumber,
 		"rating":           professor.Rating,

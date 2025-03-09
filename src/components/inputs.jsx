@@ -50,6 +50,7 @@ function Inputs({ setProfessor, setCourse, professor, course, isCompareInputs = 
     return (
         <VStack width={325}>
             <AutoComplete
+                listAllValuesOnFocus={true}
                 openOnFocus
                 disableFilter={true}
                 suggestWhenEmpty={true}
@@ -104,6 +105,7 @@ function Inputs({ setProfessor, setCourse, professor, course, isCompareInputs = 
             </AutoComplete>
 
             <AutoComplete
+                listAllValuesOnFocus={true}
                 openOnFocus
                 disableFilter={true}
                 suggestWhenEmpty={true}
