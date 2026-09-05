@@ -22,14 +22,19 @@ Keep:
 - Course-aware professor and course suggestions.
 - Grade distribution chart.
 - Live RateMyProfessors ratings.
-- Links to RateMyProfessors, UTD Grades, UTD Trends, and UTD profiles.
-- Theme toggle, feedback link, review prompt, and recent query history if they still fit the new UI.
+- Links to RateMyProfessors and UTD Grades.
 
 Remove:
 
 - Compare professor mode.
 - Standalone course-only grade distribution lookup.
 - Professor-only grade distribution lookup.
+- Links to UTD Trends.
+- Links to UTD profiles.
+- Theme toggle.
+- Feedback link.
+- Review prompt.
+- Recent query history.
 - The Go backend.
 - Startup-time SQLite database generation.
 - Azure/Docker deployment path.
@@ -229,6 +234,8 @@ Exit criteria:
 - Remove professor-only submit behavior.
 - Require both professor and course before submit.
 - Remove `CourseResults`.
+- Remove theme toggle, feedback modal, review prompt, and recent query persistence.
+- Remove UTD Trends and UTD profile links from professor details.
 - Update validation copy so professor and course are both required.
 
 Exit criteria:
@@ -236,6 +243,8 @@ Exit criteria:
 - Current UI works against the new FastAPI backend.
 - Users cannot submit a course-only lookup.
 - Users cannot submit a professor-only lookup.
+- The popup has no compare, theme, feedback, review, or recent-history UI.
+- Professor details only link to RateMyProfessors and UTD Grades.
 - No compare state is stored or rendered.
 
 ### Phase 6: Plasmo TypeScript Migration
@@ -250,7 +259,7 @@ Exit criteria:
 Exit criteria:
 
 - Plasmo builds a Manifest V3 extension.
-- Popup supports professor-plus-course lookup, suggestions, chart, and external links.
+- Popup supports professor-plus-course lookup, suggestions, chart, RateMyProfessors links, and UTD Grades links.
 - Existing Vite extension can be removed.
 
 ### Phase 7: Cleanup
