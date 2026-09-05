@@ -177,12 +177,7 @@ Exit criteria:
 
 - Add `supabase/migrations/001_create_grade_sections.sql`.
 - Add `scripts/import_grades.py`.
-- Add importer tests for:
-  - professor name reordering,
-  - edge-case professor aliases,
-  - grade column variants,
-  - term extraction,
-  - empty grade cells becoming zero.
+- Verify importer behavior with dry runs against `raw_data/*.csv`.
 - Import local `raw_data/*.csv` into a Supabase development project.
 
 Exit criteria:
@@ -203,7 +198,7 @@ Exit criteria:
 - Reject professor-only and course-only grade distribution requests.
 - Port live RateMyProfessors lookup.
 - Make RMP failure non-fatal.
-- Add backend tests with mocked Supabase/RMP clients.
+- Verify backend behavior with manual local requests.
 
 Exit criteria:
 
@@ -306,7 +301,7 @@ Big-bang migration risk:
 The first code slice should be Phase 2 only:
 
 1. Add Supabase migration SQL.
-2. Add CSV importer and parser tests.
+2. Add CSV importer.
 3. Validate the imported row count against the current raw data.
 
 This creates the foundation without disturbing the working extension or Go backend.
