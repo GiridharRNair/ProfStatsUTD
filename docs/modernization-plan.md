@@ -18,8 +18,8 @@ raw_data/           Source grade distribution files
 
 Keep:
 
-- Professor lookup.
-- Optional course filter for a professor lookup.
+- Professor lookup for a specific course.
+- Course-aware professor and course suggestions.
 - Grade distribution chart.
 - Live RateMyProfessors ratings.
 - Links to RateMyProfessors, UTD Grades, UTD Trends, and UTD profiles.
@@ -29,11 +29,12 @@ Remove:
 
 - Compare professor mode.
 - Standalone course-only grade distribution lookup.
+- Professor-only grade distribution lookup.
 - The Go backend.
 - Startup-time SQLite database generation.
 - Azure/Docker deployment path.
 
-Course data remains part of the model because a course filter is still necessary for professor-specific outcomes. The removed behavior is aggregating a course across all professors as a standalone result.
+Course data remains part of the model because every grade distribution result must be professor-specific and course-specific. The removed behaviors are aggregating a course across all professors and aggregating a professor across all courses.
 
 ## Backend Strategy
 
@@ -49,7 +50,7 @@ Initial route names should match the existing API to reduce frontend migration r
 
 Responsibilities:
 
-- Validate professor and course inputs.
+- Require and validate both professor and course inputs for professor information requests.
 - Query Supabase for professor suggestions, course suggestions, and aggregated grades.
 - Fetch RateMyProfessors ratings live during professor lookup.
 - Return grade data even if RateMyProfessors is unavailable.
@@ -72,7 +73,7 @@ RateMyProfessors should remain live for now to keep the system simple. The API s
 }
 ```
 
-If RMP lookup fails, the response should still include grades with nullable rating fields and an empty tag list.
+If RMP lookup fails, the response should still include course-specific grades with nullable rating fields and an empty tag list.
 
 ## Supabase Data Model
 
@@ -160,6 +161,7 @@ The importer should use Supabase service credentials or a direct Postgres connec
 - Document the current API response shape.
 - Add sample JSON fixtures for professor lookup and suggestions.
 - Decide whether the public API route names stay legacy-compatible for v1.
+- Document that `/professor_info` requires both `teacher` and `course`.
 
 Exit criteria:
 
@@ -193,13 +195,14 @@ Exit criteria:
   - `/professor_info`.
 - Query Supabase for grade data.
 - Port professor/course validation.
+- Reject professor-only and course-only grade distribution requests.
 - Port live RateMyProfessors lookup.
 - Make RMP failure non-fatal.
 - Add backend tests with mocked Supabase/RMP clients.
 
 Exit criteria:
 
-- FastAPI returns equivalent professor and suggestion responses for known queries.
+- FastAPI returns professor and suggestion responses for known professor-plus-course queries.
 - FastAPI does not depend on SQLite or Go.
 - Local extension can point to FastAPI with an env var.
 
@@ -219,18 +222,20 @@ Exit criteria:
 - Vercel preview API can serve the existing extension.
 - No import path runs inside serverless request handlers.
 
-### Phase 5: Remove Course-Only and Compare From Existing UI
+### Phase 5: Require Professor Plus Course and Remove Compare From Existing UI
 
 - Remove compare button and second lookup form.
 - Remove course-only submit behavior.
-- Keep course input only as an optional professor filter.
+- Remove professor-only submit behavior.
+- Require both professor and course before submit.
 - Remove `CourseResults`.
-- Update validation copy so professor is required.
+- Update validation copy so professor and course are both required.
 
 Exit criteria:
 
 - Current UI works against the new FastAPI backend.
 - Users cannot submit a course-only lookup.
+- Users cannot submit a professor-only lookup.
 - No compare state is stored or rendered.
 
 ### Phase 6: Plasmo TypeScript Migration
@@ -245,7 +250,7 @@ Exit criteria:
 Exit criteria:
 
 - Plasmo builds a Manifest V3 extension.
-- Popup supports professor lookup, optional course filter, suggestions, chart, and external links.
+- Popup supports professor-plus-course lookup, suggestions, chart, and external links.
 - Existing Vite extension can be removed.
 
 ### Phase 7: Cleanup
