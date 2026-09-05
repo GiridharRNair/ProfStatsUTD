@@ -7,6 +7,8 @@
     "scripts": {
         "postinstall": "cd api && go mod download",
         "create-db": "python3 db_setup/create_db.py && python3 db_setup/test_db.py",
+        "import-grades:dry-run": "python3 scripts/import_grades.py --dry-run",
+        "import-grades": "python3 scripts/import_grades.py",
         "test-api": "npm run create-db && cd api && go test -v ./...",
         "api": "npm run create-db && cd api && nodemon --exec go run main.go --signal SIGTERM",
         "vite": "vite",
