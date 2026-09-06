@@ -10,7 +10,7 @@ The guiding rule is to preserve one working path at every step. The extension sh
 extension/          Plasmo + React + TypeScript Chrome extension
 api/                FastAPI app deployed as Vercel Python serverless functions
 scripts/            Python data import and maintenance scripts
-supabase/           SQL migrations, indexes, and optional database functions
+supabase/           SQL schema files, indexes, and optional database functions
 raw_data/           Source grade distribution files
 ```
 
@@ -175,7 +175,7 @@ Exit criteria:
 
 ### Phase 2: Supabase Schema and Importer
 
-- Add `supabase/migrations/001_create_grade_sections.sql`.
+- Add `supabase/schemas/grade_sections.sql`.
 - Add `scripts/import_grades.py`.
 - Verify importer behavior with dry runs against `raw_data/*.csv`.
 - Import local `raw_data/*.csv` into a Supabase development project.
@@ -212,7 +212,7 @@ Exit criteria:
 - Add Python dependency file.
 - Configure environment variables:
   - `SUPABASE_URL`,
-  - `SUPABASE_SERVICE_ROLE_KEY` or read-only key depending on API design,
+  - `SUPABASE_SECRET_KEY` for trusted backend/importer writes, or a publishable key only for explicitly public read paths,
   - allowed extension origins.
 - Deploy FastAPI to a Vercel preview environment.
 - Smoke test health, suggestions, and professor lookup.

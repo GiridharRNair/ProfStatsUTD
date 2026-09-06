@@ -4,7 +4,7 @@
 The parser can run without credentials using --dry-run. Uploads require:
 
     SUPABASE_URL
-    SUPABASE_SERVICE_ROLE_KEY
+    SUPABASE_SECRET_KEY
 """
 
 from __future__ import annotations
@@ -15,7 +15,7 @@ import os
 import re
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable, Iterator
+from typing import Iterator
 
 
 GRADE_COLUMNS = {
@@ -205,17 +205,17 @@ def chunked(records: list[dict[str, object]], size: int) -> Iterator[list[dict[s
 
 def create_supabase_client():
     supabase_url = os.environ.get("SUPABASE_URL")
-    service_role_key = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
+    secret_key = os.environ.get("SUPABASE_SECRET_KEY")
 
-    if not supabase_url or not service_role_key:
-        raise RuntimeError("Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY before uploading.")
+    if not supabase_url or not secret_key:
+        raise RuntimeError("Set SUPABASE_URL and SUPABASE_SECRET_KEY before uploading.")
 
     try:
         from supabase import create_client
     except ImportError as exc:
         raise RuntimeError("Install supabase before uploading: python3 -m pip install supabase") from exc
 
-    return create_client(supabase_url, service_role_key)
+    return create_client(supabase_url, secret_key)
 
 
 def upload_records(records: list[dict[str, object]], batch_size: int) -> None:

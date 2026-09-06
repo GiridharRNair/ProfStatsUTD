@@ -16,10 +16,17 @@ python3 -m pip install -r requirements.txt
 
 Upload to Supabase:
 
+Make sure these environment variables are set:
+
 ```bash
-export SUPABASE_URL="https://your-project-ref.supabase.co"
-export SUPABASE_SERVICE_ROLE_KEY="your-service-role-key"
+SUPABASE_URL=https://your-project-ref.supabase.co
+SUPABASE_SECRET_KEY=sb_secret_your-secret-key
+```
+
+Then run:
+
+```bash
 npm run import-grades
 ```
 
-The service role key is needed only for trusted importer/API environments. Do not expose it in the Chrome extension.
+The secret key is needed only for trusted importer/API environments. Do not expose it in the Chrome extension.
