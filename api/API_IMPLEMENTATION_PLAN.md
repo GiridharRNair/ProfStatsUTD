@@ -9,7 +9,7 @@ The API should replace the legacy Go backend while keeping the frontend migratio
 Initial endpoints:
 
 ```text
-GET /health_check
+GET /health
 GET /suggestions?teacher=&course=
 GET /professor_info?teacher=&course=
 ```
@@ -93,21 +93,21 @@ The secret key must stay server-side only. It should never be exposed in the Chr
 
 ## Atomic Implementation Steps
 
-1. Add `api/requirements.txt` with the minimal dependencies.
+1. Add `api/requirements.txt` with the minimal dependencies. Done
 
-2. Add `api/app/__init__.py` and empty package marker files for `routes`, `services`, `clients`, and `utils`.
+2. Add `api/app/__init__.py` and empty package marker files for `routes`, `services`, `clients`, and `utils`. Done
 
-3. Add `api/app/config.py` with environment variable loading for `SUPABASE_URL`, `SUPABASE_SECRET_KEY`, and `ALLOWED_EXTENSION_ORIGIN`.
+3. Add `api/app/config.py` with environment variable loading for `SUPABASE_URL`, `SUPABASE_SECRET_KEY`, and `ALLOWED_EXTENSION_ORIGIN`. Done
 
-4. Add `api/app/main.py` with a FastAPI app factory and CORS middleware.
+4. Add `api/app/main.py` with a FastAPI app factory and CORS middleware. Done
 
-5. Add `api/index.py` as the Vercel entrypoint that imports the FastAPI app.
+5. Add `api/index.py` as the Vercel entrypoint that imports the FastAPI app. Done
 
-6. Add `api/app/routes/health.py` with `GET /health_check`.
+6. Add `api/app/routes/health.py` with `GET /health`.
 
 7. Wire the health route into `app/main.py`.
 
-8. Run the API locally and verify `GET /health_check` returns `{ "status": "ok" }`.
+8. Run the API locally and verify `GET /health` returns `{ "status": "ok" }`.
 
 9. Add `api/app/utils/courses.py` with course parsing equivalent to the legacy Go validator.
 
@@ -144,7 +144,7 @@ The secret key must stay server-side only. It should never be exposed in the Chr
 25. Run local manual checks for:
 
 ```text
-GET /health_check
+GET /health
 GET /suggestions?teacher=farage&course=cs2305
 GET /professor_info?teacher=Timothy%20Farage&course=CS2305
 GET /professor_info?teacher=Timothy%20Farage

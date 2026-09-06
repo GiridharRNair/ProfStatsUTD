@@ -46,7 +46,7 @@ Course data remains part of the model because every grade distribution result mu
 The Vercel backend should be a thin read layer:
 
 ```text
-GET /health_check
+GET /health
 GET /suggestions?teacher=&course=
 GET /professor_info?teacher=&course=
 ```
@@ -190,7 +190,7 @@ Exit criteria:
 - Add FastAPI implementation under `api/`.
 - Keep Go files temporarily if needed, or move the Python API into `server/` during transition to avoid path conflicts.
 - Implement:
-  - `/health_check`,
+  - `/health`,
   - `/suggestions`,
   - `/professor_info`.
 - Query Supabase for grade data.
