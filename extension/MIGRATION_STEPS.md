@@ -13,7 +13,7 @@ Make sure to use Shadcn components.
 3. Add TypeScript API types for `/suggestions` and `/professor_info`. Done
 4. Implement a typed API client using `PLASMO_PUBLIC_API_URL`, with a local API fallback. Done
 5. Build one popup form with professor and course inputs. Done
-6. Fetch professor and course suggestions from `/suggestions?teacher=&course=`.
+6. Fetch professor and course suggestions from `/suggestions?teacher=&course=`. Done
 7. Validate that both professor and course are present before submit. Done
 8. Submit only to `/professor_info?teacher=&course=`. Done
 9. Render professor details, ratings, tags, and grade distribution. Done

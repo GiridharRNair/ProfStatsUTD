@@ -1,8 +1,9 @@
 import { useState, type FormEvent, type ReactElement } from "react"
 
-import { ClearableInput } from "~components/clearable-input"
 import { Spinner } from "~components/spinner"
+import { SuggestionInput } from "~components/suggestion-input"
 import { Button } from "~components/ui/button"
+import { useSuggestions } from "~lib/use-suggestions"
 import type { LookupQuery } from "~types/api"
 
 export interface LookupFormProps {
@@ -14,6 +15,7 @@ export interface LookupFormProps {
 export function LookupForm({ onSubmit, pending }: LookupFormProps): ReactElement {
     const [teacher, setTeacher] = useState("")
     const [course, setCourse] = useState("")
+    const suggestions = useSuggestions(teacher, course)
 
     // The API rejects professor-only and course-only lookups, so require both.
     const canSubmit = teacher.trim() !== "" && course.trim() !== ""
@@ -28,23 +30,21 @@ export function LookupForm({ onSubmit, pending }: LookupFormProps): ReactElement
 
     return (
         <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
-            <ClearableInput
+            <SuggestionInput
                 value={teacher}
-                onChange={(event) => setTeacher(event.target.value)}
-                onClear={() => setTeacher("")}
+                onChange={setTeacher}
+                suggestions={suggestions.professors}
                 placeholder="Enter teacher name"
-                aria-label="teacher name"
-                autoComplete="off"
-                autoFocus
+                label="teacher name"
                 disabled={pending}
+                autoFocus
             />
-            <ClearableInput
+            <SuggestionInput
                 value={course}
-                onChange={(event) => setCourse(event.target.value)}
-                onClear={() => setCourse("")}
+                onChange={setCourse}
+                suggestions={suggestions.courses}
                 placeholder="Enter course name"
-                aria-label="course name"
-                autoComplete="off"
+                label="course name"
                 disabled={pending}
             />
             <Button type="submit" disabled={!canSubmit || pending}>
