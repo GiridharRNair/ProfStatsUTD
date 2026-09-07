@@ -12,11 +12,11 @@ Make sure to use Shadcn components.
 2. Create a new Chrome extension manifest for the Plasmo app, including fresh metadata, permissions, and popup configuration. Existing icon artwork can be reused. Done
 3. Add TypeScript API types for `/suggestions` and `/professor_info`. Done
 4. Implement a typed API client using `PLASMO_PUBLIC_API_URL`, with a local API fallback. Done
-5. Build one popup form with professor and course inputs.
+5. Build one popup form with professor and course inputs. Done
 6. Fetch professor and course suggestions from `/suggestions?teacher=&course=`.
-7. Validate that both professor and course are present before submit.
-8. Submit only to `/professor_info?teacher=&course=`.
-9. Render professor details, ratings, tags, and grade distribution.
+7. Validate that both professor and course are present before submit. Done
+8. Submit only to `/professor_info?teacher=&course=`. Done
+9. Render professor details, ratings, tags, and grade distribution. Done
 10. Keep only RateMyProfessors and UTD Grades links in professor details.
 11. Remove compare UI, second lookup form, course-only lookup, professor-only lookup, `CourseResults`, theme toggle, feedback modal, review prompt, and recent-query persistence.
 12. Replace Chakra UI with shadcn components where useful; use a chart library for the grade graph.

@@ -50,6 +50,17 @@ export default tseslint.config(
             ]
         }
     },
+    {
+        // Tailwind's config is CommonJS: package.json declares no module type.
+        files: ["*.config.js"],
+        languageOptions: {
+            sourceType: "commonjs",
+            globals: globals.node
+        },
+        rules: {
+            "@typescript-eslint/no-require-imports": "off"
+        }
+    },
     // Must come last so formatting rules defer to Prettier.
     prettierConfig
 )
