@@ -11,7 +11,7 @@ npm run import-grades:dry-run
 Install upload dependencies:
 
 ```bash
-python3 -m pip install -r requirements.txt
+python3 -m pip install -r requirements-dev.txt
 ```
 
 Upload to Supabase:

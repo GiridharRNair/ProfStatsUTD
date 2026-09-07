@@ -30,7 +30,6 @@ Important behavior:
 api/
   API_IMPLEMENTATION_PLAN.md
   index.py
-  requirements.txt
   app/
     __init__.py
     main.py
@@ -54,7 +53,7 @@ api/
 File responsibilities:
 
 - `index.py`: Vercel entrypoint that exposes the FastAPI app.
-- `requirements.txt`: Python dependencies needed by Vercel.
+- `../requirements.txt`: Python dependencies Vercel installs, at the repo root because that is the only path its installer reads.
 - `app/main.py`: creates the FastAPI app, registers middleware and routes.
 - `app/config.py`: reads environment variables and constants.
 - `app/models/`: response models split by API response area.
@@ -83,7 +82,7 @@ The secret key must stay server-side only. It should never be exposed in the Chr
 
 ## Atomic Implementation Steps
 
-1. Add `api/requirements.txt` with the minimal dependencies. Done
+1. Add the repo-root `requirements.txt` with the minimal dependencies. Done
 
 2. Add `api/app/__init__.py` and empty package marker files for `routes` and `services`. Done
 
@@ -99,7 +98,7 @@ The secret key must stay server-side only. It should never be exposed in the Chr
 
 8. Run the API locally and verify `GET /health` returns `{ "status": "ok" }`. Done
 
-9. Add API development tooling and runtime dependencies to `api/requirements.txt`: Done
+9. Add API development tooling and runtime dependencies (runtime in `requirements.txt`, tooling in `requirements-dev.txt`): Done
    - `httpx` for outbound RateMyProfessors requests,
    - `supabase` for Supabase access,
    - `ruff` for linting and formatting,
