@@ -95,18 +95,18 @@ The secret key must stay server-side only. It should never be exposed in the Chr
 
 8. Run the API locally and verify `GET /health` returns `{ "status": "ok" }`. Done
 
-9. Add API development tooling and runtime dependencies to `api/requirements.txt`:
+9. Add API development tooling and runtime dependencies to `api/requirements.txt`: Done
    - `httpx` for outbound RateMyProfessors requests,
    - `supabase` for Supabase access,
    - `ruff` for linting and formatting,
    - `mypy` for static type checking.
 
-10. Add API tool configuration:
+10. Add API tool configuration: Done
     - configure Ruff for the `api/` package,
     - configure mypy for the `api/` package,
     - keep configuration local to the API so it does not accidentally lint the legacy Go API or existing frontend.
 
-11. Run the initial API quality checks before adding more code:
+11. Run the initial API quality checks before adding more code: Done
     - Ruff lint,
     - Ruff format check,
     - mypy.
