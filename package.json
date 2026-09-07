@@ -5,7 +5,6 @@
     "version": "1.1.9",
     "type": "module",
     "scripts": {
-        "postinstall": "cd api && go mod download",
         "create-db": "python3 db_setup/create_db.py && python3 db_setup/test_db.py",
         "import-grades:dry-run": "python3 scripts/import_grades.py --dry-run",
         "import-grades": "python3 scripts/import_grades.py",
