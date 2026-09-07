@@ -95,44 +95,197 @@ The secret key must stay server-side only. It should never be exposed in the Chr
 
 8. Run the API locally and verify `GET /health` returns `{ "status": "ok" }`. Done
 
-9. Add inline course input normalization in the relevant route handlers:
-   - accept values like `CS 2305` and `CS2305`,
-   - derive `subject` and `catalog_number`,
-   - reject missing or invalid course values,
-   - do not fetch course names,
-   - do not fetch course catalog pages.
+9. Add API development tooling and runtime dependencies to `api/requirements.txt`:
+   - `httpx` for outbound RateMyProfessors requests,
+   - `supabase` for Supabase access,
+   - `ruff` for linting and formatting,
+   - `mypy` for static type checking.
 
-10. Add inline professor input normalization in the relevant route handlers.
+10. Add API tool configuration:
+    - configure Ruff for the `api/` package,
+    - configure mypy for the `api/` package,
+    - keep configuration local to the API so it does not accidentally lint the legacy Go API or existing frontend.
 
-11. Add `api/app/models.py` with response shapes for grades, professor info, and suggestions.
+11. Run the initial API quality checks before adding more code:
+    - Ruff lint,
+    - Ruff format check,
+    - mypy.
 
-12. Add `api/app/services/supabase.py` to create a Supabase client from environment variables.
+12. Add `api/app/services/rate_my_professors.py`.
 
-13. Add grade aggregation logic to `api/app/services/supabase.py`.
+13. In `rate_my_professors.py`, define a `RateMyProfessorsResult` structure with these fields:
+    - `id`,
+    - `name`,
+    - `department`,
+    - `rating`,
+    - `difficulty`,
+    - `would_take_again`,
+    - `tags`.
 
-14. Add professor suggestion and course suggestion logic to `api/app/services/supabase.py`.
+14. In `rate_my_professors.py`, port the legacy UTD school id constant:
+    - `UTD_SCHOOL_ID = "1273"`.
 
-15. Add `api/app/routes/suggestions.py` with `GET /suggestions`.
+15. In `rate_my_professors.py`, add a function that searches RateMyProfessors for a professor id from a professor name.
 
-16. Wire the suggestions route into `app/main.py`.
+16. In `rate_my_professors.py`, preserve the current special-case id mapping for known RMP search misses, including Bo Park.
 
-17. Add `api/app/services/rate_my_professors.py` with the live RMP professor search and details lookup.
+17. In `rate_my_professors.py`, add a function that fetches the professor summary from RMP GraphQL by professor id.
 
-18. Add `api/app/routes/professor.py` with `GET /professor_info`.
+18. In `rate_my_professors.py`, add a function that fetches professor tags from RMP GraphQL.
 
-19. Make `/professor_info` reject missing `teacher`.
+19. In `rate_my_professors.py`, normalize RMP output to match the API response shape:
+    - rating and difficulty capped at `5`,
+    - would-take-again capped at `100`,
+    - tags title-cased and limited to the five most frequent tags,
+    - middle names removed from the display name where needed.
 
-20. Make `/professor_info` reject missing `course`.
+20. In `rate_my_professors.py`, expose one public function:
+    - `get_professor_rating(professor_name: str) -> RateMyProfessorsResult | None`.
 
-21. Make `/professor_info` reject invalid professor names.
+21. Make `get_professor_rating` return `None` for not-found or RMP failures instead of raising route-level errors.
 
-22. Make `/professor_info` reject invalid course names.
+22. Run Ruff and mypy after the RMP service is added.
 
-23. Make `/professor_info` return grade data even when RMP lookup fails.
+23. Manually verify the RMP service from a Python shell with at least:
+    - `Timothy Farage`,
+    - one professor that should not be found or should fail gracefully.
 
-24. Wire the professor route into `app/main.py`.
+24. Add `api/app/services/supabase.py`.
 
-25. Run local manual checks for:
+25. In `supabase.py`, create a Supabase client from:
+    - `SUPABASE_URL`,
+    - `SUPABASE_SECRET_KEY`.
+
+26. In `supabase.py`, fail clearly if either Supabase environment variable is missing.
+
+27. In `supabase.py`, add `normalize_professor_search_name(name: str) -> str` for database search only.
+
+28. In `supabase.py`, add `get_professor_suggestions(teacher_query: str) -> list[str]`.
+
+29. Implement professor suggestions using Supabase/Postgres search against `instructor_search_name`.
+    Start with normalized `ilike` matching. If quality is weak later, replace it with a Postgres RPC that uses the existing `pg_trgm` index.
+
+30. In `supabase.py`, add `parse_course_query(course_query: str) -> tuple[str, str]`.
+
+31. Keep course parsing narrow:
+    - accept `CS 2305` and `CS2305`,
+    - return `("CS", "2305")`,
+    - reject missing values,
+    - reject values without a subject and catalog number,
+    - do not fetch course names,
+    - do not fetch course catalog pages.
+
+32. In `supabase.py`, add `get_course_suggestions(teacher_query: str, course_query: str) -> list[str]`.
+
+33. Implement course suggestions using Supabase/Postgres search against `subject` and `catalog_number`.
+    The query should support partial course input like `CS`, `CS 2`, and `CS2305`.
+
+34. In `supabase.py`, add `get_aggregated_grades(teacher: str, subject: str, catalog_number: str) -> dict`.
+
+35. Make grade aggregation require all three values:
+    - normalized professor search name,
+    - subject,
+    - catalog number.
+
+36. Make grade aggregation sum every grade column from `grade_sections` and return the database grade field names unchanged:
+    - `a_plus`,
+    - `a`,
+    - `a_minus`,
+    - `b_plus`,
+    - `b`,
+    - `b_minus`,
+    - `c_plus`,
+    - `c`,
+    - `c_minus`,
+    - `d_plus`,
+    - `d`,
+    - `d_minus`,
+    - `f`,
+    - `cr`,
+    - `nc`,
+    - `p`,
+    - `w`,
+    - `i`,
+    - `nf`.
+
+37. Run Ruff and mypy after the Supabase service is added.
+
+38. Add `api/app/routes/suggestions.py` with a route skeleton for `GET /suggestions`.
+
+39. The suggestions route should read `teacher` and `course` query parameters as optional strings.
+
+40. The suggestions route should call only `app/services/supabase.py`; do not add a separate suggestions service module.
+
+41. The suggestions route should return:
+    - `professors`,
+    - `courses`.
+
+42. Wire the suggestions route into `app/main.py`.
+
+43. Run Ruff and mypy after the suggestions route skeleton is wired.
+
+44. Manually verify `GET /suggestions` returns a valid response shape before tuning search behavior.
+
+45. Add `api/app/routes/professor.py` with a route skeleton for `GET /professor_info`.
+
+46. The professor route should normalize and validate the `teacher` request parameter inline.
+
+47. The professor route should reject missing `teacher` with HTTP 400 and a clear `detail` message.
+
+48. The professor route should reject invalid professor names inline using the legacy validation rule:
+    - letters,
+    - spaces,
+    - periods,
+    - hyphens,
+    - no repeated hyphen patterns.
+
+49. The professor route should normalize and validate the `course` request parameter by calling `parse_course_query` from `app/services/supabase.py`.
+
+50. The professor route should reject missing or invalid `course` with HTTP 400 and a clear `detail` message.
+
+51. Add `api/app/models.py`.
+
+52. In `models.py`, define the response shape for grade totals using the database grade field names:
+    - `a_plus`,
+    - `a`,
+    - `a_minus`,
+    - and so on.
+
+53. In `models.py`, define the response shape for professor info:
+    - `id`,
+    - `name`,
+    - `department`,
+    - `grades`,
+    - `subject`,
+    - `course_number`,
+    - `rating`,
+    - `difficulty`,
+    - `would_take_again`,
+    - `tags`.
+
+54. In `models.py`, define the response shape for suggestions:
+    - `professors`,
+    - `courses`.
+
+55. Finish the professor route by calling `get_aggregated_grades`.
+
+56. Finish the professor route by calling `get_professor_rating`.
+
+57. Make the professor route return grades even if `get_professor_rating` returns `None`.
+
+58. If RMP data is unavailable, return nullable rating metadata:
+    - `id: null`,
+    - `department: null`,
+    - `rating: null`,
+    - `difficulty: null`,
+    - `would_take_again: null`,
+    - `tags: []`.
+
+59. Wire the professor route into `app/main.py`.
+
+60. Run Ruff and mypy after the professor route is wired.
+
+61. Run local manual checks for:
 
 ```text
 GET /health
@@ -142,11 +295,20 @@ GET /professor_info?teacher=Timothy%20Farage
 GET /professor_info?course=CS2305
 ```
 
-26. Add Vercel config only if the default Python function discovery does not work.
+62. Confirm the missing-parameter requests return HTTP 400:
+    - `/professor_info?teacher=Timothy%20Farage`,
+    - `/professor_info?course=CS2305`.
 
-27. Update root scripts only after the local FastAPI API is usable.
+63. Confirm `/professor_info?teacher=Timothy%20Farage&course=CS2305` returns:
+    - course-specific grade totals from Supabase,
+    - live RMP metadata when available,
+    - the agreed top-level API field names.
 
-28. Keep `legacy-api-go/` until the FastAPI backend has been verified against Supabase and the frontend no longer depends on the old Go server.
+64. Add Vercel config only if the default Python function discovery does not work.
+
+65. Update root scripts only after the local FastAPI API is usable.
+
+66. Keep `legacy-api-go/` until the FastAPI backend has been verified against Supabase and the frontend no longer depends on the old Go server.
 
 ## Manual Verification Checklist
 
