@@ -150,24 +150,24 @@ The secret key must stay server-side only. It should never be exposed in the Chr
     - `Timothy Farage`,
     - one professor that should not be found or should fail gracefully.
 
-24. Add `api/app/services/supabase.py`.
+24. Add `api/app/services/supabase.py`. Done
 
-25. In `supabase.py`, create a Supabase client from:
+25. In `supabase.py`, create a Supabase client from: Done
     - `SUPABASE_URL`,
     - `SUPABASE_SECRET_KEY`.
 
-26. In `supabase.py`, fail clearly if either Supabase environment variable is missing.
+26. In `supabase.py`, fail clearly if either Supabase environment variable is missing. Done
 
-27. In `supabase.py`, add `normalize_professor_search_name(name: str) -> str` for database search only.
+27. In `supabase.py`, add `normalize_professor_search_name(name: str) -> str` for database search only. Done
 
-28. In `supabase.py`, add `get_professor_suggestions(teacher_query: str) -> list[str]`.
+28. In `supabase.py`, add `get_professor_suggestions(teacher_query: str) -> list[str]` using normalized Supabase/Postgres search against `instructor_search_name`. Done
 
-29. Implement professor suggestions using Supabase/Postgres search against `instructor_search_name`.
+29. Keep professor suggestions on normalized `ilike` matching for now. Done
     Start with normalized `ilike` matching. If quality is weak later, replace it with a Postgres RPC that uses the existing `pg_trgm` index.
 
-30. In `supabase.py`, add `parse_course_query(course_query: str) -> tuple[str, str]`.
+30. In `supabase.py`, add `parse_course_query(course_query: str) -> tuple[str, str]`. Done
 
-31. Keep course parsing narrow:
+31. Keep course parsing narrow: Done
     - accept `CS 2305` and `CS2305`,
     - return `("CS", "2305")`,
     - reject missing values,
@@ -175,19 +175,19 @@ The secret key must stay server-side only. It should never be exposed in the Chr
     - do not fetch course names,
     - do not fetch course catalog pages.
 
-32. In `supabase.py`, add `get_course_suggestions(teacher_query: str, course_query: str) -> list[str]`.
+32. In `supabase.py`, add `get_course_suggestions(teacher_query: str, course_query: str) -> list[str]`. Done
 
-33. Implement course suggestions using Supabase/Postgres search against `subject` and `catalog_number`.
+33. Implement course suggestions using Supabase/Postgres search against `subject` and `catalog_number`. Done
     The query should support partial course input like `CS`, `CS 2`, and `CS2305`.
 
-34. In `supabase.py`, add `get_aggregated_grades(teacher: str, subject: str, catalog_number: str) -> dict`.
+34. In `supabase.py`, add `get_aggregated_grades(teacher: str, subject: str, catalog_number: str) -> dict`. Done
 
-35. Make grade aggregation require all three values:
+35. Make grade aggregation require all three values: Done
     - normalized professor search name,
     - subject,
     - catalog number.
 
-36. Make grade aggregation sum every grade column from `grade_sections` and return the database grade field names unchanged:
+36. Make grade aggregation sum every grade column from `grade_sections` and return the database grade field names unchanged: Done
     - `a_plus`,
     - `a`,
     - `a_minus`,
@@ -208,7 +208,7 @@ The secret key must stay server-side only. It should never be exposed in the Chr
     - `i`,
     - `nf`.
 
-37. Run Ruff and mypy after the Supabase service is added.
+37. Run Ruff and mypy after the Supabase service is added. Done
 
 38. Add `api/app/routes/suggestions.py` with a route skeleton for `GET /suggestions`.
 
@@ -227,6 +227,7 @@ The secret key must stay server-side only. It should never be exposed in the Chr
 44. Manually verify `GET /suggestions` returns a valid response shape before tuning search behavior.
 
 45. Add `api/app/routes/professor.py` with a route skeleton for `GET /professor_info`.
+    Request parameter normalization should start here, after the route handler exists.
 
 46. The professor route should normalize and validate the `teacher` request parameter inline.
 
