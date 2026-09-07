@@ -11,7 +11,6 @@ import "./styles/globals.css"
 
 export default function Popup(): ReactElement {
     const [professor, setProfessor] = useState<ProfessorInfoResponse | null>(null)
-    const [isSample, setIsSample] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const [pending, setPending] = useState(false)
 
@@ -24,7 +23,6 @@ export default function Popup(): ReactElement {
                 return
             }
             setProfessor(saved ?? SAMPLE_PROFESSOR)
-            setIsSample(saved === null)
         })
 
         return () => {
@@ -39,7 +37,6 @@ export default function Popup(): ReactElement {
         try {
             const result = await fetchProfessorInfo(query)
             setProfessor(result)
-            setIsSample(false)
             void saveLastProfessor(result)
         } catch (caught) {
             setError(
@@ -54,7 +51,7 @@ export default function Popup(): ReactElement {
         <main className="flex w-[340px] flex-col gap-3 p-3">
             <LookupForm onSubmit={handleSubmit} pending={pending} />
             {error && <p className="text-xs text-destructive">{error}</p>}
-            {professor && <ProfessorDetails professor={professor} isSample={isSample} />}
+            {professor && <ProfessorDetails professor={professor} />}
         </main>
     )
 }

@@ -15,12 +15,9 @@ function Metric({ label, value }: { label: string; value: string }): ReactElemen
 }
 
 export function ProfessorDetails({
-    professor,
-    isSample = false
+    professor
 }: {
     professor: ProfessorInfoResponse
-    /** Marks the placeholder shown before any lookup has been made. */
-    isSample?: boolean
 }): ReactElement {
     const hasRatings =
         professor.rating !== null ||
@@ -34,11 +31,6 @@ export function ProfessorDetails({
                 {professor.department && (
                     <p className="text-xs text-muted-foreground">
                         {professor.department}
-                    </p>
-                )}
-                {isSample && (
-                    <p className="text-[10px] uppercase tracking-wide text-muted-foreground">
-                        Sample
                     </p>
                 )}
             </div>
