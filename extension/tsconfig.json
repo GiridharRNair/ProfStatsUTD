@@ -4,11 +4,7 @@
         "strict": false,
         "skipLibCheck": true,
         "target": "esnext",
-        "lib": [
-            "dom",
-            "dom.iterable",
-            "esnext"
-        ],
+        "lib": ["dom", "dom.iterable", "esnext"],
         "allowJs": true,
         "forceConsistentCasingInFileNames": true,
         "noEmit": true,
@@ -27,25 +23,11 @@
         "jsx": "preserve",
         "baseUrl": ".",
         "paths": {
-            "~*": [
-                "./src/*"
-            ],
-            "@/*": [
-                "./src/*"
-            ]
+            "~*": ["./src/*"],
+            "@/*": ["./src/*"]
         },
-        "types": [
-            "chrome"
-        ]
+        "types": ["chrome"]
     },
-    "include": [
-        ".plasmo/index.d.ts",
-        "./**/*.ts",
-        "./**/*.tsx"
-    ],
-    "exclude": [
-        "node_modules",
-        "build",
-        ".plasmo"
-    ]
+    "include": [".plasmo/index.d.ts", "./**/*.ts", "./**/*.tsx"],
+    "exclude": ["node_modules", "build", ".plasmo"]
 }
