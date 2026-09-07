@@ -210,21 +210,21 @@ The secret key must stay server-side only. It should never be exposed in the Chr
 
 37. Run Ruff and mypy after the Supabase service is added. Done
 
-38. Add `api/app/routes/suggestions.py` with a route skeleton for `GET /suggestions`.
+38. Add `api/app/routes/suggestions.py` with a route skeleton for `GET /suggestions`. Done
 
-39. The suggestions route should read `teacher` and `course` query parameters as optional strings.
+39. The suggestions route should read `teacher` and `course` query parameters as optional strings. Done
 
-40. The suggestions route should call only `app/services/supabase.py`; do not add a separate suggestions service module.
+40. The suggestions route should call only `app/services/supabase.py`; do not add a separate suggestions service module. Done
 
-41. The suggestions route should return:
+41. The suggestions route should return: Done
     - `professors`,
     - `courses`.
 
-42. Wire the suggestions route into `app/main.py`.
+42. Wire the suggestions route into `app/main.py`. Done
 
-43. Run Ruff and mypy after the suggestions route skeleton is wired.
+43. Run Ruff and mypy after the suggestions route skeleton is wired. Done
 
-44. Manually verify `GET /suggestions` returns a valid response shape before tuning search behavior.
+44. Manually verify `GET /suggestions` returns a valid response shape before tuning search behavior. Done
 
 45. Add `api/app/routes/professor.py` with a route skeleton for `GET /professor_info`.
     Request parameter normalization should start here, after the route handler exists.
