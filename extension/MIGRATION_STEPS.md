@@ -7,7 +7,7 @@ Migrate the Chrome extension to Plasmo with React and TypeScript while simplifyi
 ## Steps
 
 1. Create the Plasmo app structure under `extension/`.
-2. Create a new Chrome extension manifest for the Plasmo app, including fresh metadata, permissions, icons, and popup configuration.
+2. Create a new Chrome extension manifest for the Plasmo app, including fresh metadata, permissions, and popup configuration. Existing icon artwork can be reused.
 3. Add TypeScript API types for `/suggestions` and `/professor_info`.
 4. Implement a typed API client using `PLASMO_PUBLIC_API_URL`, with a local API fallback.
 5. Build one popup form with professor and course inputs.
