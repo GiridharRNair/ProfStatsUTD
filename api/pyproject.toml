@@ -1,3 +1,18 @@
+[project]
+name = "profstats-api"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115,<1",
+    "httpx>=0.28,<1",
+    "uvicorn[standard]>=0.32,<1",
+]
+
+[tool.uv]
+# The app is served from index.py, not installed as a package, and there is
+# no build backend here for uv to build it with.
+package = false
+
 [tool.ruff]
 line-length = 100
 target-version = "py312"
