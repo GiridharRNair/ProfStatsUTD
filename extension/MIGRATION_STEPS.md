@@ -4,12 +4,14 @@
 
 Migrate the Chrome extension to Plasmo with React and TypeScript while simplifying the popup workflow to require both professor and course before lookup.
 
+Make sure to use Shadcn components.
+
 ## Steps
 
-1. Create the Plasmo app structure under `extension/`.
-2. Create a new Chrome extension manifest for the Plasmo app, including fresh metadata, permissions, and popup configuration. Existing icon artwork can be reused.
-3. Add TypeScript API types for `/suggestions` and `/professor_info`.
-4. Implement a typed API client using `PLASMO_PUBLIC_API_URL`, with a local API fallback.
+1. Create the Plasmo app structure under `extension/`. Done
+2. Create a new Chrome extension manifest for the Plasmo app, including fresh metadata, permissions, and popup configuration. Existing icon artwork can be reused. Done
+3. Add TypeScript API types for `/suggestions` and `/professor_info`. Done
+4. Implement a typed API client using `PLASMO_PUBLIC_API_URL`, with a local API fallback. Done
 5. Build one popup form with professor and course inputs.
 6. Fetch professor and course suggestions from `/suggestions?teacher=&course=`.
 7. Validate that both professor and course are present before submit.
