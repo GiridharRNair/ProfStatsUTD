@@ -1,4 +1,11 @@
--r requirements.txt
+# Local development only. Production dependencies are declared in
+# api/pyproject.toml, which is what Vercel installs.
+#
+# Runtime packages are repeated here so the API can be run locally and so
+# mypy can resolve fastapi and httpx when type checking api/app.
+fastapi>=0.115,<1
+httpx>=0.28,<1
+uvicorn[standard]>=0.32,<1
 
 mypy>=1.14,<2
 openpyxl>=3.1,<4
