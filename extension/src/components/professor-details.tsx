@@ -1,6 +1,7 @@
 import type { ReactElement } from "react"
 
 import { GradeDistribution } from "~components/grade-distribution"
+import { ProfessorLinksDrawer } from "~components/professor-links-drawer"
 import { Badge } from "~components/ui/badge"
 import type { ProfessorInfoResponse } from "~types/api"
 
@@ -29,7 +30,7 @@ export function ProfessorDetails({
     return (
         <section className="flex flex-col gap-3">
             <div className="text-center">
-                <h2 className="text-sm">{professor.name}</h2>
+                <ProfessorLinksDrawer professor={professor} />
                 {professor.department && (
                     <p className="text-xs text-muted-foreground">
                         {professor.department}

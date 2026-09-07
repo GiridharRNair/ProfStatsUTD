@@ -17,7 +17,7 @@ Make sure to use Shadcn components.
 7. Validate that both professor and course are present before submit. Done
 8. Submit only to `/professor_info?teacher=&course=`. Done
 9. Render professor details, ratings, tags, and grade distribution. Done
-10. Keep only RateMyProfessors and UTD Grades links in professor details.
+10. Show RateMyProfessors, UTD Grades, and UTD Trends links in a drawer opened from the professor name. Done
 11. Remove compare UI, second lookup form, course-only lookup, professor-only lookup, `CourseResults`, theme toggle, feedback modal, review prompt, and recent-query persistence.
 12. Replace Chakra UI with shadcn components where useful; use a chart library for the grade graph.
 13. Delete the legacy Vite/CRX extension after the new Plasmo extension is complete.
