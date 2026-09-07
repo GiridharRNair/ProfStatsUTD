@@ -111,9 +111,9 @@ The secret key must stay server-side only. It should never be exposed in the Chr
     - Ruff format check,
     - mypy.
 
-12. Add `api/app/services/rate_my_professors.py`.
+12. Add `api/app/services/rate_my_professors.py`. Done
 
-13. In `rate_my_professors.py`, define a `RateMyProfessorsResult` structure with these fields:
+13. In `rate_my_professors.py`, define a `RateMyProfessorsResult` structure with these fields: Done
     - `id`,
     - `name`,
     - `department`,
@@ -122,31 +122,31 @@ The secret key must stay server-side only. It should never be exposed in the Chr
     - `would_take_again`,
     - `tags`.
 
-14. In `rate_my_professors.py`, port the legacy UTD school id constant:
+14. In `rate_my_professors.py`, port the legacy UTD school id constant: Done
     - `UTD_SCHOOL_ID = "1273"`.
 
-15. In `rate_my_professors.py`, add a function that searches RateMyProfessors for a professor id from a professor name.
+15. In `rate_my_professors.py`, add a function that searches RateMyProfessors for a professor id from a professor name. Done
 
-16. In `rate_my_professors.py`, preserve the current special-case id mapping for known RMP search misses, including Bo Park.
+16. In `rate_my_professors.py`, preserve the current special-case id mapping for known RMP search misses, including Bo Park. Done
 
-17. In `rate_my_professors.py`, add a function that fetches the professor summary from RMP GraphQL by professor id.
+17. In `rate_my_professors.py`, add a function that fetches the professor summary from RMP GraphQL by professor id. Done
 
-18. In `rate_my_professors.py`, add a function that fetches professor tags from RMP GraphQL.
+18. In `rate_my_professors.py`, add a function that fetches professor tags from RMP GraphQL. Done
 
-19. In `rate_my_professors.py`, normalize RMP output to match the API response shape:
+19. In `rate_my_professors.py`, normalize RMP output to match the API response shape: Done
     - rating and difficulty capped at `5`,
     - would-take-again capped at `100`,
     - tags title-cased and limited to the five most frequent tags,
     - middle names removed from the display name where needed.
 
-20. In `rate_my_professors.py`, expose one public function:
+20. In `rate_my_professors.py`, expose one public function: Done
     - `get_professor_rating(professor_name: str) -> RateMyProfessorsResult | None`.
 
-21. Make `get_professor_rating` return `None` for not-found or RMP failures instead of raising route-level errors.
+21. Make `get_professor_rating` return `None` for not-found or RMP failures instead of raising route-level errors. Done
 
-22. Run Ruff and mypy after the RMP service is added.
+22. Run Ruff and mypy after the RMP service is added. Done
 
-23. Manually verify the RMP service from a Python shell with at least:
+23. Manually verify the RMP service from a Python shell with at least: Done
     - `Timothy Farage`,
     - one professor that should not be found or should fail gracefully.
 
