@@ -20,7 +20,7 @@ Make sure to use Shadcn components.
 10. Show RateMyProfessors, UTD Grades, and UTD Trends links in a drawer opened from the professor name. Done
 11. Remove compare UI, second lookup form, course-only lookup, professor-only lookup, `CourseResults`, theme toggle, feedback modal, review prompt, and recent-query persistence.
 12. Replace Chakra UI with shadcn components where useful; use a chart library for the grade graph.
-13. Delete the legacy Vite/CRX extension after the new Plasmo extension is complete.
+13. Delete the legacy Vite/CRX extension after the new Plasmo extension is complete. Done
 14. Verify with TypeScript checks, Plasmo build, and a local smoke test against the FastAPI backend.
 
 ## API Contract

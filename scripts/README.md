@@ -5,7 +5,7 @@ Use the importer to parse local UTD grade distribution files and upload them to 
 Dry run without credentials:
 
 ```bash
-npm run import-grades:dry-run
+python3 scripts/import_grades.py --dry-run
 ```
 
 Install upload dependencies:
@@ -26,7 +26,7 @@ SUPABASE_SECRET_KEY=sb_secret_your-secret-key
 Then run:
 
 ```bash
-npm run import-grades
+python3 scripts/import_grades.py
 ```
 
 The secret key is needed only for trusted importer/API environments. Do not expose it in the Chrome extension.

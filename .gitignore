@@ -7,37 +7,21 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
-dist
-dist-ssr
 build
 .plasmo
 .parcel-cache
 tsconfig.tsbuildinfo
-*.local
-
-*.exe
-*.exe~
-*.dll
-*.so
-*.dylib
-
-*.test
-
-*.out
-
-go.work
 
 *.DS_Store
 
 .env
+.vercel
 
-*/tmp
-
+.venv
 */venv
+*/tmp
 
 __pycache__/
 */__pycache__
 *.py[cod]
 *$py.class
-
-utdgrades.db

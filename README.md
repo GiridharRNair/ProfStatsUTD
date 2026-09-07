@@ -6,54 +6,74 @@
 
 ProfStats is a handy Chrome extension with 150+ users, merging professor ratings and grade distributions at the University of Texas at Dallas for simplified access to course information for students.
 
-The frontend is built with React using Vite, while the backend is built with Golang and deployed on Azure Web App via Docker. The SQLite database is created and populated using a Python script, utilizing CSV files from the `raw_data` directory sourced from [UTD Grades](https://github.com/acmutd/utd-grades).
+The extension is built with Plasmo, React, and TypeScript. The backend is a FastAPI app deployed as Vercel Python serverless functions, reading grade distributions from Supabase and fetching RateMyProfessors ratings live. Grade data comes from CSV files in the `raw_data` directory sourced from [UTD Grades](https://github.com/acmutd/utd-grades).
+
+## Layout
+
+```text
+extension/    Plasmo + React + TypeScript Chrome extension
+api/          FastAPI app deployed as Vercel Python serverless functions
+scripts/      Python data import and maintenance scripts
+supabase/     SQL schema files and indexes
+raw_data/     Source grade distribution files
+```
 
 ## Local Development
 
-Make sure you have the following software installed on your machine:
+You will need Node.js 20.19+ and Python 3.12+.
 
--   Node.js
--   Golang
--   Python
+### Backend
 
-### Steps:
+Install the Python dependencies and run the API:
 
-1. **Clone the repository:**
+```bash
+python3 -m pip install -r requirements-dev.txt
+uvicorn app.main:app --reload --app-dir api
+```
 
-    ```bash
-    git clone https://github.com/GiridharRNair/ProfStatsUTD
-    ```
+`/suggestions` and `/professor_info` need Supabase credentials. Copy `.env.example` to `.env` and fill in:
 
-2. **Navigate to the project directory:**
+```text
+SUPABASE_URL
+SUPABASE_SECRET_KEY
+```
 
-    ```bash
-    cd ProfStatsUTD
-    ```
+`/health` works without them.
 
-3. **Install dependencies:**
+### Extension
 
-    ```bash
-    npm run install
-    ```
+```bash
+cd extension
+npm install
+npm run dev
+```
 
-    > This command installs the dependencies for the Golang backend and the React frontend
+The extension reads its API base URL from `PLASMO_PUBLIC_API_URL` in the repo-root `.env`, falling back to `http://localhost:8000`.
 
-4. **Start the server and extension concurrently:**
+Then load it in Chrome:
 
-    ```bash
-    npm run dev
-    ```
+- Navigate to `chrome://extensions/`.
+- Enable Developer Mode.
+- Choose "Load unpacked" and select `extension/build/chrome-mv3-dev`.
 
-    > This project uses the `concurrently` npm package to run the server and extension concurrently
+Run `npm run build` in `extension/` for a production build in `extension/build/chrome-mv3-prod`.
 
-5. **Enable Developer Mode in Chrome:**
+### Checks
 
-    - Navigate to `chrome://extensions/`.
-    - Enable Developer Mode.
+```bash
+cd extension && npm run typecheck && npm run lint && npm run format:check
+cd api && ruff check . && mypy
+```
 
-6. **Load the extension:**
+`mypy` and `ruff` read their configuration from `api/pyproject.toml`, whose
+paths are relative to `api/`, so run them from that directory.
 
-    - Unpack the `dist` folder.
-    - Start using the extension for seamless testing and development.
+## Importing Grade Data
+
+See [scripts/README.md](scripts/README.md).
+
+## Deployment
+
+The API deploys to Vercel from `main`. `SUPABASE_URL` and `SUPABASE_SECRET_KEY` must be set in the Vercel project. The extension is packaged with `npm run package` in `extension/` and uploaded to the Chrome Web Store.
 
 Please feel free to open an issue or submit a pull request if you have any suggestions or feedback.

@@ -310,9 +310,9 @@ GET /professor_info?course=CS2305
 
 64. Add Vercel config only if the default Python function discovery does not work.
 
-65. Update root scripts only after the local FastAPI API is usable.
+65. Update root scripts only after the local FastAPI API is usable. Done: the root package.json was removed with the legacy Vite app; the importer is invoked directly with python3.
 
-66. Keep `legacy-api-go/` until the FastAPI backend has been verified against Supabase and the frontend no longer depends on the old Go server.
+66. Keep `legacy-api-go/` until the FastAPI backend has been verified against Supabase and the frontend no longer depends on the old Go server. Done: verified against production, then deleted.
 
 ## Manual Verification Checklist
 
