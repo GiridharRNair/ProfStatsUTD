@@ -36,6 +36,11 @@ def get_professor_rating(professor_name: str) -> RateMyProfessorsResult | None:
         if summary is None:
             return None
 
+        if not _is_special_case_professor(professor_name) and not _summary_matches_query(
+            professor_name, summary
+        ):
+            return None
+
         tags = _fetch_professor_tags(professor_id, summary.num_ratings)
         return RateMyProfessorsResult(
             id=professor_id,
@@ -226,7 +231,7 @@ def _cap_float(value: float | None, maximum: float) -> float | None:
 
 
 def _cap_int(value: float | None, maximum: int) -> int | None:
-    if value is None:
+    if value is None or value < 0:
         return None
 
     return min(maximum, round(value))
@@ -260,6 +265,46 @@ def _nested_list(data: object, *keys: str) -> list[Any] | None:
         return None
 
     return current
+
+
+def _is_special_case_professor(professor_name: str) -> bool:
+    return _clean_professor_id_search_name(professor_name) in SPECIAL_CASE_PROFESSOR_IDS
+
+
+def _summary_matches_query(professor_name: str, summary: _ProfessorSummary) -> bool:
+    query_parts = _normalized_name_parts(professor_name)
+    if not query_parts:
+        return False
+
+    first_name_parts = _normalized_name_parts(summary.first_name)
+    last_name_parts = _normalized_name_parts(summary.last_name)
+    if not first_name_parts or not last_name_parts:
+        return False
+
+    result_first_name = first_name_parts[0]
+    result_last_name = last_name_parts[-1]
+    if len(query_parts) == 1:
+        query_name = query_parts[0]
+        return query_name in {
+            result_first_name,
+            result_last_name,
+            f"{result_first_name}{result_last_name}",
+        }
+
+    return _name_part_matches(result_first_name, query_parts) and _name_part_matches(
+        result_last_name, query_parts
+    )
+
+
+def _name_part_matches(result_part: str, query_parts: list[str]) -> bool:
+    return any(
+        result_part.startswith(query_part) or query_part.startswith(result_part)
+        for query_part in query_parts
+    )
+
+
+def _normalized_name_parts(name: str) -> list[str]:
+    return re.findall(r"[a-z0-9]+", name.lower())
 
 
 def _optional_str(value: object) -> str | None:

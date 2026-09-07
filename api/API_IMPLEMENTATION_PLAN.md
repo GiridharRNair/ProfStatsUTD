@@ -35,7 +35,11 @@ api/
     __init__.py
     main.py
     config.py
-    models.py
+    models/
+      __init__.py
+      grades.py
+      professor.py
+      suggestions.py
     routes/
       __init__.py
       health.py
@@ -53,7 +57,7 @@ File responsibilities:
 - `requirements.txt`: Python dependencies needed by Vercel.
 - `app/main.py`: creates the FastAPI app, registers middleware and routes.
 - `app/config.py`: reads environment variables and constants.
-- `app/models.py`: response models and shared typed structures.
+- `app/models/`: response models split by API response area.
 - `app/routes/health.py`: health check route.
 - `app/routes/professor.py`: `/professor_info` route.
 - `app/routes/suggestions.py`: `/suggestions` route.
@@ -152,7 +156,7 @@ The secret key must stay server-side only. It should never be exposed in the Chr
 
 24. Add `api/app/services/supabase.py`. Done
 
-25. In `supabase.py`, create a Supabase client from: Done
+25. In `supabase.py`, create a Supabase REST query helper from: Done
     - `SUPABASE_URL`,
     - `SUPABASE_SECRET_KEY`.
 
@@ -226,33 +230,33 @@ The secret key must stay server-side only. It should never be exposed in the Chr
 
 44. Manually verify `GET /suggestions` returns a valid response shape before tuning search behavior. Done
 
-45. Add `api/app/routes/professor.py` with a route skeleton for `GET /professor_info`.
+45. Add `api/app/routes/professor.py` with a route skeleton for `GET /professor_info`. Done
     Request parameter normalization should start here, after the route handler exists.
 
-46. The professor route should normalize and validate the `teacher` request parameter inline.
+46. The professor route should normalize and validate the `teacher` request parameter inline. Done
 
-47. The professor route should reject missing `teacher` with HTTP 400 and a clear `detail` message.
+47. The professor route should reject missing `teacher` with HTTP 400 and a clear `detail` message. Done
 
-48. The professor route should reject invalid professor names inline using the legacy validation rule:
+48. The professor route should reject invalid professor names inline using the legacy validation rule: Done
     - letters,
     - spaces,
     - periods,
     - hyphens,
     - no repeated hyphen patterns.
 
-49. The professor route should normalize and validate the `course` request parameter by calling `parse_course_query` from `app/services/supabase.py`.
+49. The professor route should normalize and validate the `course` request parameter by calling `parse_course_query` from `app/services/supabase.py`. Done
 
-50. The professor route should reject missing or invalid `course` with HTTP 400 and a clear `detail` message.
+50. The professor route should reject missing or invalid `course` with HTTP 400 and a clear `detail` message. Done
 
-51. Add `api/app/models.py`.
+51. Add `api/app/models/`. Done
 
-52. In `models.py`, define the response shape for grade totals using the database grade field names:
+52. In `models/grades.py`, define the response shape for grade totals using the database grade field names: Done
     - `a_plus`,
     - `a`,
     - `a_minus`,
     - and so on.
 
-53. In `models.py`, define the response shape for professor info:
+53. In `models/professor.py`, define the response shape for professor info: Done
     - `id`,
     - `name`,
     - `department`,
@@ -264,17 +268,17 @@ The secret key must stay server-side only. It should never be exposed in the Chr
     - `would_take_again`,
     - `tags`.
 
-54. In `models.py`, define the response shape for suggestions:
+54. In `models/suggestions.py`, define the response shape for suggestions: Done
     - `professors`,
     - `courses`.
 
-55. Finish the professor route by calling `get_aggregated_grades`.
+55. Finish the professor route by calling `get_aggregated_grades`. Done
 
-56. Finish the professor route by calling `get_professor_rating`.
+56. Finish the professor route by calling `get_professor_rating`. Done
 
-57. Make the professor route return grades even if `get_professor_rating` returns `None`.
+57. Make the professor route return grades even if `get_professor_rating` returns `None`. Done
 
-58. If RMP data is unavailable, return nullable rating metadata:
+58. If RMP data is unavailable, return nullable rating metadata: Done
     - `id: null`,
     - `department: null`,
     - `rating: null`,
@@ -282,11 +286,11 @@ The secret key must stay server-side only. It should never be exposed in the Chr
     - `would_take_again: null`,
     - `tags: []`.
 
-59. Wire the professor route into `app/main.py`.
+59. Wire the professor route into `app/main.py`. Done
 
-60. Run Ruff and mypy after the professor route is wired.
+60. Run Ruff and mypy after the professor route is wired. Done
 
-61. Run local manual checks for:
+61. Run local manual checks for: Done
 
 ```text
 GET /health
@@ -296,11 +300,11 @@ GET /professor_info?teacher=Timothy%20Farage
 GET /professor_info?course=CS2305
 ```
 
-62. Confirm the missing-parameter requests return HTTP 400:
+62. Confirm the missing-parameter requests return HTTP 400: Done
     - `/professor_info?teacher=Timothy%20Farage`,
     - `/professor_info?course=CS2305`.
 
-63. Confirm `/professor_info?teacher=Timothy%20Farage&course=CS2305` returns:
+63. Confirm `/professor_info?teacher=Timothy%20Farage&course=CS2305` returns: Done
     - course-specific grade totals from Supabase,
     - live RMP metadata when available,
     - the agreed top-level API field names.

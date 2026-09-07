@@ -1,12 +1,13 @@
 import re
 from typing import Any
 
-from supabase import Client, create_client
+import httpx
 
 from app.config import get_settings
 
 PROFESSOR_SUGGESTION_LIMIT = 5
 COURSE_SUGGESTION_LIMIT = 5
+SUPABASE_REST_TIMEOUT_SECONDS = 10
 GRADE_COLUMNS = (
     "a_plus",
     "a",
@@ -34,16 +35,12 @@ class SupabaseConfigurationError(RuntimeError):
     pass
 
 
-class InvalidCourseQueryError(ValueError):
+class SupabaseQueryError(RuntimeError):
     pass
 
 
-def create_supabase_client() -> Client:
-    settings = get_settings()
-    if not settings.supabase_url or not settings.supabase_secret_key:
-        raise SupabaseConfigurationError("Set SUPABASE_URL and SUPABASE_SECRET_KEY.")
-
-    return create_client(settings.supabase_url, settings.supabase_secret_key)
+class InvalidCourseQueryError(ValueError):
+    pass
 
 
 def normalize_professor_search_name(name: str) -> str:
@@ -55,17 +52,16 @@ def get_professor_suggestions(teacher_query: str) -> list[str]:
     if not normalized_query:
         return []
 
-    response = (
-        create_supabase_client()
-        .table("grade_sections")
-        .select("instructor_name")
-        .ilike("instructor_search_name", _contains_words_pattern(normalized_query))
-        .limit(100)
-        .execute()
+    records = _get_grade_sections(
+        {
+            "select": "instructor_name",
+            "instructor_search_name": _contains_words_filter(normalized_query),
+            "limit": "100",
+        }
     )
 
     suggestions: list[str] = []
-    for record in _records(response.data):
+    for record in records:
         instructor_name = record.get("instructor_name")
         if not isinstance(instructor_name, str) or not instructor_name:
             continue
@@ -92,29 +88,25 @@ def get_course_suggestions(teacher_query: str, course_query: str) -> list[str]:
     subject, catalog_number = _split_course_query(course_query)
     professor_search_name = normalize_professor_search_name(teacher_query)
 
-    query = (
-        create_supabase_client()
-        .table("grade_sections")
-        .select("subject,catalog_number")
-        .order("subject")
-        .order("catalog_number")
-    )
+    params = {
+        "select": "subject,catalog_number",
+        "order": "subject.asc,catalog_number.asc",
+        "limit": "100",
+    }
 
     if subject:
-        query = query.ilike("subject", f"{subject}%")
+        params["subject"] = _starts_with_filter(subject)
 
     if catalog_number:
-        query = query.ilike("catalog_number", f"{catalog_number}%")
+        params["catalog_number"] = _starts_with_filter(catalog_number)
 
     if professor_search_name:
-        query = query.ilike(
-            "instructor_search_name", _contains_words_pattern(professor_search_name)
-        )
+        params["instructor_search_name"] = _contains_words_filter(professor_search_name)
 
-    response = query.limit(100).execute()
+    records = _get_grade_sections(params)
 
     suggestions: list[str] = []
-    for record in _records(response.data):
+    for record in records:
         record_subject = record.get("subject")
         record_catalog_number = record.get("catalog_number")
         if not isinstance(record_subject, str) or not isinstance(record_catalog_number, str):
@@ -135,18 +127,17 @@ def get_aggregated_grades(teacher: str, subject: str, catalog_number: str) -> di
     if not professor_search_name or not subject or not catalog_number:
         raise ValueError("Teacher, subject, and catalog number are required for grade aggregation.")
 
-    response = (
-        create_supabase_client()
-        .table("grade_sections")
-        .select(",".join(GRADE_COLUMNS))
-        .eq("subject", subject.upper())
-        .eq("catalog_number", catalog_number.upper())
-        .ilike("instructor_search_name", _contains_words_pattern(professor_search_name))
-        .execute()
+    records = _get_grade_sections(
+        {
+            "select": ",".join(GRADE_COLUMNS),
+            "subject": _equals_filter(subject.upper()),
+            "catalog_number": _equals_filter(catalog_number.upper()),
+            "instructor_search_name": _contains_words_filter(professor_search_name),
+        }
     )
 
     totals = {column: 0 for column in GRADE_COLUMNS}
-    for record in _records(response.data):
+    for record in records:
         for column in GRADE_COLUMNS:
             totals[column] += _int_record_value(record, column)
 
@@ -161,8 +152,38 @@ def _professor_suggestion_name(name: str) -> str:
     return f"{name_parts[0]} {name_parts[-1]}"
 
 
-def _contains_words_pattern(search_name: str) -> str:
-    return f"%{'%'.join(search_name.split())}%"
+def _get_grade_sections(params: dict[str, str]) -> list[dict[str, Any]]:
+    settings = get_settings()
+    if not settings.supabase_url or not settings.supabase_secret_key:
+        raise SupabaseConfigurationError("Set SUPABASE_URL and SUPABASE_SECRET_KEY.")
+
+    try:
+        response = httpx.get(
+            f"{settings.supabase_url.rstrip('/')}/rest/v1/grade_sections",
+            params=params,
+            headers={
+                "apikey": settings.supabase_secret_key,
+                "Authorization": f"Bearer {settings.supabase_secret_key}",
+            },
+            timeout=SUPABASE_REST_TIMEOUT_SECONDS,
+        )
+        response.raise_for_status()
+    except httpx.HTTPError as exc:
+        raise SupabaseQueryError("Supabase query failed.") from exc
+
+    return _records(response.json())
+
+
+def _contains_words_filter(search_name: str) -> str:
+    return f"ilike.*{'*'.join(search_name.split())}*"
+
+
+def _starts_with_filter(value: str) -> str:
+    return f"ilike.{value}*"
+
+
+def _equals_filter(value: str) -> str:
+    return f"eq.{value}"
 
 
 def _split_course_query(course_query: str) -> tuple[str, str]:
