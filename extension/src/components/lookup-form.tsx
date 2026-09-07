@@ -47,7 +47,11 @@ export function LookupForm({ onSubmit, pending }: LookupFormProps): ReactElement
                 label="course name"
                 disabled={pending}
             />
-            <Button type="submit" disabled={!canSubmit || pending}>
+            <Button
+                type="submit"
+                className="h-8 font-light"
+                disabled={!canSubmit || pending}
+            >
                 {pending ? <Spinner /> : "Look up"}
             </Button>
         </form>

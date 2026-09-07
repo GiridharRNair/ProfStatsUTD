@@ -6,17 +6,20 @@ import type { ProfessorInfoResponse } from "~types/api"
 
 function Metric({ label, value }: { label: string; value: string }): ReactElement {
     return (
-        <div className="flex flex-col">
-            <span className="text-sm font-medium tabular-nums">{value}</span>
+        <div className="flex flex-col items-center">
+            <span className="text-sm tabular-nums">{value}</span>
             <span className="text-xs text-muted-foreground">{label}</span>
         </div>
     )
 }
 
 export function ProfessorDetails({
-    professor
+    professor,
+    isSample = false
 }: {
     professor: ProfessorInfoResponse
+    /** Marks the placeholder shown before any lookup has been made. */
+    isSample?: boolean
 }): ReactElement {
     const hasRatings =
         professor.rating !== null ||
@@ -25,19 +28,24 @@ export function ProfessorDetails({
 
     return (
         <section className="flex flex-col gap-3">
-            <div>
-                <h2 className="text-sm font-semibold">{professor.name}</h2>
+            <div className="text-center">
+                <h2 className="text-sm">{professor.name}</h2>
                 {professor.department && (
                     <p className="text-xs text-muted-foreground">
                         {professor.department}
                     </p>
                 )}
+                {isSample && (
+                    <p className="text-[10px] uppercase tracking-wide text-muted-foreground">
+                        Sample
+                    </p>
+                )}
             </div>
 
             {professor.tags.length > 0 && (
-                <div className="flex flex-wrap gap-1">
+                <div className="flex flex-wrap justify-center gap-1">
                     {professor.tags.map((tag) => (
-                        <Badge key={tag} variant="secondary">
+                        <Badge key={tag} variant="secondary" className="font-light">
                             {tag}
                         </Badge>
                     ))}
@@ -68,7 +76,7 @@ export function ProfessorDetails({
                     />
                 </div>
             ) : (
-                <p className="text-xs text-muted-foreground">
+                <p className="text-center text-xs text-muted-foreground">
                     No RateMyProfessors ratings found.
                 </p>
             )}

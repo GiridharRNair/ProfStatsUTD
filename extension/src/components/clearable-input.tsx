@@ -28,8 +28,9 @@ export function ClearableInput({
                 ref={inputRef}
                 value={value}
                 disabled={disabled}
-                // Leave room so long values do not run under the clear control.
-                className="pr-8"
+                // h-8 trims shadcn's default h-9; pr-8 leaves room so long
+                // values do not run under the clear control.
+                className="h-8 pr-8 text-sm"
                 {...props}
             />
             {value !== "" && !disabled && (
