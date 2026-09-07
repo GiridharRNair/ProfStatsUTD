@@ -1,6 +1,9 @@
-<p align="center">
-  <img src="assets/marquee-promo-tile.jpg" alt="Screenshot" width="400">
-</p>
+<table>
+  <tr>
+    <td><img src="assets/extension-screenshot-1.png" alt="Look up professor info quickly" width="100%"></td>
+    <td><img src="assets/extension-screenshot-2.png" alt="Click their name for quick links" width="100%"></td>
+  </tr>
+</table>
 
 [![Chrome Web Store](https://img.shields.io/badge/Featured_on-Chrome_Web_Store-cce7e8?style=for-the-badge)](https://chromewebstore.google.com/detail/profstats-ut-dallas/doilmgfedjlpepeaolcfpdmkehecdaff)
 
@@ -27,7 +30,7 @@ You will need Node.js 20.19+ and Python 3.12+.
 Install the Python dependencies and run the API:
 
 ```bash
-python3 -m pip install -r requirements-dev.txt
+python3 -m pip install -r requirements.txt
 uvicorn app.main:app --reload --app-dir api
 ```
 

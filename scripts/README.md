@@ -11,7 +11,7 @@ python3 scripts/import_grades.py --dry-run
 Install upload dependencies:
 
 ```bash
-python3 -m pip install -r requirements-dev.txt
+python3 -m pip install -r requirements.txt
 ```
 
 Upload to Supabase:
