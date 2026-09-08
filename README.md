@@ -33,7 +33,18 @@ cd ProfStatsUTD
 
 ### API
 
-1. **Install the Python dependencies.**
+1. **Create and activate a virtual environment.**
+
+    ```bash
+    python3 -m venv .venv
+    source .venv/bin/activate
+    ```
+
+    On Windows the second line is `.venv\Scripts\activate` instead.
+
+    This keeps the project's packages out of your system Python, so `ruff` and `mypy` resolve to the versions pinned here rather than whatever happens to be installed globally. `.venv` is gitignored. Your shell prompt gains a `(.venv)` prefix while it is active; run `deactivate` to leave it, and re-run the `source` line in each new terminal.
+
+2. **Install the Python dependencies.**
 
     ```bash
     python3 -m pip install -r requirements.txt
@@ -41,7 +52,7 @@ cd ProfStatsUTD
 
     This is the development set: the runtime packages plus `ruff`, `mypy`, and `openpyxl` for the importer. What actually ships to Vercel is declared separately in `api/pyproject.toml`, which is why that file is the one to edit when adding a runtime dependency.
 
-2. **Provide Supabase credentials.**
+3. **Provide Supabase credentials.**
 
     ```bash
     cp .env.example .env
@@ -49,7 +60,7 @@ cd ProfStatsUTD
 
     Fill in `SUPABASE_URL` and `SUPABASE_SECRET_KEY` from your Supabase project. The secret key is used only by trusted server and importer environments, never by the extension. Without these, `/health` still works but `/suggestions` and `/professor_info` return `500`.
 
-3. **Run the server.**
+4. **Run the server.**
 
     ```bash
     fastapi dev api/index.py
@@ -57,7 +68,7 @@ cd ProfStatsUTD
 
     This serves on `http://localhost:8000` with auto-reload, which is the address the extension falls back to when no API URL is configured. `api/index.py` is also the entry point Vercel uses, so you are running the same app locally that gets deployed.
 
-4. **Check it responds.**
+5. **Check it responds.**
 
     ```bash
     curl http://localhost:8000/health
