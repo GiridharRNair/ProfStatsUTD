@@ -2,8 +2,9 @@
 # api/pyproject.toml, which is what Vercel installs.
 #
 # Runtime packages are repeated here so the API can be run locally and so
-# mypy can resolve fastapi and httpx when type checking api/app.
-fastapi>=0.115,<1
+# mypy can resolve fastapi and httpx when type checking api/app. The
+# [standard] extra adds the `fastapi` CLI used by `fastapi dev`.
+fastapi[standard]>=0.115,<1
 httpx>=0.28,<1
 uvicorn[standard]>=0.32,<1
 

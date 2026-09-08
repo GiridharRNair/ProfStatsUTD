@@ -4,7 +4,7 @@ import { fetchSuggestions } from "~lib/api"
 import type { SuggestionsResponse } from "~types/api"
 
 /** Long enough to skip most intermediate keystrokes, short enough to feel live. */
-const DEBOUNCE_MS = 200
+const DEBOUNCE_MS = 100
 
 const EMPTY: SuggestionsResponse = { professors: [], courses: [] }
 
